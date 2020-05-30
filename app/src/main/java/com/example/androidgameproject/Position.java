@@ -5,6 +5,25 @@ import android.graphics.Rect;
 abstract public class Position {
     protected int y,x,deltaY,deltaX,width,height;
 
+    public Position(int x,int y, int width, int height) {
+        this.y = y;
+        this.x = x;
+        this.width = width;
+        this.height = height;
+    }
+    public int topBorder(){
+        return y;
+    }
+    public int bottomBorder(){
+        return y+height;
+    }
+    public int leftBorder(){
+        return x;
+    }
+    public int rightBorder(){
+        return x+width;
+    }
+
     public Rect getRect(){
         return new Rect(x,y,x+width,y+height);
     }

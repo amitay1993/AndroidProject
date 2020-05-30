@@ -17,14 +17,14 @@ public class Background  implements ObjectsInterface {
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap,x,y,null);
         if(x<0){
-            canvas.drawBitmap(bitmap,x+GameSurfaceView.WIDTH,y,null);
+            canvas.drawBitmap(bitmap,x+GameSurfaceView.widthScreen,y,null);
         }
     }
 
     @Override
     public void update() {
         x+=deltaX;
-        if(x<(-1)*GameSurfaceView.WIDTH) {
+        if(x<(-1)*GameSurfaceView.widthScreen) {
             x=0;
         }
 

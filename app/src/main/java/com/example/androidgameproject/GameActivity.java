@@ -2,8 +2,10 @@ package com.example.androidgameproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,7 +18,12 @@ public class GameActivity extends AppCompatActivity {
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(new GameSurfaceView(this));
+        Point point=new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        setContentView(new GameSurfaceView(this,point.x,point.y));
+
+
+
     }
 
     @Override

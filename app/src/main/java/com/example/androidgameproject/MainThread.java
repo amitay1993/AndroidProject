@@ -63,7 +63,6 @@ public class MainThread extends Thread {
                 avgFps=1000/((totalTime/frameCount)/1000000);
                 totalTime=0;
                 frameCount=0;
-                System.out.println(avgFps+"");
             }
         }
 
