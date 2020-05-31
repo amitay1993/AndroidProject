@@ -3,6 +3,8 @@ package com.example.androidgameproject;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,11 +20,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Background background;
     private Player player;
     private List<Bullet> bullets;
-    private long bulletStartTime;
+    private long bulletStartTime,enemyStartTime,obstacleStartTime;
     static int widthScreen, heightScreen;
     private List<Enemy> enemies;
-    private long enemyStartTime;
-    Random random=new Random();;
+    private List<Obstacle> obstacles;
+    Random random=new Random();
+    private Explosion explosion;
+
 
 
     public GameSurfaceView(Context context,int width,int height) {
@@ -34,6 +38,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         setFocusable(true);
         bullets=new ArrayList<>();
         enemies =new ArrayList<>();
+        obstacles=new ArrayList<>();
 
 
     }
@@ -44,8 +49,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mainThread.start();
         background=new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         player=new Player(BitmapFactory.decodeResource(getResources(),R.drawable.player));
-        bulletStartTime=System.nanoTime();
-        enemyStartTime=System.nanoTime();
+        bulletStartTime=enemyStartTime=obstacleStartTime=System.nanoTime();
 
 
 
@@ -101,22 +105,60 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             for(Bullet bullet:bullets){
                 bullet.update();
-                if(bullet.getX()<-10) //change
+
+                if(bullet.leftBorder()>widthScreen+200) //change
                 {
+                    Log.d("enemy", bullet.leftBorder()+" "+widthScreen+"");
+                    Log.d("enemy", "bullet");
                     bullets.remove(bullet);
+                    break;
                 }
             }
-            long enemyElapsed=(System.nanoTime()-enemyStartTime)/1000000;
-            if(enemyElapsed>10000-player.getScore()/4) {
-                enemies.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.dragon1), widthScreen + 10, (int) random.nextDouble() * (heightScreen - 50), player.getScore()));
+            long enemyTimer=(System.nanoTime()-enemyStartTime)/1000000;
+            if(enemyTimer>10000-player.getScore()/4) {
+                enemies.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2), widthScreen + 10, (int) (random.nextDouble()* (heightScreen - 130)), player.getScore()));
                 enemyStartTime = System.nanoTime();
             }
 
             for(Enemy enemy:enemies){
                 enemy.update();
-                if(enemy.getX()<-100) {
-                  enemies.remove(enemy);
 
+                if(collisionDetection(enemy,player)){
+                    enemies.remove(enemy);
+                    player.setPlaying(false);
+                    break;
+                }
+
+                if(enemy.rightBorder()<0)
+                {
+                    Log.d("enemy", "enemy");
+                  enemies.remove(enemy);
+                  break;
+                }
+                for(Bullet bullet:bullets){
+                    if(collisionDetection(enemy,bullet)){
+                        explosion=new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2),enemy.getX(),enemy.getY(),getResources());
+                        enemies.remove(enemy);
+                        bullets.remove(bullet);
+                        break;
+                    }
+                }
+
+            }
+
+            long obstacleTimer=(System.nanoTime()-obstacleStartTime)/1000000;
+            if(obstacleTimer>12000-player.getScore()/4) {
+                obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_pillarnew1crop_removebg), widthScreen + 10, heightScreen/2));
+                obstacleStartTime = System.nanoTime();
+            }
+            for(Obstacle obstacle : obstacles){
+                obstacle.update();
+                if(collisionDetection(player,obstacle)){
+                    player.setPlaying(false);
+                    break;
+                }
+                if(obstacle.rightBorder()<0){
+                    obstacles.remove(obstacle);
                 }
 
             }
@@ -139,6 +181,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 bullet.draw(canvas);
             for(Enemy enemy:enemies)
                 enemy.draw(canvas);
+            for(Obstacle obstacle:obstacles)
+                obstacle.draw(canvas);
+            if(explosion!=null) {
+                explosion.draw(canvas);
+                explosion=null;
+            }
         }
     }
+    public boolean collisionDetection(Position first,Position second){
+
+        if(first instanceof Enemy && second instanceof Player&&Rect.intersects(first.getRect(), second.getRect()))
+            Log.d("rect", first.getRect().left+" "+first.getRect().right+" "+second.getRect().left+" "+second.getRect().right);
+        return Rect.intersects(first.getRect(), second.getRect());
+    }
+
 }
