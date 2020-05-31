@@ -116,7 +116,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             long enemyTimer=(System.nanoTime()-enemyStartTime)/1000000;
             if(enemyTimer>10000-player.getScore()/4) {
-                enemies.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2), widthScreen + 10, (int) (random.nextDouble()* (heightScreen - 130)), player.getScore()));
+                enemies.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2), widthScreen + 10, (int) (random.nextDouble()* (heightScreen - 130)) ,player.getScore(),getResources()));
                 enemyStartTime = System.nanoTime();
             }
 
@@ -137,7 +137,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 }
                 for(Bullet bullet:bullets){
                     if(collisionDetection(enemy,bullet)){
-                        explosion=new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2),enemy.getX(),enemy.getY(),getResources());
+                      //  explosion=new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2),enemy.getX(),enemy.getY(),getResources());
                         enemies.remove(enemy);
                         bullets.remove(bullet);
                         break;
@@ -183,10 +183,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 enemy.draw(canvas);
             for(Obstacle obstacle:obstacles)
                 obstacle.draw(canvas);
-            if(explosion!=null) {
-                explosion.draw(canvas);
-                explosion=null;
-            }
+//            if(explosion!=null) {
+//                explosion.draw(canvas);
+//                explosion=null;
+//            }
         }
     }
     public boolean collisionDetection(Position first,Position second){
