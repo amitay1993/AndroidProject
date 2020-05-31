@@ -13,7 +13,8 @@ public class Enemy extends Position implements ObjectsInterface {
     public Enemy(Bitmap bitmap,int x,int y,int speed) {
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
         this.bitmap = bitmap;
-        this.speed=4+(int)random.nextDouble()*30/score; // change
+        random=new Random();
+        this.speed=4+(int)random.nextDouble()*30/(score+1); // change
     }
 
     @Override
@@ -25,5 +26,10 @@ public class Enemy extends Position implements ObjectsInterface {
     public void update() {
         x-=speed;
 
+    }
+
+    @Override
+    public int getWidth() {
+        return getWidth()-10;
     }
 }

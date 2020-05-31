@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
@@ -19,6 +20,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private List<Bullet> bullets;
     private long bulletStartTime;
     static int widthScreen, heightScreen;
+    private List<Enemy> enemies;
+    private long enemyStartTime;
+    Random random=new Random();;
 
 
     public GameSurfaceView(Context context,int width,int height) {
@@ -29,6 +33,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         getHolder().addCallback(this);
         setFocusable(true);
         bullets=new ArrayList<>();
+        enemies =new ArrayList<>();
+
 
     }
 
@@ -39,6 +45,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         background=new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
         player=new Player(BitmapFactory.decodeResource(getResources(),R.drawable.player));
         bulletStartTime=System.nanoTime();
+        enemyStartTime=System.nanoTime();
 
 
 
@@ -99,6 +106,20 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     bullets.remove(bullet);
                 }
             }
+            long enemyElapsed=(System.nanoTime()-enemyStartTime)/1000000;
+            if(enemyElapsed>10000-player.getScore()/4) {
+                enemies.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.dragon1), widthScreen + 10, (int) random.nextDouble() * (heightScreen - 50), player.getScore()));
+                enemyStartTime = System.nanoTime();
+            }
+
+            for(Enemy enemy:enemies){
+                enemy.update();
+                if(enemy.getX()<-100) {
+                  enemies.remove(enemy);
+
+                }
+
+            }
 
         }
 
@@ -116,6 +137,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             canvas.restoreToCount(saveState);
             for(Bullet bullet:bullets)
                 bullet.draw(canvas);
+            for(Enemy enemy:enemies)
+                enemy.draw(canvas);
         }
     }
 }
