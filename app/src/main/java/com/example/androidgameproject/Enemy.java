@@ -23,8 +23,8 @@ public class Enemy extends Position implements ObjectsInterface {
         bitmaps[1]= BitmapFactory.decodeResource(res,R.drawable.rsz_dragon1);
         random=new Random();
         this.score=score;
-        this.speed=4+(int)random.nextDouble()*30/(score); // change
-        if(speed>40){
+        this.speed=10+(int)random.nextDouble()*30/(score); // change
+        if(speed>100){
             this.speed=40;
         }//speed limit
         startTime=System.nanoTime();
