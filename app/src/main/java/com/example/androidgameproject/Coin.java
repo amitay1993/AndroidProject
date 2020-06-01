@@ -1,15 +1,28 @@
 package com.example.androidgameproject;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
-public class Coin implements ObjectsInterface {
-    @Override
-    public void draw(Canvas canvas) {
+public class Coin extends Position implements ObjectsInterface {
+
+    private Bitmap bitmap;
+    private final int speed=10;
+    public Coin(Bitmap bitmap, int x, int y){
+        super(x,y,bitmap.getWidth(),bitmap.getHeight());
+
+        this.bitmap=bitmap;
 
     }
 
     @Override
-    public void update() {
+    public void draw(Canvas canvas) {
+        canvas.drawBitmap(bitmap,x,y,null);
+    }
 
+    @Override
+    public void update() {
+        x-=speed;
     }
 }

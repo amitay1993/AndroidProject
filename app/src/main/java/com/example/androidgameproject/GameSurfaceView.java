@@ -26,16 +26,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Background[] backgrounds;
     private Player player;
     private List<Bullet> bullets;
-    private long bulletStartTime, enemyStartTime, obstacleStartTime;
+    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime;
     static int widthScreen, heightScreen;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
+    private List<Coin> coins;
     Random random = new Random();
     private Explosion explosion;
     private boolean isRestart;
-    private int bScore;
+    private int bScore,coin_counter,backNumber,life_counter;
+    private Bitmap coinImg;
     Context context;
-    private int backNumber;
+    private Bitmap[] lifes;
+
 
 
     public GameSurfaceView(Context context, int width, int height) {
@@ -49,6 +52,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         bullets = new ArrayList<>();
         enemies = new ArrayList<>();
         obstacles = new ArrayList<>();
+        coins=new ArrayList<>();
+        coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
+        lifes=new Bitmap[3];
+        lifes[0]=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
+        lifes[1]=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
+        lifes[2]=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
+
+
+
 
 
     }
@@ -120,16 +132,32 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
                 if (bullet.leftBorder() > widthScreen + 200) //change
                 {
-                    Log.d("enemy", bullet.leftBorder() + " " + widthScreen + "");
-                    Log.d("enemy", "bullet");
                     bullets.remove(bullet);
                     break;
                 }
             }
+            long cointTimeElapsed=(System.nanoTime()-coinStartTime)/1000000;
+            if(cointTimeElapsed>5500-player.getScore()/2){
+                coins.add(new Coin(BitmapFactory.decodeResource(getResources(), R.drawable.coin), widthScreen + 10, (int) (random.nextDouble() * (heightScreen -20 ))));
+                coinStartTime=System.nanoTime();
+            }
+
+
+
             long enemyTimer = (System.nanoTime() - enemyStartTime) / 1000000;
-            if (enemyTimer > 10000 - player.getScore() / 3) {
-                enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + 10, (int) (random.nextDouble() * (heightScreen - 130)), player.getScore(), getResources()));
+            if (enemyTimer > 6500 - player.getScore() / 3) {
+                addEnemies();
+               // enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + 10, (int) (random.nextDouble() * (heightScreen -130 )), player.getScore(), getResources()));
                 enemyStartTime = System.nanoTime();
+            }
+
+            for(Coin coin: coins){
+                coin.update();
+                if (collisionDetection(player, coin)) {
+                    coins.remove(coin);
+                    coin_counter++;
+                    break;
+                }
             }
 
             for (Enemy enemy : enemies) {
@@ -200,6 +228,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             if (explosion != null) {
                 explosion.draw(canvas);
             }
+            for (Coin coin: coins){
+                coin.draw(canvas);
+            }
+            drawCoinScore(canvas);
             drawTxt(canvas);
         }
     }
@@ -210,6 +242,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
         canvas.drawText("Distance "+player.getScore(),player.rightBorder()+5,40,paint); // player score is distance
         canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-40,paint); // player score is distance
+        canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
+    }
+
+    public void drawCoinScore(Canvas canvas){
+        canvas.drawBitmap(coinImg,widthScreen-130,40,null); // player score is distance
     }
 
     public boolean collisionDetection(Position first, Position second) {
@@ -263,12 +300,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private void setBackNumber(){
         if(bScore<20)
             backNumber=0;
-        else if(bScore<40)
+        else if(bScore<990)
             backNumber=1;
-        else if(bScore<60)
+        else if(bScore<1000)
             backNumber=2;
-        else if(bScore<80)
+        else if(bScore<1000)
             backNumber=3;
     }
+    private void addEnemies(){
+        enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20)+100, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
+        enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20)+200, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
+        enemies.add(new Groll(BitmapFactory.decodeResource(getResources(), R.drawable.roll0), widthScreen + random.nextInt(20)+300, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
+
+    }
 }
+
 
