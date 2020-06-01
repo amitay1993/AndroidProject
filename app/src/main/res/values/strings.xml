@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidGameProject</string>
+    <string name="startgame_btn">Start Game</string>
 </resources>
