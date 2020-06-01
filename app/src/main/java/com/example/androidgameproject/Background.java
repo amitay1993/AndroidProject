@@ -20,6 +20,9 @@ public class Background  implements ObjectsInterface {
             canvas.drawBitmap(bitmap,x+GameSurfaceView.widthScreen,y,null);
         }
     }
+        public void setBitmap(Bitmap bitmap){
+        this.bitmap=bitmap;
+    }
 
     @Override
     public void update() {

@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 public class Player extends Position implements ObjectsInterface {
 
     private Bitmap playerBitmap;
-    private Bitmap[] bitmaps;
     private int score;
     private double deltaYplayer;
     private boolean isUp,isPlaying;
@@ -31,7 +30,7 @@ public class Player extends Position implements ObjectsInterface {
     @Override
     public void update() {
         long timeElapsed=System.nanoTime()-startTime/1000000;
-        if(timeElapsed>100){ //change
+        if(timeElapsed>10000){ //change
             score++;
             startTime=System.nanoTime();
         }
@@ -83,5 +82,9 @@ public class Player extends Position implements ObjectsInterface {
     }
     public void resetScore(){
         score=0;
+    }
+
+    public Bitmap getPlayerBitmap() {
+        return playerBitmap;
     }
 }

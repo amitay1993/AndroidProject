@@ -11,7 +11,7 @@ public class Bullet extends Position implements ObjectsInterface {
 
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
 
-        this.speed = 9;
+        this.speed = 18;
         this.bitmap = bitmap;
     }
 

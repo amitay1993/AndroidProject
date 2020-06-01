@@ -1,9 +1,15 @@
 package com.example.androidgameproject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -16,29 +22,33 @@ import java.util.Random;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
     private MainThread mainThread;
-    public static final  int SPEED=-5; //change
-    private Background background;
+    public static final int SPEED = -5; //change
+    private Background[] backgrounds;
     private Player player;
     private List<Bullet> bullets;
-    private long bulletStartTime,enemyStartTime,obstacleStartTime;
+    private long bulletStartTime, enemyStartTime, obstacleStartTime;
     static int widthScreen, heightScreen;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
-    Random random=new Random();
+    Random random = new Random();
     private Explosion explosion;
+    private boolean isRestart;
+    private int bScore;
+    Context context;
+    private int backNumber;
 
 
-
-    public GameSurfaceView(Context context,int width,int height) {
+    public GameSurfaceView(Context context, int width, int height) {
         super(context);
-        widthScreen =width;
-        heightScreen =height;
-        mainThread=new MainThread(getHolder(),this);
+        this.context=context;
+        widthScreen = width;
+        heightScreen = height;
+        mainThread = new MainThread(getHolder(), this);
         getHolder().addCallback(this);
         setFocusable(true);
-        bullets=new ArrayList<>();
-        enemies =new ArrayList<>();
-        obstacles=new ArrayList<>();
+        bullets = new ArrayList<>();
+        enemies = new ArrayList<>();
+        obstacles = new ArrayList<>();
 
 
     }
@@ -47,11 +57,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceCreated(SurfaceHolder holder) {
         mainThread.setRunning(true);
         mainThread.start();
-        background=new Background(BitmapFactory.decodeResource(getResources(),R.drawable.background1));
-        player=new Player(BitmapFactory.decodeResource(getResources(),R.drawable.player));
-        bulletStartTime=enemyStartTime=obstacleStartTime=System.nanoTime();
-
-
+        backgrounds=new Background[4];
+        backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background1));
+        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background2));
+        backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background3));
+        backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background4));
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+        bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
 
 
     }
@@ -63,13 +75,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry=true;
-        while (retry){
-            try{
+        boolean retry = true;
+        while (retry) {
+            try {
                 mainThread.setRunning(false);
                 mainThread.join();
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -78,90 +90,92 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        int action =event.getAction();
-        if(action==MotionEvent.ACTION_DOWN){
-            if(!player.isPlaying()) {
+        int action = event.getAction();
+        if (action == MotionEvent.ACTION_DOWN) {
+            if (!player.isPlaying()) {
                 player.setPlaying(true);
-            }
-            else
+            } else
                 player.setUp(true);
-        }
-       else if(action==MotionEvent.ACTION_UP) {
+        } else if (action == MotionEvent.ACTION_UP) {
             player.setUp(false);
         }
         return true;
     }
 
-    public void update(){
+    public void update() {
 
-        if(player.isPlaying()) {
-            background.update();
+        if (player.isPlaying()) {
+
+            setBackNumber();
+            backgrounds[backNumber].update();;
             player.update();
 
-            long bulletTimer=(System.nanoTime()-bulletStartTime)/1000000;
-            if(bulletTimer>2500-player.getScore()/4){ //change
-                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight()/2-9));
-                bulletStartTime=System.nanoTime();
+            long bulletTimer = (System.nanoTime() - bulletStartTime) / 1000000;
+            if (bulletTimer > 2500 - player.getScore() / 3) { //change
+                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9));
+                bulletStartTime = System.nanoTime();
             }
-            for(Bullet bullet:bullets){
+            for (Bullet bullet : bullets) {
                 bullet.update();
 
-                if(bullet.leftBorder()>widthScreen+200) //change
+                if (bullet.leftBorder() > widthScreen + 200) //change
                 {
-                    Log.d("enemy", bullet.leftBorder()+" "+widthScreen+"");
+                    Log.d("enemy", bullet.leftBorder() + " " + widthScreen + "");
                     Log.d("enemy", "bullet");
                     bullets.remove(bullet);
                     break;
                 }
             }
-            long enemyTimer=(System.nanoTime()-enemyStartTime)/1000000;
-            if(enemyTimer>10000-player.getScore()/4) {
-                enemies.add(new Enemy(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2), widthScreen + 10, (int) (random.nextDouble()* (heightScreen - 130)) ,player.getScore(),getResources()));
+            long enemyTimer = (System.nanoTime() - enemyStartTime) / 1000000;
+            if (enemyTimer > 10000 - player.getScore() / 3) {
+                enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + 10, (int) (random.nextDouble() * (heightScreen - 130)), player.getScore(), getResources()));
                 enemyStartTime = System.nanoTime();
             }
 
-            for(Enemy enemy:enemies){
+            for (Enemy enemy : enemies) {
                 enemy.update();
 
-                if(collisionDetection(enemy,player)){
+                if (collisionDetection(player, enemy)) {
                     enemies.remove(enemy);
-                    player.setPlaying(false);
+                    gameOver();
                     break;
                 }
 
-                if(enemy.rightBorder()<0)
-                {
+                if (enemy.rightBorder() < 0) {
                     Log.d("enemy", "enemy");
-                  enemies.remove(enemy);
-                  break;
+                    enemies.remove(enemy);
+                    break;
                 }
-                for(Bullet bullet:bullets){
-                    if(collisionDetection(enemy,bullet)){
-                      //  explosion=new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon2),enemy.getX(),enemy.getY(),getResources());
+                for (Bullet bullet : bullets) {
+                    if (collisionDetection(enemy, bullet)) {
+                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemy.getX(), enemy.getY(), getResources());
                         enemies.remove(enemy);
                         bullets.remove(bullet);
+                        bScore+=20;
                         break;
                     }
                 }
 
             }
 
-            long obstacleTimer=(System.nanoTime()-obstacleStartTime)/1000000;
-            if(obstacleTimer>12000-player.getScore()/4) {
-                obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_pillarnew1crop_removebg), widthScreen + 10, heightScreen/2));
+            long obstacleTimer = (System.nanoTime() - obstacleStartTime) / 1000000;
+            if (obstacleTimer > 12000 - player.getScore() / 4) {
+                obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_pillarnew1crop_removebg), widthScreen + 10, heightScreen / 2));
                 obstacleStartTime = System.nanoTime();
             }
-            for(Obstacle obstacle : obstacles){
+            for (Obstacle obstacle : obstacles) {
                 obstacle.update();
-                if(collisionDetection(player,obstacle)){
-                    player.setPlaying(false);
+                if (collisionDetection(player, obstacle)) {
+                    gameOver();
                     break;
                 }
-                if(obstacle.rightBorder()<0){
+                if (obstacle.rightBorder() < 0) {
                     obstacles.remove(obstacle);
                 }
 
             }
+
+
 
         }
 
@@ -171,29 +185,90 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        if(canvas!=null){
-            final int saveState=canvas.save();
+        if (canvas != null) {
+            final int saveState = canvas.save();
+            backgrounds[backNumber].draw(canvas);
 
-            background.draw(canvas);
             player.draw(canvas);
             canvas.restoreToCount(saveState);
-            for(Bullet bullet:bullets)
+            for (Bullet bullet : bullets)
                 bullet.draw(canvas);
-            for(Enemy enemy:enemies)
+            for (Enemy enemy : enemies)
                 enemy.draw(canvas);
-            for(Obstacle obstacle:obstacles)
+            for (Obstacle obstacle : obstacles)
                 obstacle.draw(canvas);
-//            if(explosion!=null) {
-//                explosion.draw(canvas);
-//                explosion=null;
-//            }
+            if (explosion != null) {
+                explosion.draw(canvas);
+            }
+            drawTxt(canvas);
         }
     }
-    public boolean collisionDetection(Position first,Position second){
+    public void drawTxt(Canvas canvas){
+        Paint paint=new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(50);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+        canvas.drawText("Distance "+player.getScore(),player.rightBorder()+5,40,paint); // player score is distance
+        canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-40,paint); // player score is distance
+    }
 
-        if(first instanceof Enemy && second instanceof Player&&Rect.intersects(first.getRect(), second.getRect()))
-            Log.d("rect", first.getRect().left+" "+first.getRect().right+" "+second.getRect().left+" "+second.getRect().right);
+    public boolean collisionDetection(Position first, Position second) {
         return Rect.intersects(first.getRect(), second.getRect());
     }
 
+    public boolean collisionDetectionObstacle(Position first, Position second) {
+        int leftX, rightX, botY, midY, topY;
+        double slopeAsc, slopeDsc, freeNumberAsc, freeNumberDsc;
+        leftX = first.leftBorder();
+        botY = first.bottomBorder();
+        rightX = first.rightBorder();
+        midY = first.bottomBorder() - first.getHeight() / 2;
+        topY = first.topBorder();
+        Rect rect = second.getRect();
+
+        if (rect.contains(rightX, midY))
+            return true;
+
+
+        slopeAsc = (double) (midY - botY) / (rightX - leftX); // y=mx+n , n=y-mx
+        slopeDsc = -slopeAsc;
+        freeNumberAsc = midY - (slopeAsc * rightX);
+        freeNumberDsc = midY - (slopeDsc * rightX);
+
+
+        int lineYasc = (int) (slopeAsc * second.getX() + freeNumberAsc);
+        int lineYdsc = (int) (slopeDsc * second.getX() + freeNumberDsc);
+        return second.getY() <= lineYasc && second.getY() >= lineYdsc;
+    }
+
+    void gameOver() {
+
+
+     //   player.setPlaying(false);
+        enemies.clear();
+        bullets.clear();
+        obstacles.clear();
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage("Alert message to be shown");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+
+    }
+    private void setBackNumber(){
+        if(bScore<20)
+            backNumber=0;
+        else if(bScore<40)
+            backNumber=1;
+        else if(bScore<60)
+            backNumber=2;
+        else if(bScore<80)
+            backNumber=3;
+    }
 }
+
