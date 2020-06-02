@@ -2,27 +2,86 @@ package com.example.androidgameproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-public class GameActivity extends AppCompatActivity {
-
+public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
+    Point point;
+    GameSurfaceView gameSurfaceView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Point point=new Point();
+        point=new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
-        setContentView(new GameSurfaceView(this,point.x,point.y));
+        gameSurfaceView=new GameSurfaceView(this,point.x,point.y);
 
 
+
+
+        FrameLayout game = new FrameLayout(this);
+        LinearLayout gameWidgets = new LinearLayout (this);
+
+
+        ImageButton pausebtn = new ImageButton(this);
+        pausebtn.setImageDrawable(getResources().getDrawable(R.drawable.pausebtn));
+        pausebtn.setBackground(null);
+        LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity= Gravity.START|Gravity.BOTTOM;
+
+        pausebtn.setLayoutParams(params);
+        //pausebtn.setWidth(300);
+        //pausebtn.setText("PAUSE");
+        //pausebtn.setGravity(3);
+
+        gameWidgets.addView(pausebtn);
+        game.addView(gameSurfaceView);
+        game.addView(gameWidgets);
+
+        setContentView(game);
+        pausebtn.setOnClickListener(this);
+
+
+
+    }
+    public void onClick(View v) {
+        onPause();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
+                alertDialog.setTitle("Pause");
+                alertDialog.setMessage("Alert message to be shown");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Resume",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(which==DialogInterface.BUTTON_POSITIVE){
+                                    gameSurfaceView.resumeOnPause();
+                                }
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
 
     }
 
@@ -42,4 +101,37 @@ public class GameActivity extends AppCompatActivity {
             decorView.setSystemUiVisibility(uiOptions);
         }
     }
+    @Override
+    public void onGameOver() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("Alert message to be shown");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(which==DialogInterface.BUTTON_POSITIVE){
+                                   recreate();
+                                }
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gameSurfaceView.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gameSurfaceView.resume();
+    }
+
 }

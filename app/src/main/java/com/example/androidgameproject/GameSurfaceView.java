@@ -1,5 +1,6 @@
 package com.example.androidgameproject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,8 +24,9 @@ import java.util.List;
 import java.util.Random;
 
 
-public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
-    private MainThread mainThread;
+public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
+    MainThread mainThread;
+    GameActivity gameActivity;
     public static final int SPEED = -5; //change
     private Background[] backgrounds;
     private Player player;
@@ -37,13 +40,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Explosion explosion;
     private boolean isGameOver=false;
     private int bScore,coin_counter,backNumber,life_counter=3,bullet_speed=10;
-    private Bitmap coinImg,life;
+    private Bitmap coinImg,life,pauseBtn;
     Context context;
+    private GameListener gameListenerDialogBox;
 
 
 
     public GameSurfaceView(Context context, int width, int height) {
         super(context);
+        gameListenerDialogBox=((GameListener)context);
         this.context=context;
         widthScreen = width;
         heightScreen = height;
@@ -55,8 +60,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         obstacles = new ArrayList<>();
         coins=new ArrayList<>();
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
-
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
+        pauseBtn=BitmapFactory.decodeResource(getResources(),R.drawable.pausebtn);
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+        backgrounds=new Background[4];
+        backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background1));
+        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background2));
+        backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background3));
+        backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background4));
+        bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
+
+
 
 
 
@@ -67,14 +81,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void surfaceCreated(SurfaceHolder holder) {
         mainThread.setRunning(true);
         mainThread.start();
-        backgrounds=new Background[4];
-        backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background1));
-        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background2));
-        backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background3));
-        backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background4));
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
-        bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
-
 
     }
 
@@ -92,7 +98,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             try {
                 mainThread.setRunning(false);
                 mainThread.join();
-
+                retry=false;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -197,7 +203,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
 
             long obstacleTimer = (System.nanoTime() - obstacleStartTime) / 1000000;
-            if (obstacleTimer > 12000 - player.getScore() / 4) {
+            if (obstacleTimer > 20000 - player.getScore() / 4) {
                 obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_pillarnew1crop_removebg), widthScreen + 10, heightScreen / 2));
                 obstacleStartTime = System.nanoTime();
             }
@@ -262,7 +268,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void drawHerats(Canvas canvas){
 
             for(int i=0;i<life_counter;i++){
-                canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+i*life.getWidth(),40,null); // player score is distance
+                canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+i*life.getWidth()/2f,40,null); // player score is distance
             }
 
         }
@@ -298,12 +304,18 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     void gameOver() {
-        invalidate();
-        isGameOver=true;
+        isGameOver = true;
         player.setPlaying(false);
         enemies.clear();
         bullets.clear();
         obstacles.clear();
+        gameListenerDialogBox.onGameOver();
+        mainThread.setRunning(false);
+        //((Activity)context).finish();
+
+
+    }
+
 //        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 //        alertDialog.setTitle("Alert");
 //        alertDialog.setMessage("Alert message to be shown");
@@ -315,11 +327,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 //                });
 //        alertDialog.show();
 
-    }
     private void setBackNumber(){
         if(bScore<20)
             backNumber=0;
-        else if(bScore<100) {
+        else if(bScore<40) {
             backNumber = 1;
             bullet_speed=21;
         }
@@ -339,6 +350,29 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     }
 
+    public void pause() {
+
+        try {
+            mainThread.setRunning(false);
+            mainThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resume() {
+        mainThread= new MainThread(getHolder(),this);
+    }
+
+    public void resumeOnPause(){
+        resume();
+        surfaceCreated(getHolder());
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }
 }
 
 

@@ -80,7 +80,9 @@ public class MainThread extends Thread implements Runnable {
         running=bool;
     }
 
-
+    public Boolean getRunning() {
+        return running;
+    }
 }
 
 
