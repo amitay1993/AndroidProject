@@ -10,10 +10,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.media.MediaRouter;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +35,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private List<Coin> coins;
     Random random = new Random();
     private Explosion explosion;
-    private boolean isRestart;
-    private int bScore,coin_counter,backNumber,life_counter;
-    private Bitmap coinImg;
+    private boolean isGameOver=false;
+    private int bScore,coin_counter,backNumber,life_counter=3,bullet_speed=10;
+    private Bitmap coinImg,life;
     Context context;
-    private Bitmap[] lifes;
 
 
 
@@ -54,11 +55,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         obstacles = new ArrayList<>();
         coins=new ArrayList<>();
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
-        lifes=new Bitmap[3];
-        lifes[0]=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
-        lifes[1]=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
-        lifes[2]=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
 
+        life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
 
 
 
@@ -80,8 +78,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     }
 
+
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
 
     }
 
@@ -100,16 +100,19 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
-        if (action == MotionEvent.ACTION_DOWN) {
-            if (!player.isPlaying()) {
-                player.setPlaying(true);
-            } else
-                player.setUp(true);
-        } else if (action == MotionEvent.ACTION_UP) {
-            player.setUp(false);
+        if(!isGameOver) {
+            if (action == MotionEvent.ACTION_DOWN) {
+                if (!player.isPlaying()) {
+                    player.setPlaying(true);
+                } else
+                    player.setUp(true);
+            } else if (action == MotionEvent.ACTION_UP) {
+                player.setUp(false);
+            }
         }
         return true;
     }
@@ -124,7 +127,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
             long bulletTimer = (System.nanoTime() - bulletStartTime) / 1000000;
             if (bulletTimer > 2500 - player.getScore() / 3) { //change
-                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9));
+                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9,bullet_speed));
                 bulletStartTime = System.nanoTime();
             }
             for (Bullet bullet : bullets) {
@@ -154,7 +157,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for(Coin coin: coins){
                 coin.update();
                 if (collisionDetection(player, coin)) {
+                   // Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
                     coins.remove(coin);
+                    bScore+=20;
                     coin_counter++;
                     break;
                 }
@@ -165,7 +170,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
                 if (collisionDetection(player, enemy)) {
                     enemies.remove(enemy);
-                    gameOver();
+                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemy.getX(), enemy.getY(), getResources());
+                    life_counter--;
+                    if(life_counter==0){
+                        gameOver();
+                    }
                     break;
                 }
 
@@ -176,6 +185,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 }
                 for (Bullet bullet : bullets) {
                     if (collisionDetection(enemy, bullet)) {
+                       // Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
                         explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemy.getX(), enemy.getY(), getResources());
                         enemies.remove(enemy);
                         bullets.remove(bullet);
@@ -194,6 +204,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (Obstacle obstacle : obstacles) {
                 obstacle.update();
                 if (collisionDetection(player, obstacle)) {
+                    life_counter=0;
                     gameOver();
                     break;
                 }
@@ -202,8 +213,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 }
 
             }
-
-
 
         }
 
@@ -232,7 +241,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 coin.draw(canvas);
             }
             drawCoinScore(canvas);
+            drawHerats(canvas);
             drawTxt(canvas);
+
         }
     }
     public void drawTxt(Canvas canvas){
@@ -240,14 +251,22 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.WHITE);
         paint.setTextSize(50);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        canvas.drawText("Distance "+player.getScore(),player.rightBorder()+5,40,paint); // player score is distance
-        canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-40,paint); // player score is distance
+        canvas.drawText("Distance "+player.getScore(),player.rightBorder()+5,50,paint); // player score is distance
+        canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-50,paint); // player score is distance
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
     }
 
     public void drawCoinScore(Canvas canvas){
         canvas.drawBitmap(coinImg,widthScreen-130,40,null); // player score is distance
     }
+    public void drawHerats(Canvas canvas){
+
+            for(int i=0;i<life_counter;i++){
+                canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+i*life.getWidth(),40,null); // player score is distance
+            }
+
+        }
+
 
     public boolean collisionDetection(Position first, Position second) {
         return Rect.intersects(first.getRect(), second.getRect());
@@ -279,33 +298,39 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     void gameOver() {
-
-
-     //   player.setPlaying(false);
+        invalidate();
+        isGameOver=true;
+        player.setPlaying(false);
         enemies.clear();
         bullets.clear();
         obstacles.clear();
-        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-        alertDialog.setTitle("Alert");
-        alertDialog.setMessage("Alert message to be shown");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        alertDialog.show();
+//        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+//        alertDialog.setTitle("Alert");
+//        alertDialog.setMessage("Alert message to be shown");
+//        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//        alertDialog.show();
 
     }
     private void setBackNumber(){
         if(bScore<20)
             backNumber=0;
-        else if(bScore<990)
-            backNumber=1;
-        else if(bScore<1000)
-            backNumber=2;
-        else if(bScore<1000)
-            backNumber=3;
+        else if(bScore<100) {
+            backNumber = 1;
+            bullet_speed=21;
+        }
+        else if(bScore<150) {
+            bullet_speed = 23;
+            backNumber = 2;
+        }
+        else if(bScore<200) {
+            backNumber = 3;
+            bullet_speed=25;
+        }
     }
     private void addEnemies(){
         enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20)+100, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
@@ -313,6 +338,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies.add(new Groll(BitmapFactory.decodeResource(getResources(), R.drawable.roll0), widthScreen + random.nextInt(20)+300, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
 
     }
+
 }
 
 

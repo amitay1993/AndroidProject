@@ -10,7 +10,7 @@ public class Player extends Position implements ObjectsInterface {
     private double deltaYplayer;
     private boolean isUp,isPlaying;
     private long startTime;
-    private Animation animation;
+//    private Animation animation;
 
     public Player(Bitmap bitmap) { //change
         super(100,GameSurfaceView.heightScreen /2-bitmap.getHeight()/2,bitmap.getWidth(),bitmap.getHeight());
