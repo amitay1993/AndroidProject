@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -72,19 +73,38 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
-                alertDialog.setTitle("Pause");
-                alertDialog.setMessage("Alert message to be shown");
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Resume",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(which==DialogInterface.BUTTON_POSITIVE){
-                                    gameSurfaceView.resumeOnPause();
-                                }
-                            }
-                        });
+                final AlertDialog.Builder builder=new AlertDialog.Builder(GameActivity.this);
+
+                View view= LayoutInflater.from(GameActivity.this).inflate(R.layout.dialog_layout,null);
+
+                builder.setView(view);
+
+                builder.setPositiveButton("Resume",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        gameSurfaceView.resumeOnPause();
+                    }
+                });
+                builder.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        gameSurfaceView.resumeOnPause();
+
+                    }
+                });
+                final AlertDialog alertDialog=builder.create();
+                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    }
+                });
+                builder.setCancelable(false);
                 alertDialog.show();
             }
+
         });
 
     }

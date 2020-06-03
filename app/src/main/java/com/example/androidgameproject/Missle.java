@@ -13,7 +13,7 @@ public class Missle extends Enemy {
         super(x, y, bitmap.getWidth(),bitmap.getHeight(),0);
 
         if(up==0){
-            
+
             bitmaps.add(BitmapFactory.decodeResource(res, R.drawable.rsz_downmissile));
         }else{
             bitmaps.add(bitmap);
