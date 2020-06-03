@@ -154,7 +154,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
             long enemyTimer = (System.nanoTime() - enemyStartTime) / 1000000;
-            if (enemyTimer > 6500 - player.getScore() / 3) {
+            if (enemyTimer > 3000 - player.getScore() / 3) {
                 addEnemies();
                // enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + 10, (int) (random.nextDouble() * (heightScreen -130 )), player.getScore(), getResources()));
                 enemyStartTime = System.nanoTime();
@@ -257,8 +257,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.WHITE);
         paint.setTextSize(50);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        canvas.drawText("Distance "+player.getScore(),player.rightBorder()+5,50,paint); // player score is distance
-        canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-50,paint); // player score is distance
+        canvas.drawText("Distance "+player.getScore(),player.rightBorder()+5,65,paint); // player score is distance
+        canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-65,paint); // player score is distance
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
     }
 
@@ -268,7 +268,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void drawHerats(Canvas canvas){
 
             for(int i=0;i<life_counter;i++){
-                canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+i*life.getWidth()/2f,40,null); // player score is distance
+                canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+i*life.getWidth()/1.5f,30,null); // player score is distance
             }
 
         }
@@ -328,17 +328,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 //        alertDialog.show();
 
     private void setBackNumber(){
-        if(bScore<20)
+        if(bScore<100)
             backNumber=0;
-        else if(bScore<40) {
+        else if(bScore<400) {
             backNumber = 1;
             bullet_speed=21;
         }
-        else if(bScore<150) {
+        else if(bScore<600) {
             bullet_speed = 23;
             backNumber = 2;
         }
-        else if(bScore<200) {
+        else if(bScore<1200) {
             backNumber = 3;
             bullet_speed=25;
         }
@@ -347,11 +347,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20)+100, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
         enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20)+200, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
         enemies.add(new Groll(BitmapFactory.decodeResource(getResources(), R.drawable.roll0), widthScreen + random.nextInt(20)+300, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
+        enemies.add(new Missle(BitmapFactory.decodeResource(getResources(), R.drawable.), widthScreen + random.nextInt(20)+400, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources(),random.nextInt(2)));
+        enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20)+400, (int) ((random.nextDouble()+0.8f) * (heightScreen -150 )), player.getScore(), getResources()));
 
     }
 
     public void pause() {
-
         try {
             mainThread.setRunning(false);
             mainThread.join();

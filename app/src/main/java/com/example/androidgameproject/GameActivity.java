@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,17 +39,20 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
 
 
-        FrameLayout game = new FrameLayout(this);
+        FrameLayout game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);
-
+        gameWidgets.setGravity(Gravity.BOTTOM | Gravity.END);
 
         ImageButton pausebtn = new ImageButton(this);
         pausebtn.setImageDrawable(getResources().getDrawable(R.drawable.pausebtn));
         pausebtn.setBackground(null);
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.gravity= Gravity.START|Gravity.BOTTOM;
-
+        params.setMargins(100,0,100,50);
+       // pausebtn.setScaleX(1.5f);
+      //  pausebtn.setScaleY(1.5f);
         pausebtn.setLayoutParams(params);
+        gameWidgets.requestLayout();
+       // pausebtn.setLayoutParams(params);
         //pausebtn.setWidth(300);
         //pausebtn.setText("PAUSE");
         //pausebtn.setGravity(3);
