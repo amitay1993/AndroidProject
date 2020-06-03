@@ -1,9 +1,7 @@
 package com.example.androidgameproject;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,13 +9,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.media.MediaRouter;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Bitmap coinImg,life,pauseBtn;
     Context context;
     private GameListener gameListenerDialogBox;
-
+    MediaPlayer mediaPlayerGame;
+    SoundPool coinSound;
+    int coinSoundId;
 
 
     public GameSurfaceView(Context context, int width, int height) {
@@ -69,6 +71,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background3));
         backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background4));
         bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
+        mediaPlayerGame=MediaPlayer.create(context,R.raw.game);
+        coinSound=new SoundPool(99, AudioManager.STREAM_MUSIC,0);
+        coinSoundId=coinSound.load(context,R.raw.coin,1);
+
 
 
 
@@ -126,29 +132,41 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void update() {
 
         if (player.isPlaying()) {
+            mediaPlayerGame.start();
 
             setBackNumber();
             backgrounds[backNumber].update();;
             player.update();
 
             long bulletTimer = (System.nanoTime() - bulletStartTime) / 1000000;
-            if (bulletTimer > 2500 - player.getScore() / 3) { //change
+            if (bulletTimer > 1500 - player.getScore() / 3) { //change
                 bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9,bullet_speed));
                 bulletStartTime = System.nanoTime();
             }
-            for (Bullet bullet : bullets) {
-                bullet.update();
+            for (int i=0;i<bullets.size();i++) {
+                bullets.get(i).update();
 
-                if (bullet.leftBorder() > widthScreen + 200) //change
+                if (bullets.get(i).leftBorder() > widthScreen + 200) //change
                 {
-                    bullets.remove(bullet);
+                    bullets.remove(i);
                     break;
                 }
+
             }
-            long cointTimeElapsed=(System.nanoTime()-coinStartTime)/1000000;
-            if(cointTimeElapsed>5500-player.getScore()/2){
+            long coinTimeElapsed=(System.nanoTime()-coinStartTime)/1000000;
+            if(coinTimeElapsed>5500-player.getScore()/2){
                 coins.add(new Coin(BitmapFactory.decodeResource(getResources(), R.drawable.coin), widthScreen + 10, (int) (random.nextDouble() * (heightScreen -20 ))));
                 coinStartTime=System.nanoTime();
+            }
+            for(int i=0;i<coins.size();i++){
+                coins.get(i).update();
+                if (collisionDetection(player, coins.get(i))) {
+                    coinSound.play(coinSoundId,5,5,1,0,1);
+                    coins.remove(i);
+                    bScore+=20;
+                    coin_counter++;
+                    break;
+                }
             }
 
 
@@ -156,27 +174,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             long enemyTimer = (System.nanoTime() - enemyStartTime) / 1000000;
             if (enemyTimer > 3000 - player.getScore() / 3) {
                 addEnemies();
-               // enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + 10, (int) (random.nextDouble() * (heightScreen -130 )), player.getScore(), getResources()));
                 enemyStartTime = System.nanoTime();
             }
 
-            for(Coin coin: coins){
-                coin.update();
-                if (collisionDetection(player, coin)) {
-                   // Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
-                    coins.remove(coin);
-                    bScore+=20;
-                    coin_counter++;
-                    break;
-                }
-            }
+            for (int i=0 ;i<enemies.size();i++) {
+                enemies.get(i).update();
 
-            for (Enemy enemy : enemies) {
-                enemy.update();
-
-                if (collisionDetection(player, enemy)) {
-                    enemies.remove(enemy);
-                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemy.getX(), enemy.getY(), getResources());
+                if (collisionDetection(player, enemies.get(i))) {
+                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY(), getResources());
+                    enemies.remove(i);
                     life_counter--;
                     if(life_counter==0){
                         gameOver();
@@ -184,17 +190,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     break;
                 }
 
-                if (enemy.rightBorder() < 0) {
-                    Log.d("enemy", "enemy");
-                    enemies.remove(enemy);
+                if (enemies.get(i).rightBorder() < 0) {
+                    enemies.remove(i);
                     break;
                 }
-                for (Bullet bullet : bullets) {
-                    if (collisionDetection(enemy, bullet)) {
-                       // Toast.makeText(context, "hello", Toast.LENGTH_SHORT).show();
-                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemy.getX(), enemy.getY(), getResources());
-                        enemies.remove(enemy);
-                        bullets.remove(bullet);
+                for (int j=0 ;j<bullets.size();j++) {
+                    if (collisionDetection(enemies.get(i), bullets.get(j))) {
+
+                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY(), getResources());
+                        enemies.remove(i);
+                        bullets.remove(j);
                         bScore+=20;
                         break;
                     }
@@ -207,15 +212,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_pillarnew1crop_removebg), widthScreen + 10, heightScreen / 2));
                 obstacleStartTime = System.nanoTime();
             }
-            for (Obstacle obstacle : obstacles) {
-                obstacle.update();
-                if (collisionDetection(player, obstacle)) {
+            for (int i=0;i<obstacles.size();i++) {
+                obstacles.get(i).update();
+                if (collisionDetection(player, obstacles.get(i))) {
                     life_counter=0;
                     gameOver();
-                    break;
                 }
-                if (obstacle.rightBorder() < 0) {
-                    obstacles.remove(obstacle);
+                if (obstacles.get(i).rightBorder() < 0) {
+                    obstacles.remove(i);
+                    break;
                 }
 
             }
@@ -311,21 +316,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         obstacles.clear();
         gameListenerDialogBox.onGameOver();
         mainThread.setRunning(false);
-        //((Activity)context).finish();
 
 
     }
 
-//        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
-//        alertDialog.setTitle("Alert");
-//        alertDialog.setMessage("Alert message to be shown");
-//        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//        alertDialog.show();
+
 
     private void setBackNumber(){
         if(bScore<100)
@@ -348,12 +343,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20)+200, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
         enemies.add(new Groll(BitmapFactory.decodeResource(getResources(), R.drawable.roll0), widthScreen + random.nextInt(20)+300, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
         enemies.add(new Missle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_rotatemissile), widthScreen + random.nextInt(20)+400, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources(),random.nextInt(2)));
-        enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20)+400, (int) ((random.nextDouble()+0.8f) * (heightScreen -150 )), player.getScore(), getResources()));
+        enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20)+400, (int) ((random.nextDouble()) * (heightScreen -150 )), player.getScore(), getResources()));
 
     }
 
     public void pause() {
         try {
+            mediaPlayerGame.pause();
             mainThread.setRunning(false);
             mainThread.join();
         } catch (InterruptedException e) {

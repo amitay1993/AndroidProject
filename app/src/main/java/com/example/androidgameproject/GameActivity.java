@@ -69,6 +69,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
     }
     public void onClick(View v) {
+        gameSurfaceView.mediaPlayerGame.pause();
         onPause();
         runOnUiThread(new Runnable() {
             @Override
@@ -78,6 +79,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 View view= LayoutInflater.from(GameActivity.this).inflate(R.layout.dialog_layout,null);
 
                 builder.setView(view);
+                builder.setCancelable(false);
 
                 builder.setPositiveButton("Resume",new DialogInterface.OnClickListener() {
                     @Override
@@ -127,11 +129,13 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     }
     @Override
     public void onGameOver() {
+        gameSurfaceView.mediaPlayerGame.stop();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
                 alertDialog.setTitle("Alert");
+                alertDialog.setCancelable(false);
                 alertDialog.setMessage("Alert message to be shown");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
                         new DialogInterface.OnClickListener() {
