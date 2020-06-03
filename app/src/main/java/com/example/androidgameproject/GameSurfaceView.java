@@ -39,7 +39,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false;
-    private int bScore,coin_counter,backNumber,life_counter=3,bullet_speed=10;
+    private int bScore,coin_counter,backNumber,life_counter=3,bullet_speed=17;
     private Bitmap coinImg,life,pauseBtn;
     Context context;
     private GameListener gameListenerDialogBox;
@@ -347,7 +347,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20)+100, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
         enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20)+200, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
         enemies.add(new Groll(BitmapFactory.decodeResource(getResources(), R.drawable.roll0), widthScreen + random.nextInt(20)+300, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources()));
-        enemies.add(new Missle(BitmapFactory.decodeResource(getResources(), R.drawable.), widthScreen + random.nextInt(20)+400, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources(),random.nextInt(2)));
+        enemies.add(new Missle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_rotatemissile), widthScreen + random.nextInt(20)+400, (int) (random.nextDouble() * (heightScreen -150 )), player.getScore(), getResources(),random.nextInt(2)));
         enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20)+400, (int) ((random.nextDouble()+0.8f) * (heightScreen -150 )), player.getScore(), getResources()));
 
     }
