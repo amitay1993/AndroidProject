@@ -13,7 +13,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:textSize="20sp"
-            android:text="Order Confirmation"
+            android:text="GAME OVER"
             android:textStyle="bold|italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Flavors"
+            android:text="Score"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_marginStart="20dp"
@@ -70,7 +70,7 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Size"
+            android:text="Distance"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_marginStart="20dp"
@@ -108,7 +108,7 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Extras"
+            android:text="Coins"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_marginStart="20dp"
@@ -132,118 +132,11 @@
             android:layout_height="wrap_content">
 
         </TextView>
+
+
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/lin_3"
-        android:id="@+id/lin_4"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="Drinks"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:layout_height="wrap_content">
-
-        </TextView>
-
-
-        <TextView
-
-            android:id="@+id/dlg_drinks"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:layout_height="wrap_content">
-
-        </TextView>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/lin_5"
-        android:layout_below="@id/lin_4"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="Time"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:layout_height="wrap_content">
-
-        </TextView>
-
-
-        <TextView
-            android:id="@+id/dlg_time"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:layout_height="wrap_content"
-            >
-
-        </TextView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="20dp"
-        android:id="@+id/lin_6"
-        android:layout_below="@id/lin_5"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="Final Price"
-
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:layout_height="wrap_content">
-
-        </TextView>
-
-
-        <TextView
-
-            android:id="@+id/dlg_final_price"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:layout_height="wrap_content"
-            >
-
-        </TextView>
-    </LinearLayout>
 
 
 </RelativeLayout>

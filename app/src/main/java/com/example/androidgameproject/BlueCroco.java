@@ -1,21 +1,17 @@
 package com.example.androidgameproject;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 public class BlueCroco extends Enemy{
-    public BlueCroco(int x, int y, int width, int height, int delay) {
-        super(x, y, width, height, delay);
+    public BlueCroco(Bitmap bitmap, int x, int y, int score, Resources res,int delay) {
+        super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
+        bitmaps.add(bitmap);
 
-
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-    }
-
-    @Override
-    public void update() {
-        super.update();
+        speed = 4 + (int) (random.nextDouble() * score / 30); // change
+        if (speed >25) {
+            this.speed = 25;
+        }
     }
 }

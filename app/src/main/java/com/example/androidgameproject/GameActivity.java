@@ -27,6 +27,7 @@ import android.widget.Toast;
 public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
     Point point;
     GameSurfaceView gameSurfaceView;
+   // Button playAgain,save,menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +37,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
         point=new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
         gameSurfaceView=new GameSurfaceView(this,point.x,point.y);
+
+
+
 
 
 
@@ -103,7 +107,6 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                         alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
                     }
                 });
-                builder.setCancelable(false);
                 alertDialog.show();
             }
 
@@ -129,25 +132,49 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     }
     @Override
     public void onGameOver() {
+
         gameSurfaceView.mediaPlayerGame.stop();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AlertDialog alertDialog = new AlertDialog.Builder(GameActivity.this).create();
-                alertDialog.setTitle("Alert");
-                alertDialog.setCancelable(false);
-                alertDialog.setMessage("Alert message to be shown");
-                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                if(which==DialogInterface.BUTTON_POSITIVE){
-                                   recreate();
-                                }
-                            }
-                        });
+                final AlertDialog.Builder builder=new AlertDialog.Builder(GameActivity.this);
+
+                View view= LayoutInflater.from(GameActivity.this).inflate(R.layout.dialog_diff,null);
+
+                builder.setView(view);
+                builder.setCancelable(false);
+                final AlertDialog alertDialog=builder.create();
+
+                final Button playAaginbtn=view.findViewById(R.id.playagain);
+                Button savebtn=view.findViewById(R.id.save);
+                Button backtomenu=view.findViewById(R.id.backtomenu);
+
+
+                backtomenu.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(GameActivity.this,MainActivity.class);
+                        alertDialog.dismiss();
+                        finish();
+                        startActivity(intent);
+
+                    }
+                });
+
+                playAaginbtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                        recreate();
+                    }
+                });
                 alertDialog.show();
             }
+
         });
+
+
+
     }
 
     @Override
