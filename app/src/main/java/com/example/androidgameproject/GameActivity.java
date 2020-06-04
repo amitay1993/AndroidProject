@@ -18,16 +18,28 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
     Point point;
     GameSurfaceView gameSurfaceView;
-   // Button playAgain,save,menu;
+    List<User> users=new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,8 +158,62 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 final AlertDialog alertDialog=builder.create();
 
                 final Button playAaginbtn=view.findViewById(R.id.playagain);
-                Button savebtn=view.findViewById(R.id.save);
-                Button backtomenu=view.findViewById(R.id.backtomenu);
+                final Button savebtn=view.findViewById(R.id.save);
+                final Button backtomenu=view.findViewById(R.id.backtomenu);
+                final EditText nameEt=view.findViewById(R.id.entername);
+
+                TextView scoreTv=view.findViewById(R.id.score);
+                TextView distTv=view.findViewById(R.id.distance);
+                final TextView coinsTv=view.findViewById(R.id.coins);
+
+
+                int coins=gameSurfaceView.coin_counter;
+                final long dist=gameSurfaceView.player.getScore();
+                final int score=gameSurfaceView.bScore;
+
+                coinsTv.setText("coins " + coins);
+                scoreTv.setText("score " + dist);
+                distTv.setText("distance " + score);
+
+
+
+
+                savebtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String name=nameEt.getText().toString();
+                        if(name.length()==0){
+                            Toast.makeText(GameActivity.this, "You Must enter a Name", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            try {
+                                File yourFile = new File("score.txt");
+                                yourFile.createNewFile();
+                                FileInputStream fileInputStream=openFileInput(yourFile.getName());
+
+                                ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
+                                users=(ArrayList<User>) objectInputStream.readObject();
+                                objectInputStream.close();
+
+
+                                FileOutputStream fileOutputStream=openFileOutput("LeaderBoard",MODE_PRIVATE);
+                                ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
+                                users.add(new User(name,score,dist));
+                                objectOutputStream.writeObject(users);
+                                objectOutputStream.close();
+
+                                nameEt.setText("");
+                                Toast.makeText(GameActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                savebtn.setClickable(false);
+
+
+                            } catch (ClassNotFoundException | IOException e) {
+                                        e.printStackTrace();
+                                    }
+                        }
+
+                    }
+                });
 
 
                 backtomenu.setOnClickListener(new View.OnClickListener() {

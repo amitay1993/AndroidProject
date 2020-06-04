@@ -33,7 +33,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public static final int SPEED = -5; //change
     private Background[] backgrounds;
-    private Player player;
+    Player player;
     private List<Bullet> bullets;
     private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime,backgroundLevelStartTime;
     static int widthScreen, heightScreen;
@@ -43,7 +43,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false;
-    private int bScore,coin_counter,backNumber,life_counter=3,bullet_speed=17;
+    int bScore,coin_counter,backNumber,life_counter=3,bullet_speed=17;
     private Bitmap coinImg,life,pauseBtn;
     Context context;
     private GameListener gameListenerDialogBox;

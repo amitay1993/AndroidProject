@@ -26,7 +26,7 @@
             android:gravity="center"/>
 
         <TextView
-            android:id="@+id/btn_easy"
+            android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt_title"
@@ -38,10 +38,10 @@
             android:text="Distance"/>
 
         <TextView
-            android:id="@+id/btn_medium"
+            android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_easy"
+            android:layout_below="@id/distance"
             android:paddingHorizontal="20dp"
             android:layout_marginBottom="20dp"
             android:layout_marginHorizontal="20dp"
@@ -49,10 +49,10 @@
             android:text="Score"/>
 
         <TextView
-            android:id="@+id/btn_hard"
+            android:id="@+id/coins"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_medium"
+            android:layout_below="@id/score"
             android:paddingHorizontal="30dp"
             android:layout_marginBottom="50dp"
             android:layout_marginHorizontal="20dp"
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Enter your name"
-            android:layout_below="@id/btn_hard">
+            android:layout_below="@id/coins">
         </EditText>
 
         <Button
@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/entername"
-            android:layout_below="@id/btn_hard">
+            android:layout_below="@id/coins">
 
         </Button>
         <Button
