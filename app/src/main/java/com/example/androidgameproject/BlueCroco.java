@@ -9,7 +9,7 @@ public class BlueCroco extends Enemy{
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
         bitmaps.add(bitmap);
 
-        speed = 4 + (int) (random.nextDouble() * score / 30); // change
+        speed = 7 + (int) (random.nextDouble() * score / 30); // change
         if (speed >25) {
             this.speed = 25;
         }
