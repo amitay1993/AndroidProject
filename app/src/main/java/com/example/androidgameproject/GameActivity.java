@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -187,15 +188,18 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                         }
                         else{
                             try {
-                                File yourFile = new File("score.txt");
-                                yourFile.createNewFile();
-                                FileInputStream fileInputStream=openFileInput(yourFile.getName());
-
+                                FileInputStream fileInputStream=openFileInput("LeaderBoard");
                                 ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
                                 users=(ArrayList<User>) objectInputStream.readObject();
+                                for( User user:users){
+                                    System.out.println(user.toString());
+                                }
                                 objectInputStream.close();
 
-
+                            } catch (ClassNotFoundException | IOException e) {
+                                        e.printStackTrace();
+                                    }
+                            try{
                                 FileOutputStream fileOutputStream=openFileOutput("LeaderBoard",MODE_PRIVATE);
                                 ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
                                 users.add(new User(name,score,dist));
@@ -206,10 +210,11 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                                 Toast.makeText(GameActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                                 savebtn.setClickable(false);
 
-
-                            } catch (ClassNotFoundException | IOException e) {
-                                        e.printStackTrace();
-                                    }
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
 
                     }
