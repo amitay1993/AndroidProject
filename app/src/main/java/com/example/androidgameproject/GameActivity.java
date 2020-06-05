@@ -2,16 +2,12 @@ package com.example.androidgameproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -51,12 +46,6 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
         getWindowManager().getDefaultDisplay().getSize(point);
         gameSurfaceView=new GameSurfaceView(this,point.x,point.y);
 
-
-
-
-
-
-
         FrameLayout game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);
         gameWidgets.setGravity(Gravity.BOTTOM | Gravity.END);
@@ -66,14 +55,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
         pausebtn.setBackground(null);
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(100,0,100,50);
-       // pausebtn.setScaleX(1.5f);
-      //  pausebtn.setScaleY(1.5f);
+
         pausebtn.setLayoutParams(params);
         gameWidgets.requestLayout();
-       // pausebtn.setLayoutParams(params);
-        //pausebtn.setWidth(300);
-        //pausebtn.setText("PAUSE");
-        //pausebtn.setGravity(3);
 
         gameWidgets.addView(pausebtn);
         game.addView(gameSurfaceView);
@@ -169,7 +153,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
 
                 int coins=gameSurfaceView.coin_counter;
-                final long dist=gameSurfaceView.player.getScore();
+                final long dist=gameSurfaceView.player.getDistance();
                 final int score=gameSurfaceView.bScore;
 
                 coinsTv.setText("coins " + coins);

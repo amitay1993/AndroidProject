@@ -5,8 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Groll extends Enemy {
-    public Groll(Bitmap bitmap, int x, int y, int score, Resources res) {
-        super(x, y, bitmap.getWidth(), bitmap.getHeight(),150);
+    public Groll(Bitmap bitmap, int x, int y, int score, Resources res,int delay) {
+        super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
 
         bitmaps.add(bitmap);
         bitmaps.add(BitmapFactory.decodeResource(res, R.drawable.roll1));

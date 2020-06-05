@@ -6,11 +6,10 @@ import android.graphics.Canvas;
 
 public class Background  implements ObjectsInterface {
     private Bitmap bitmap;
-    private int x,y,deltaX;
+    private int x,y;
 
     public Background(Bitmap bitmap) {
         this.bitmap = bitmap;
-        deltaX=GameSurfaceView.SPEED;
     }
 
     @Override
@@ -26,6 +25,8 @@ public class Background  implements ObjectsInterface {
 
     @Override
     public void update() {
+        final int deltaX = -5;
+
         x+=deltaX;
         if(x<(-1)*GameSurfaceView.widthScreen) {
             x=0;

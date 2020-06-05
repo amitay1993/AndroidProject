@@ -21,7 +21,7 @@ public class Bullet extends Position implements ObjectsInterface {
 
     @Override
     public void update() {
-        x+=speed; // change
+        x+=speed;
     }
 
     public int getSpeed() {

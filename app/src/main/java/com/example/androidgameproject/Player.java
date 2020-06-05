@@ -6,17 +6,16 @@ import android.graphics.Canvas;
 public class Player extends Position implements ObjectsInterface {
 
     private Bitmap playerBitmap;
-    private int score;
+    private int distance;
     private double deltaYplayer;
     private boolean isUp,isPlaying;
     private long startTime;
-//    private Animation animation;
 
     public Player(Bitmap bitmap) { //change
         super(100,GameSurfaceView.heightScreen /2-bitmap.getHeight()/2,bitmap.getWidth(),bitmap.getHeight());
         this.playerBitmap = bitmap;
         deltaYplayer =0;
-        score=0;
+        distance =0;
 
     }
 
@@ -31,7 +30,7 @@ public class Player extends Position implements ObjectsInterface {
     public void update() {
         long timeElapsed=System.nanoTime()-startTime/1000000;
         if(timeElapsed>10000){ //change
-            score++;
+            distance++;
             startTime=System.nanoTime();
         }
 
@@ -66,8 +65,8 @@ public class Player extends Position implements ObjectsInterface {
        this.isUp = up;
     }
 
-    public int getScore() {
-        return score;
+    public int getDistance() {
+        return distance;
     }
 
     public boolean isPlaying() {
@@ -81,7 +80,7 @@ public class Player extends Position implements ObjectsInterface {
         deltaY=0;
     }
     public void resetScore(){
-        score=0;
+        distance =0;
     }
 
     public Bitmap getPlayerBitmap() {

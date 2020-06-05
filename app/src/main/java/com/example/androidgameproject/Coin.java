@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 public class Coin extends Position implements ObjectsInterface {
 
     private Bitmap bitmap;
-    private final int speed=10;
     public Coin(Bitmap bitmap, int x, int y){
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
 
@@ -23,6 +22,7 @@ public class Coin extends Position implements ObjectsInterface {
 
     @Override
     public void update() {
+        final int speed=10;
         x-=speed;
     }
 }
