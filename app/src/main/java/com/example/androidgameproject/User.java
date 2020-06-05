@@ -9,11 +9,9 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", score=" + score +
-                ", distance=" + distance +
-                '}';
+        return "Name= " + name +
+                ", Score= " + score +
+                ", Distance=" + distance;
     }
 
     public User(String name, int score, long distance) {

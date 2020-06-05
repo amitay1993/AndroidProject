@@ -2,12 +2,7 @@ package com.example.androidgameproject;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-<<<<<<< HEAD
 import android.annotation.SuppressLint;
-=======
-import android.app.AlertDialog;
->>>>>>> 12ed3584f78d7f34e61b8542ea42906eb705de51
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -23,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
 
     MediaPlayer mp;
     boolean sound_bool = true;
-    String [] player_name={"Liran"};
 
     @SuppressLint("NewApi")
     @Override
@@ -35,18 +29,8 @@ public class MainActivity extends AppCompatActivity {
         scores_table.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Best Scores!").setItems(player_name, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainActivity.this, player_name[which].toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                }).show();
+                Intent intent=new Intent(MainActivity.this,ScoreListView.class);
+                startActivity(intent);
             }
         });
 
@@ -89,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void listnerGame(View view) {
-        //Intent intent =new Intent(this,GameActivity.class);
-        //startActivity(intent);
+        Intent intent =new Intent(this,GameActivity.class);
+        startActivity(intent);
     }
 
 
