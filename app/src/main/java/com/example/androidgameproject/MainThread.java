@@ -1,9 +1,11 @@
 package com.example.androidgameproject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-public class MainThread extends Thread {
+public class MainThread extends Thread implements Runnable {
 
     private int fps;
     private double avgFps;
@@ -68,12 +70,19 @@ public class MainThread extends Thread {
 
 
 
+
     }
+
+
+
+
     public void setRunning(boolean bool){
         running=bool;
     }
 
-
+    public Boolean getRunning() {
+        return running;
+    }
 }
 
 

@@ -6,16 +6,12 @@ import android.graphics.Rect;
 
 import java.util.Random;
 
-public class Obstacle extends Position implements ObjectsInterface {
-    private int score;
-    final private int speed=12;
-    private Random random;
+public class Obstacle extends Position implements ObjectsInterface{
     private Bitmap bitmap;
 
     public Obstacle(Bitmap bitmap,int x,int y) {
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
         this.bitmap = bitmap;
-        random=new Random();
     }
 
     @Override
@@ -24,7 +20,9 @@ public class Obstacle extends Position implements ObjectsInterface {
     }
 
     @Override
-    public void update() {
+    public void update()
+    {
+        final int speed=12;
         x-=speed;
     }
 

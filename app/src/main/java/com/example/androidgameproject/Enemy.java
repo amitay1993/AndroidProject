@@ -1,32 +1,27 @@
 package com.example.androidgameproject;
 
-import android.content.res.Resources;
+
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class Enemy extends Position implements ObjectsInterface {
-    private int score,speed;
-    private Random random;
-    private Bitmap[] bitmaps;
-    private int frame=0;
-    private final int delay=200;
+public abstract class Enemy extends Position implements ObjectsInterface {
+    protected int speed;
+    protected Random random;
+    protected List<Bitmap> bitmaps;
+    private int frame;
+    private int delay;
     private long startTime;
 
-    public Enemy(Bitmap bitmap, int x, int y,int score,Resources res) {
-        super(x,y,bitmap.getWidth(),bitmap.getHeight());
-      //  this.bitmap = bitmap;
-        bitmaps =new Bitmap[2];
-        bitmaps[0]=bitmap;
-        bitmaps[1]= BitmapFactory.decodeResource(res,R.drawable.rsz_dragon1);
+    public Enemy( int x, int y,int width,int height,int delay) {
+        super(x,y,width,height);
+        frame=0;
         random=new Random();
-        this.score=score;
-        this.speed=10+(int)random.nextDouble()*30/(score); // change
-        if(speed>100){
-            this.speed=40;
-        }//speed limit
+        this.delay=delay;
+        bitmaps=new ArrayList<>();
         startTime=System.nanoTime();
     }
 
@@ -35,10 +30,10 @@ public class Enemy extends Position implements ObjectsInterface {
     {
         long animTimer=(System.nanoTime()-startTime)/1000000;
         if(animTimer>delay-speed) {
-            canvas.drawBitmap(this.bitmaps[frame++ % bitmaps.length], x, y, null);
+            canvas.drawBitmap(bitmaps.get(frame++ % bitmaps.size()), x, y, null);
             startTime = System.nanoTime();
         }else{
-            canvas.drawBitmap(this.bitmaps[frame % bitmaps.length], x, y, null);
+            canvas.drawBitmap(bitmaps.get(frame % bitmaps.size()), x, y, null);
         }
     }
 

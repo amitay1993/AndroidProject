@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutDialogContainer"
+    android:layout_margin="20dp"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:id="@+id/layoutDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:text="Game Over"
+            android:padding="10dp"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_title"
+            android:paddingHorizontal="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="center"
+            android:text="Distance"/>
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/distance"
+            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="center"
+            android:text="Score"/>
+
+        <TextView
+            android:id="@+id/coins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/score"
+            android:paddingHorizontal="30dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="center"
+            android:text="Coins"/>
+
+        <EditText
+            android:id="@+id/entername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter your name"
+            android:layout_below="@id/coins">
+        </EditText>
+
+        <Button
+            android:text="Save"
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/entername"
+            android:layout_below="@id/coins">
+
+        </Button>
+        <Button
+            android:text="Play Again"
+            android:id="@+id/playagain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/entername">
+
+        </Button>
+
+        <Button
+            android:text="back to menu"
+            android:id="@+id/backtomenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/entername">
+
+        </Button>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/btn_cancel"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="265dp"
+        android:layout_marginHorizontal="25dp"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"/>
+
+</RelativeLayout>

@@ -3,7 +3,11 @@ package com.example.androidgameproject;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+<<<<<<< HEAD
 import android.annotation.SuppressLint;
+=======
+import android.app.AlertDialog;
+>>>>>>> 12ed3584f78d7f34e61b8542ea42906eb705de51
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -88,4 +92,6 @@ public class MainActivity extends AppCompatActivity {
         //Intent intent =new Intent(this,GameActivity.class);
         //startActivity(intent);
     }
+
+
 }
