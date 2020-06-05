@@ -13,6 +13,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
+import android.os.SystemClock;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -42,9 +43,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private List<Coin> coins;
     Random random = new Random();
     private Explosion explosion;
-    private boolean isGameOver=false;
+    private boolean isGameOver=false,isChanged=false,isOnce=true;
     int bScore,coin_counter,backNumber,life_counter=3,bullet_speed=17;
-    private Bitmap coinImg,life,pauseBtn;
+    private Bitmap coinImg,life;
     Context context;
     private GameListener gameListenerDialogBox;
     MediaPlayer mediaPlayerGame;
@@ -68,7 +69,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         coins=new ArrayList<>();
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
-        pauseBtn=BitmapFactory.decodeResource(getResources(),R.drawable.pausebtn);
         player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
         backgrounds=new Background[4];
         backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background1));
@@ -278,8 +278,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             drawCoinScore(canvas);
             drawHerats(canvas);
             drawTxt(canvas);
-            if(prevNum<backNumber) {
-                prevNum=backNumber;
+            if(isChanged) {
                 drawLevel(canvas);
             }
 
@@ -298,13 +297,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void drawLevel(Canvas canvas){
         Paint paint=new Paint();
         paint.setColor(Color.WHITE);
-        paint.setTextSize(90);
+        paint.setTextSize(75);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        long levelTimer = (System.nanoTime() - backgroundLevelStartTime) / 1000000;
-        if(levelTimer<3000){
-            paint.setTextSize(90);
-            canvas.drawText("Level "+backNumber,widthScreen/2f,50,paint);
-            backgroundLevelStartTime=System.nanoTime();
+        if (player.getScore()%1000<100) {
+            canvas.drawText("Level "+(++backNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
+        }else{
+            isChanged=false;
+
         }
     }
 
@@ -364,17 +363,28 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
     private void setBackNumber(){
-        if(bScore<100) {
+        if(player.getScore()<1000) {
             backNumber = 0;
-
+            if(isOnce){
+                isChanged=true;
+                isOnce=false;
+            }
         }
-        else if(bScore<400) {
+        else if(player.getScore()<2000) {
             backNumber = 1;
             bullet_speed=21;
+            if(!isOnce){
+                isChanged=true;
+                isOnce=true;
+            }
         }
-        else if(bScore<600) {
+        else if(player.getScore()<3000) {
             bullet_speed = 23;
             backNumber = 2;
+            if(isOnce){
+                isOnce=false;
+                isChanged=true;
+            }
         }
         else if(bScore<1200) {
             backNumber = 3;
@@ -392,11 +402,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             enemies.add(new BlueCroco(BitmapFactory.decodeResource(getResources(), R.drawable.bluecroco), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getScore(), getResources(), 0));
         }else if(backNumber>=2) {
         //    enemies.add(new SmallBlueDragon(BitmapFactory.decodeResource(getResources(), R.drawable.smallbluedragon), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getScore(), getResources(), 0));
-            enemies.add(new YellowMissile(BitmapFactory.decodeResource(getResources(), R.drawable.yellowspace), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getScore(), getResources(),0));
-
-
+            enemies.add(new BlueCroco(BitmapFactory.decodeResource(getResources(), R.drawable.bluecroco), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getScore(), getResources(), 0));
         }
-
     }
 
     public void pause() {
