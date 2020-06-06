@@ -7,7 +7,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -22,6 +26,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+
 
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
@@ -82,12 +88,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         coinSound=new SoundPool(99, AudioManager.STREAM_MUSIC,0);
         coinSoundId=coinSound.load(context,R.raw.coin,1);
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-
-
-
-
-
-
 
 
     }
@@ -170,7 +170,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             for(int i=0;i<coins.size();i++){
                 coins.get(i).update();
-                if (collisionDetection(player, coins.get(i))) {
+                if (collisionDetectionObstacle(player, coins.get(i))) {
                     coinSound.play(coinSoundId,5,5,1,0,1);
                     coins.remove(i);
                     bScore+=DELTA_SCORE;
@@ -190,7 +190,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (int i=0 ;i<enemies.size();i++) {
                 enemies.get(i).update();
 
-                if (collisionDetection(player, enemies.get(i))) {
+                if (collisionDetectionObstacle(player, enemies.get(i))) {
                     explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY(), getResources());
                     vibrate();
                     enemies.remove(i);
@@ -231,7 +231,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             for (int i=0;i<obstacles.size();i++) {
                 obstacles.get(i).update();
-                if (collisionDetection(player, obstacles.get(i))) {
+                if (collisionDetectionObstacle(player, obstacles.get(i))) {
                     vibrate();
                     life_counter=0;
                     gameOver();
@@ -260,23 +260,67 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         super.draw(canvas);
 
         if (canvas != null) {
+            Paint paint= new Paint();
+
+
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.RED);
+            paint.setStrokeWidth(10);
+            paint.setStyle(Paint.Style.STROKE);
             final int saveState = canvas.save();
+
             backgrounds[backgroundNumber].draw(canvas);
 
             player.draw(canvas);
             canvas.restoreToCount(saveState);
             for (Bullet bullet : bullets)
                 bullet.draw(canvas);
-            for (Enemy enemy : enemies)
+            for (Enemy enemy : enemies) {
                 enemy.draw(canvas);
-            for (Obstacle obstacle : obstacles)
+                Path rectangle=new Path();
+                RectF rectF=new RectF(enemy.getRect());
+
+                rectangle.addRect(rectF, Path.Direction.CCW);
+                rectangle.close();
+                canvas.drawPath(rectangle,paint);
+            }
+            for (Obstacle obstacle : obstacles) {
                 obstacle.draw(canvas);
+                Path rectangle=new Path();
+                RectF rectF=new RectF(obstacle.getRect());
+
+                rectangle.addRect(rectF, Path.Direction.CCW);
+                rectangle.close();
+                canvas.drawPath(rectangle,paint);
+            }
             if (explosion != null) {
                 explosion.draw(canvas);
             }
             for (Coin coin: coins){
                 coin.draw(canvas);
             }
+            int leftX, rightX, botY, midY, topY;
+            Path triangle=new Path();
+
+            leftX = player.leftBorder()+20;
+            botY = player.bottomBorder()-20;
+            rightX = player.rightBorder()-20;
+            midY = player.bottomBorder() - player.getHeight() / 2;
+            topY = player.topBorder()+20;
+
+
+
+            triangle.moveTo(leftX,topY);
+            triangle.lineTo(leftX,botY);
+            triangle.moveTo(leftX,botY);
+            triangle.lineTo(rightX,midY);
+            triangle.moveTo(rightX,midY);
+            triangle.lineTo(leftX,topY);
+            triangle.close();
+
+
+            canvas.drawPath(triangle,paint);
+
             drawCoinScore(canvas);
             drawHerats(canvas);
             drawTxt(canvas);
@@ -327,28 +371,46 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public boolean collisionDetectionObstacle(Position first, Position second) {
         int leftX, rightX, botY, midY, topY;
-        double slopeAsc, slopeDsc, freeNumberAsc, freeNumberDsc;
-        leftX = first.leftBorder();
-        botY = first.bottomBorder();
-        rightX = first.rightBorder();
+        leftX = first.leftBorder()+20;
+        botY = first.bottomBorder()-20;
+        rightX = first.rightBorder()-20;
         midY = first.bottomBorder() - first.getHeight() / 2;
-        topY = first.topBorder();
-        Rect rect = second.getRect();
+        topY = first.topBorder()+20;
+        // Rect rect = second.getRect();
+        Line[] triangleLines=new Line[3];
+        triangleLines[0]= new Line(new Point(leftX,topY),new Point(leftX,botY));
+        triangleLines[1]=new Line(new Point(leftX,botY),new Point(rightX,midY));
+        triangleLines[2]=new Line(new Point(rightX,midY),new Point(leftX,topY));
+        Line[] rectangleLines=new Line[4];
+        int topBorder=second.topBorder();
+        rectangleLines[0]=new Line(new Point(second.leftBorder(),topBorder),new Point(second.rightBorder(),topBorder));
+        rectangleLines[1]=new Line(new Point(second.rightBorder(),topBorder),new Point(second.rightBorder(),second.bottomBorder()));
+        rectangleLines[2]=new Line(new Point(second.rightBorder(),second.bottomBorder()),new Point(second.leftBorder(),second.bottomBorder()));
+        rectangleLines[3]=new Line(new Point(second.leftBorder(),second.bottomBorder()),new Point(second.leftBorder(),topBorder));
 
-        if (rect.contains(rightX, midY))
-            return true;
+        for(Line triangleLine:triangleLines){
+            for(Line rectangleLine:rectangleLines){
+                if(linesTouching(rectangleLine,triangleLine)) {
+                    return true;
+                }
+            }
+        }
+        return false;
 
 
-        slopeAsc = (double) (midY - botY) / (rightX - leftX); // y=mx+n , n=y-mx
-        slopeDsc = -slopeAsc;
-        freeNumberAsc = midY - (slopeAsc * rightX);
-        freeNumberDsc = midY - (slopeDsc * rightX);
-
-
-        int lineYasc = (int) (slopeAsc * second.getX() + freeNumberAsc);
-        int lineYdsc = (int) (slopeDsc * second.getX() + freeNumberDsc);
-        return second.getY() <= lineYasc && second.getY() >= lineYdsc;
     }
+    boolean linesTouching(Line l1,Line l2) {
+
+        float denom=((l2.end.y-l2.start.y)*(l1.end.x-l1.start.x) - (l2.end.x-l2.start.x)*(l1.end.y-l1.start.y));
+        float uA = ((l2.end.x-l2.start.x)*(l1.start.y-l2.start.y) - (l2.end.y-l2.start.y)*(l1.start.x-l2.start.x)) / denom;
+        float uB = ((l1.end.x-l1.start.x)*(l1.start.y-l2.start.y) - (l1.end.y-l1.start.y)*(l1.start.x-l2.start.x)) / denom;
+        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+            return true;
+        }
+        return false;
+    }
+
+
 
     void gameOver() {
         isGameOver = true;
