@@ -1,6 +1,5 @@
 package com.example.androidgameproject;
 
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +10,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Region;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -26,9 +24,6 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-
-
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
@@ -55,7 +50,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     MediaPlayer mediaPlayerGame;
     SoundPool coinSound;
     Vibrator vibrator;
-
 
     public GameSurfaceView(Context context, int width, int height) {
         super(context);
@@ -88,23 +82,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         coinSound=new SoundPool(99, AudioManager.STREAM_MUSIC,0);
         coinSoundId=coinSound.load(context,R.raw.coin,1);
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-
-
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mainThread.setRunning(true);
         mainThread.start();
-
     }
-
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-
-    }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
@@ -120,7 +107,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -170,7 +156,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             for(int i=0;i<coins.size();i++){
                 coins.get(i).update();
-                if (collisionDetectionObstacle(player, coins.get(i))) {
+                if (collisionDetectionPlayer(player, coins.get(i))) {
                     coinSound.play(coinSoundId,5,5,1,0,1);
                     coins.remove(i);
                     bScore+=DELTA_SCORE;
@@ -178,7 +164,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     break;
                 }
             }
-
 
 
             long enemyTimer = (System.nanoTime() - enemyStartTime) / MILLION;
@@ -190,7 +175,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (int i=0 ;i<enemies.size();i++) {
                 enemies.get(i).update();
 
-                if (collisionDetectionObstacle(player, enemies.get(i))) {
+                if (collisionDetectionPlayer(player, enemies.get(i))) {
                     explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY(), getResources());
                     vibrate();
                     enemies.remove(i);
@@ -231,7 +216,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             for (int i=0;i<obstacles.size();i++) {
                 obstacles.get(i).update();
-                if (collisionDetectionObstacle(player, obstacles.get(i))) {
+                if (collisionDetectionPlayer(player, obstacles.get(i))) {
                     vibrate();
                     life_counter=0;
                     gameOver();
@@ -369,24 +354,30 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return Rect.intersects(first.getRect(), second.getRect());
     }
 
-    public boolean collisionDetectionObstacle(Position first, Position second) {
+    public boolean collisionDetectionPlayer(Player first, Position second) {
+
         int leftX, rightX, botY, midY, topY;
         leftX = first.leftBorder()+20;
         botY = first.bottomBorder()-20;
         rightX = first.rightBorder()-20;
         midY = first.bottomBorder() - first.getHeight() / 2;
         topY = first.topBorder()+20;
-        // Rect rect = second.getRect();
+
         Line[] triangleLines=new Line[3];
         triangleLines[0]= new Line(new Point(leftX,topY),new Point(leftX,botY));
         triangleLines[1]=new Line(new Point(leftX,botY),new Point(rightX,midY));
         triangleLines[2]=new Line(new Point(rightX,midY),new Point(leftX,topY));
         Line[] rectangleLines=new Line[4];
+
         int topBorder=second.topBorder();
-        rectangleLines[0]=new Line(new Point(second.leftBorder(),topBorder),new Point(second.rightBorder(),topBorder));
-        rectangleLines[1]=new Line(new Point(second.rightBorder(),topBorder),new Point(second.rightBorder(),second.bottomBorder()));
-        rectangleLines[2]=new Line(new Point(second.rightBorder(),second.bottomBorder()),new Point(second.leftBorder(),second.bottomBorder()));
-        rectangleLines[3]=new Line(new Point(second.leftBorder(),second.bottomBorder()),new Point(second.leftBorder(),topBorder));
+        int leftBorder=second.leftBorder();
+        int bottomBorder=second.bottomBorder();
+        int rightBorder=second.rightBorder();
+
+        rectangleLines[0]=new Line(new Point(leftBorder,topBorder),new Point(rightBorder,topBorder));
+        rectangleLines[1]=new Line(new Point(rightBorder,topBorder),new Point(rightBorder,bottomBorder));
+        rectangleLines[2]=new Line(new Point(rightBorder,second.bottomBorder()),new Point(leftBorder,bottomBorder));
+        rectangleLines[3]=new Line(new Point(leftBorder,bottomBorder),new Point(leftBorder,topBorder));
 
         for(Line triangleLine:triangleLines){
             for(Line rectangleLine:rectangleLines){
@@ -396,9 +387,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
         }
         return false;
-
-
     }
+
+    // check if two lines are touching
     boolean linesTouching(Line l1,Line l2) {
 
         float denom=((l2.end.y-l2.start.y)*(l1.end.x-l1.start.x) - (l2.end.x-l2.start.x)*(l1.end.y-l1.start.y));
@@ -410,8 +401,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return false;
     }
 
-
-
     void gameOver() {
         isGameOver = true;
         player.setPlaying(false);
@@ -420,11 +409,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         obstacles.clear();
         gameListenerDialogBox.onGameOver();
         mainThread.setRunning(false);
-
-
     }
-
-
 
     private void setBackNumber(){
         if(player.getDistance()<FIRST_WORLD_DISTANCE) {
