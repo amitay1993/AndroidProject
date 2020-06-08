@@ -6,10 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -35,12 +33,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Background[] backgrounds;
     Player player;
 
-    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime,surpriseTimer;
+    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, supriseStartTime;
     private List<Bullet> bullets;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
     private List<Coin> coins;
-    private List<Surprise> surprises;
+    private List<Suprise> suprises;
     private Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false,isBackgroundChanged=false,isOnce=true;
@@ -51,7 +49,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     MediaPlayer mediaPlayerGame;
     SoundPool coinSound;
     Vibrator vibrator;
-    private int indexBulletToChoose=1;
+    private int indexBulletToChoose=0;
 
     public GameSurfaceView(Context context, int width, int height) {
         super(context);
@@ -68,7 +66,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies = new ArrayList<>();
         obstacles = new ArrayList<>();
         coins=new ArrayList<>();
-        surprises=new ArrayList<>();
+        suprises =new ArrayList<>();
 
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
@@ -80,7 +78,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background3));
         backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background4));
 
-        bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
+        supriseStartTime=bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
         mediaPlayerGame=MediaPlayer.create(context,R.raw.game);
         coinSound=new SoundPool(99, AudioManager.STREAM_MUSIC,0);
         coinSoundId=coinSound.load(context,R.raw.coin,1);
@@ -137,17 +135,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             player.update();
 
 
-            long supriseElapsedTime = (System.nanoTime() - surpriseTimer) / MILLION;
-            if (supriseElapsedTime > 3000 - player.getDistance() / 3) { //change
-                surprises.add(new Surprise(BitmapFactory.decodeResource(getResources(), R.drawable.surprise),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -10 ))));
-                bulletStartTime = System.nanoTime();
+            long supriseTimer = (System.nanoTime() - supriseStartTime) / MILLION;
+            if (supriseTimer > 2000 - player.getDistance() / 3) { //change
+                suprises.add(new Suprise(BitmapFactory.decodeResource(getResources(), R.drawable.surprise),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -10 ))));
+                supriseStartTime = System.nanoTime();
             }
-            for(int i=0;i<surprises.size();i++){
-                surprises.get(i).update();
-                if (collisionDetectionPlayer(player, surprises.get(i))) {
+            for(int i = 0; i< suprises.size(); i++){
+                suprises.get(i).update();
+                if (collisionDetectionPlayer(player, suprises.get(i))) {
                     coinSound.play(coinSoundId,5,5,1,0,1);
-                    surprises.remove(i);
-                    indexBulletToChoose=indexBulletToChoose++%3;
+                    suprises.remove(i);
+                    indexBulletToChoose=(indexBulletToChoose+1)%3;
                     break;
                 }
             }
@@ -283,6 +281,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (Coin coin: coins){
                 coin.draw(canvas);
             }
+            for(Suprise suprise: suprises)
+                suprise.draw(canvas);
 
             drawCoinScore(canvas);
             drawHerats(canvas);

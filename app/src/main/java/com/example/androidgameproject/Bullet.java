@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 public class Bullet extends Position implements ObjectsInterface {
     private int speed;
     private Bitmap[] bitmaps;
-    private int bulletIndex=0;
+    private int bulletIndex;
 
     public Bullet(Bitmap bitmap , int x, int y, int speed, Resources res,int bulletIndex) {
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
