@@ -167,7 +167,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
             long enemyTimer = (System.nanoTime() - enemyStartTime) / MILLION;
-            if (enemyTimer > 3000 - player.getDistance() / 3) {
+            if (enemyTimer > 4000 - player.getDistance() / 3) {
                 addEnemies();
                 enemyStartTime = System.nanoTime();
             }
@@ -176,7 +176,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 enemies.get(i).update();
 
                 if (collisionDetectionPlayer(player, enemies.get(i))) {
-                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY(), getResources());
+                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY());
                     vibrate();
                     enemies.remove(i);
                     life_counter--;
@@ -193,7 +193,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 for (int j=0 ;j<bullets.size();j++) {
                     if (collisionDetection(enemies.get(i), bullets.get(j))) {
 
-                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY(), getResources());
+                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY());
                         enemies.remove(i);
                         bullets.remove(j);
                         bScore+=DELTA_SCORE;
@@ -224,7 +224,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
                 for(int j=0;j<bullets.size();j++){
                     if(collisionDetection(obstacles.get(i),bullets.get(j))){
-                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), bullets.get(j).getX(), bullets.get(j).getY(), getResources());
+                     //   explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), bullets.get(j).getX(), bullets.get(j).getY());
                         bullets.remove(j);
                         break;
                     }
@@ -245,38 +245,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         super.draw(canvas);
 
         if (canvas != null) {
-            Paint paint= new Paint();
-
-
-            paint.setStyle(Paint.Style.FILL);
-            paint.setColor(Color.RED);
-            paint.setStrokeWidth(10);
-            paint.setStyle(Paint.Style.STROKE);
             final int saveState = canvas.save();
-
             backgrounds[backgroundNumber].draw(canvas);
-
             player.draw(canvas);
             canvas.restoreToCount(saveState);
             for (Bullet bullet : bullets)
                 bullet.draw(canvas);
             for (Enemy enemy : enemies) {
                 enemy.draw(canvas);
-                Path rectangle=new Path();
-                RectF rectF=new RectF(enemy.getRect());
-
-                rectangle.addRect(rectF, Path.Direction.CCW);
-                rectangle.close();
-                canvas.drawPath(rectangle,paint);
             }
             for (Obstacle obstacle : obstacles) {
                 obstacle.draw(canvas);
-                Path rectangle=new Path();
-                RectF rectF=new RectF(obstacle.getRect());
-
-                rectangle.addRect(rectF, Path.Direction.CCW);
-                rectangle.close();
-                canvas.drawPath(rectangle,paint);
             }
             if (explosion != null) {
                 explosion.draw(canvas);
@@ -284,27 +263,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (Coin coin: coins){
                 coin.draw(canvas);
             }
-            int leftX, rightX, botY, midY, topY;
-            Path triangle=new Path();
-
-            leftX = player.leftBorder()+20;
-            botY = player.bottomBorder()-20;
-            rightX = player.rightBorder()-20;
-            midY = player.bottomBorder() - player.getHeight() / 2;
-            topY = player.topBorder()+20;
-
-
-
-            triangle.moveTo(leftX,topY);
-            triangle.lineTo(leftX,botY);
-            triangle.moveTo(leftX,botY);
-            triangle.lineTo(rightX,midY);
-            triangle.moveTo(rightX,midY);
-            triangle.lineTo(leftX,topY);
-            triangle.close();
-
-
-            canvas.drawPath(triangle,paint);
 
             drawCoinScore(canvas);
             drawHerats(canvas);
@@ -445,7 +403,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
             enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
             enemies.add(new Groll(BitmapFactory.decodeResource(getResources(), R.drawable.roll0), widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
-
 
         }else if(backgroundNumber ==1) {
             enemies.add(new Missle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_rotatemissile), widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(), random.nextInt(2)));
