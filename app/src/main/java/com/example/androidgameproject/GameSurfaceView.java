@@ -35,14 +35,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Background[] backgrounds;
     Player player;
 
-    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime,backgroundLevelStartTime;
+    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime,surpriseTimer;
     private List<Bullet> bullets;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
     private List<Coin> coins;
+    private List<Surprise> surprises;
     private Random random = new Random();
     private Explosion explosion;
-    private boolean isGameOver=false,isChanged=false,isOnce=true;
+    private boolean isGameOver=false,isBackgroundChanged=false,isOnce=true;
     int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId;
     private Bitmap coinImg,life;
     Context context;
@@ -50,6 +51,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     MediaPlayer mediaPlayerGame;
     SoundPool coinSound;
     Vibrator vibrator;
+    private int indexBulletToChoose=1;
 
     public GameSurfaceView(Context context, int width, int height) {
         super(context);
@@ -66,6 +68,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies = new ArrayList<>();
         obstacles = new ArrayList<>();
         coins=new ArrayList<>();
+        surprises=new ArrayList<>();
 
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
@@ -133,9 +136,26 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             backgrounds[backgroundNumber].update();
             player.update();
 
+
+            long supriseElapsedTime = (System.nanoTime() - surpriseTimer) / MILLION;
+            if (supriseElapsedTime > 3000 - player.getDistance() / 3) { //change
+                surprises.add(new Surprise(BitmapFactory.decodeResource(getResources(), R.drawable.surprise),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -10 ))));
+                bulletStartTime = System.nanoTime();
+            }
+            for(int i=0;i<surprises.size();i++){
+                surprises.get(i).update();
+                if (collisionDetectionPlayer(player, surprises.get(i))) {
+                    coinSound.play(coinSoundId,5,5,1,0,1);
+                    surprises.remove(i);
+                    indexBulletToChoose=indexBulletToChoose++%3;
+                    break;
+                }
+            }
+
+
             long bulletTimer = (System.nanoTime() - bulletStartTime) / MILLION;
             if (bulletTimer > 1500 - player.getDistance() / 3) { //change
-                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_WIDTH, bulletSpeed));
+                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_WIDTH, bulletSpeed,getResources(),indexBulletToChoose));
                 bulletStartTime = System.nanoTime();
             }
             for (int i=0;i<bullets.size();i++) {
@@ -267,7 +287,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             drawCoinScore(canvas);
             drawHerats(canvas);
             drawTxt(canvas);
-            if(isChanged) {
+            if(isBackgroundChanged) {
                 drawLevel(canvas);
             }
 
@@ -291,7 +311,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         if (player.getDistance()%1000<100) {
             canvas.drawText("Level "+(++backgroundNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
         }else{
-            isChanged=false;
+            isBackgroundChanged=false;
 
         }
     }
@@ -373,7 +393,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         if(player.getDistance()<FIRST_WORLD_DISTANCE) {
             backgroundNumber = 0;
             if(isOnce){
-                isChanged=true;
+                isBackgroundChanged=true;
                 isOnce=false;
             }
         }
@@ -381,7 +401,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             backgroundNumber = 1;
             bulletSpeed =21;
             if(!isOnce){
-                isChanged=true;
+                isBackgroundChanged=true;
                 isOnce=true;
             }
         }
@@ -390,7 +410,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             backgroundNumber = 2;
             if(isOnce){
                 isOnce=false;
-                isChanged=true;
+                isBackgroundChanged=true;
             }
         }
         else if(bScore<FOURTH_WORLD_DISTANCE) {
