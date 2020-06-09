@@ -25,7 +25,7 @@ abstract public class Position {
     }
 
     public Rect getRect(){
-        return new Rect(x+10,y+10,rightBorder()-10,bottomBorder()-10);
+        return new Rect(x+10,y,rightBorder()-10,bottomBorder());
     }
 
     public int getY() {

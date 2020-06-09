@@ -16,9 +16,9 @@ public class Skeleton extends Enemy {
         bitmaps.add(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_007));
         bitmaps.add(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_008));
         bitmaps.add(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_009));
-        speed = 8 + (int) (random.nextDouble() * distance / 30); // change
-        if (speed >30) {
-            this.speed = 30;
+        speed = 10 + (int) (random.nextDouble() * distance / 30); // change
+        if (speed >28) {
+            this.speed = 28;
         }
     }
 }

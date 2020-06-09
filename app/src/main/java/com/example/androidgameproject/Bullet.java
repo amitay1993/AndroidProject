@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
 public class Bullet extends Position implements ObjectsInterface {
     private int speed;
@@ -14,10 +15,13 @@ public class Bullet extends Position implements ObjectsInterface {
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
         this.bulletIndex=bulletIndex;
         this.speed = speed;
+        bulletPos();
         this.bitmaps =new Bitmap[3];
         bitmaps[0]=bitmap;
         bitmaps[1]=BitmapFactory.decodeResource(res,R.drawable.superblue);
         bitmaps[2]=BitmapFactory.decodeResource(res,R.drawable.supered);
+
+
     }
 
     @Override
@@ -42,4 +46,13 @@ public class Bullet extends Position implements ObjectsInterface {
     public void setBulletIndex(int bulletIndex) {
         this.bulletIndex = bulletIndex;
     }
+    private void bulletPos(){
+        if(bulletIndex==1){
+            y-=46;
+        }
+        else if(bulletIndex==2){
+            y-=36;
+        }
+    }
+
 }

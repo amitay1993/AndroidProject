@@ -26,28 +26,28 @@ import java.util.Random;
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
     static int widthScreen, heightScreen;
-    final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000,BULLET_WIDTH=9,COIN_WIDTH=20,DELTA_SCORE=20,
-              FIRST_WORLD_DISTANCE=1000,SECOND_WORD_DISTANCE=2000,THIRD_WORLD_DISTANCE=3000,FOURTH_WORLD_DISTANCE=4000;
+    final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000, BULLET_HEIGHT =9, COIN_HEIGHT =20,DELTA_SCORE=20,POWER_HEIGHT=30,
+              FIRST_WORLD_DISTANCE=2000,SECOND_WORD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=10000;
 
     MainThread mainThread;
     private Background[] backgrounds;
     Player player;
 
-    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, supriseStartTime;
+    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, powerUpStartTime;
     private List<Bullet> bullets;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
     private List<Coin> coins;
-    private List<Suprise> suprises;
+    private List<PowerUp> powers;
     private Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false,isBackgroundChanged=false,isOnce=true;
-    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId;
+    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId,explosionSoundId;
     private Bitmap coinImg,life;
     Context context;
     private GameListener gameListenerDialogBox;
     MediaPlayer mediaPlayerGame;
-    SoundPool coinSound;
+    SoundPool coinSound,explosionSound;
     Vibrator vibrator;
     private int indexBulletToChoose=0;
 
@@ -66,7 +66,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies = new ArrayList<>();
         obstacles = new ArrayList<>();
         coins=new ArrayList<>();
-        suprises =new ArrayList<>();
+        powers =new ArrayList<>();
 
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
@@ -78,10 +78,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background3));
         backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background4));
 
-        supriseStartTime=bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
+        powerUpStartTime =bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
+
         mediaPlayerGame=MediaPlayer.create(context,R.raw.game);
-        coinSound=new SoundPool(99, AudioManager.STREAM_MUSIC,0);
+        coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+        explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         coinSoundId=coinSound.load(context,R.raw.coin,1);
+        explosionSoundId=explosionSound.load(context,R.raw.explosion_sound,1);
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
@@ -135,25 +138,25 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             player.update();
 
 
-            long supriseTimer = (System.nanoTime() - supriseStartTime) / MILLION;
-            if (supriseTimer > 2000 - player.getDistance() / 3) { //change
-                suprises.add(new Suprise(BitmapFactory.decodeResource(getResources(), R.drawable.surprise),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -10 ))));
-                supriseStartTime = System.nanoTime();
+            long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION;
+            if (powerUpTimer > 14000 - player.getDistance() / 8) { //change
+                powers.add(new PowerUp(BitmapFactory.decodeResource(getResources(), R.drawable.power_up),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -POWER_HEIGHT ))));
+                powerUpStartTime = System.nanoTime();
             }
-            for(int i = 0; i< suprises.size(); i++){
-                suprises.get(i).update();
-                if (collisionDetectionPlayer(player, suprises.get(i))) {
-                    coinSound.play(coinSoundId,5,5,1,0,1);
-                    suprises.remove(i);
-                    indexBulletToChoose=(indexBulletToChoose+1)%3;
+            for(int i = 0; i< powers.size(); i++){
+                powers.get(i).update();
+                if (collisionDetectionPlayer(player, powers.get(i))) {
+                    coinSound.play(coinSoundId,1,1,0,0,1);
+                    powers.remove(i);
+                    indexBulletToChoose=random.nextInt(2)+1;
                     break;
                 }
             }
 
 
             long bulletTimer = (System.nanoTime() - bulletStartTime) / MILLION;
-            if (bulletTimer > 1500 - player.getDistance() / 3) { //change
-                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_WIDTH, bulletSpeed,getResources(),indexBulletToChoose));
+            if (bulletTimer > 1500 - player.getDistance() / 4) { //change
+                bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,getResources(),indexBulletToChoose));
                 bulletStartTime = System.nanoTime();
             }
             for (int i=0;i<bullets.size();i++) {
@@ -168,14 +171,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
             }
             long coinTimeElapsed=(System.nanoTime()-coinStartTime)/MILLION;
-            if(coinTimeElapsed>5500-player.getDistance()/2){
-                coins.add(new Coin(BitmapFactory.decodeResource(getResources(), R.drawable.coin), widthScreen + 10, (int) (random.nextDouble() * (heightScreen -COIN_WIDTH ))));
+            if(coinTimeElapsed>5000-player.getDistance()/4){
+                coins.add(new Coin(BitmapFactory.decodeResource(getResources(), R.drawable.coin), widthScreen + 10, (int) (random.nextDouble() * (heightScreen - COIN_HEIGHT))));
                 coinStartTime=System.nanoTime();
             }
             for(int i=0;i<coins.size();i++){
                 coins.get(i).update();
                 if (collisionDetectionPlayer(player, coins.get(i))) {
-                    coinSound.play(coinSoundId,5,5,1,0,1);
+                    coinSound.play(coinSoundId,1,1,0,0,1);
                     coins.remove(i);
                     bScore+=DELTA_SCORE;
                     coin_counter++;
@@ -185,7 +188,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
             long enemyTimer = (System.nanoTime() - enemyStartTime) / MILLION;
-            if (enemyTimer > 4000 - player.getDistance() / 3) {
+            if (enemyTimer > 3000 - player.getDistance() / 4) {
                 addEnemies();
                 enemyStartTime = System.nanoTime();
             }
@@ -198,6 +201,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     vibrate();
                     enemies.remove(i);
                     life_counter--;
+                    indexBulletToChoose=0;
                     if(life_counter==0){
                         gameOver();
                     }
@@ -210,8 +214,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 }
                 for (int j=0 ;j<bullets.size();j++) {
                     if (collisionDetection(enemies.get(i), bullets.get(j))) {
-
                         explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY());
+                        explosionSound.play(explosionSoundId,1,1,0,0,1);
                         enemies.remove(i);
                         bullets.remove(j);
                         bScore+=DELTA_SCORE;
@@ -222,7 +226,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
 
             long obstacleTimer = (System.nanoTime() - obstacleStartTime) / MILLION;
-            if (obstacleTimer > 10000 - player.getDistance() / 4) {
+            if (obstacleTimer > 8000 - player.getDistance() / 6) {
                 if(random.nextInt(2)==1) {
                     obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.new_pillar), widthScreen + 10, heightScreen / 2 + 150));
                 }
@@ -281,7 +285,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (Coin coin: coins){
                 coin.draw(canvas);
             }
-            for(Suprise suprise: suprises)
+            for(PowerUp suprise: powers)
                 suprise.draw(canvas);
 
             drawCoinScore(canvas);
@@ -385,6 +389,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies.clear();
         bullets.clear();
         obstacles.clear();
+    //    player=null;
         gameListenerDialogBox.onGameOver();
         mainThread.setRunning(false);
     }
@@ -427,16 +432,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }else if(backgroundNumber ==1) {
             enemies.add(new Missle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_rotatemissile), widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(), random.nextInt(2)));
             enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new BlueCroco(BitmapFactory.decodeResource(getResources(), R.drawable.bluecroco), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
+            enemies.add(new SpaceShip(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_spaceship1), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
         }else if(backgroundNumber ==2) {
-            //    enemies.add(new SmallBlueDragon(BitmapFactory.decodeResource(getResources(), R.drawable.smallbluedragon), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 0));
             enemies.add(new UfoGreen(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_green), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
             enemies.add(new UfoYellow(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_yellow), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
             enemies.add(new UfoRed(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_red), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
         }else{
             enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
             enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new UfoRed(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_red), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoRed(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_green), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
             enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
 
         }
