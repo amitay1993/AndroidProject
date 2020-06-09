@@ -50,6 +50,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     SoundPool coinSound,explosionSound;
     Vibrator vibrator;
     private int indexBulletToChoose=0;
+   static BitmapFactory.Options options;
 
     public GameSurfaceView(Context context, int width, int height) {
         super(context);
@@ -86,6 +87,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         coinSoundId=coinSound.load(context,R.raw.coin,1);
         explosionSoundId=explosionSound.load(context,R.raw.explosion_sound,1);
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+
+        options = new BitmapFactory.Options();
+        options.inScaled = false;
     }
 
     @Override
@@ -139,7 +143,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
             long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION;
-            if (powerUpTimer > 14000 - player.getDistance() / 8) { //change
+            if (powerUpTimer > 6000 - player.getDistance() / 8) { //change 14000
                 powers.add(new PowerUp(BitmapFactory.decodeResource(getResources(), R.drawable.power_up),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -POWER_HEIGHT ))));
                 powerUpStartTime = System.nanoTime();
             }
@@ -197,7 +201,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 enemies.get(i).update();
 
                 if (collisionDetectionPlayer(player, enemies.get(i))) {
-                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY());
+                    int enemyY= enemies.get(i).getY();
+                    if(enemies.get(i).topBorder()>player.topBorder())
+                        enemyY=enemies.get(i).bottomBorder();
+                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY);
                     vibrate();
                     enemies.remove(i);
                     life_counter--;
@@ -214,7 +221,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 }
                 for (int j=0 ;j<bullets.size();j++) {
                     if (collisionDetection(enemies.get(i), bullets.get(j))) {
-                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.exp2_0), enemies.get(i).getX(), enemies.get(i).getY());
+
+
+                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY());
                         explosionSound.play(explosionSoundId,1,1,0,0,1);
                         enemies.remove(i);
                         bullets.remove(j);

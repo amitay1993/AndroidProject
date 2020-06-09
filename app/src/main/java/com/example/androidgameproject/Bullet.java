@@ -15,11 +15,12 @@ public class Bullet extends Position implements ObjectsInterface {
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
         this.bulletIndex=bulletIndex;
         this.speed = speed;
-        bulletPos();
+
         this.bitmaps =new Bitmap[3];
         bitmaps[0]=bitmap;
         bitmaps[1]=BitmapFactory.decodeResource(res,R.drawable.superblue);
         bitmaps[2]=BitmapFactory.decodeResource(res,R.drawable.supered);
+        bulletPos();
 
 
     }
@@ -49,10 +50,17 @@ public class Bullet extends Position implements ObjectsInterface {
     private void bulletPos(){
         if(bulletIndex==1){
             y-=46;
+            height=bitmaps[1].getHeight();
+            width=bitmaps[1].getWidth();
         }
         else if(bulletIndex==2){
             y-=36;
+            height=bitmaps[2].getHeight();
+            width=bitmaps[2].getWidth();
         }
+    }
+    public Rect getRect(){
+        return new Rect(x,y-5,rightBorder(),bottomBorder()+5);
     }
 
 }
