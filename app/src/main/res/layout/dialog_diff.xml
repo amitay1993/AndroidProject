@@ -11,8 +11,7 @@
         android:id="@+id/layoutDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="65dp">
+        android:layout_alignParentEnd="true">
 
         <TextView
             android:layout_marginTop="10dp"
@@ -49,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/distance"
-            android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="20dp"
             android:paddingHorizontal="30dp"
 
@@ -91,7 +89,7 @@
             android:id="@+id/save"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:background="null"
+            android:background="@null"
             android:scaleType="fitCenter"
             android:layout_centerInParent="true"
             android:src="@drawable/save"
@@ -102,7 +100,7 @@
         <ImageButton
             android:src="@drawable/playagain"
             android:scaleType="fitCenter"
-            android:background="null"
+            android:background="@null"
             android:id="@+id/playagain"
 
            android:layout_width="36dp"
@@ -122,7 +120,7 @@
             android:scaleType="fitCenter"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:background="null"
+            android:background="@null"
             android:layout_toStartOf="@+id/save"
             android:layout_marginStart="-72dp"
             android:layout_marginTop="0dp">

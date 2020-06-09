@@ -81,27 +81,26 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
                 builder.setView(view);
                 builder.setCancelable(false);
-
-                builder.setPositiveButton("Resume",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        gameSurfaceView.resumeOnPause();
-                    }
-                });
-                builder.setNegativeButton("Retry", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        gameSurfaceView.resumeOnPause();
-
-                    }
-                });
                 final AlertDialog alertDialog=builder.create();
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                final ImageButton resumeBtn=view.findViewById(R.id.resume);
+                final ImageButton menuBtn=view.findViewById(R.id.backtomenu);
+
+                resumeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onShow(DialogInterface dialog) {
-                        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-                        alertDialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                        gameSurfaceView.resumeOnPause();
+                    }
+                });
+
+                menuBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(GameActivity.this,MainActivity.class);
+                        alertDialog.dismiss();
+                        finish();
+                        startActivity(intent);
                     }
                 });
                 alertDialog.show();
@@ -142,9 +141,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 builder.setCancelable(false);
                 final AlertDialog alertDialog=builder.create();
 
-                final Button playAaginbtn=view.findViewById(R.id.playagain);
-                final Button savebtn=view.findViewById(R.id.save);
-                final Button backtomenu=view.findViewById(R.id.backtomenu);
+                final ImageButton playAaginbtn=view.findViewById(R.id.playagain);
+                final ImageButton savebtn=view.findViewById(R.id.save);
+                final ImageButton backtomenu=view.findViewById(R.id.backtomenu);
                 final EditText nameEt=view.findViewById(R.id.entername);
 
                 TextView scoreTv=view.findViewById(R.id.score);
