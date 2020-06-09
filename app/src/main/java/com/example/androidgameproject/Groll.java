@@ -3,9 +3,10 @@ package com.example.androidgameproject;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 public class Groll extends Enemy {
-    public Groll(Bitmap bitmap, int x, int y, int score, Resources res,int delay) {
+    public Groll(Bitmap bitmap, int x, int y, int distance, Resources res,int delay) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
 
         bitmaps.add(bitmap);
@@ -18,9 +19,12 @@ public class Groll extends Enemy {
         bitmaps.add(BitmapFactory.decodeResource(res, R.drawable.roll8));
 
 
-        speed = 8 + (int) (random.nextDouble() * score / 30); // change
-        if (speed >30) {
-            this.speed = 30;
+        speed = 10 + (int) (random.nextDouble() * distance / 30); // change
+        if (speed >28) {
+            this.speed = 28;
         }
+    }
+    public Rect getRect(){
+        return new Rect(x+10,y-10,rightBorder()-10,bottomBorder());
     }
 }

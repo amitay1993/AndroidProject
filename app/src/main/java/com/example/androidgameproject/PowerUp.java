@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 
 
 
-public class Suprise extends Position implements ObjectsInterface {
+public class PowerUp extends Position implements ObjectsInterface {
     private Bitmap bitmap;
-    public Suprise(Bitmap bitmap, int x, int y) {
+    public PowerUp(Bitmap bitmap, int x, int y) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight());
 
         this.bitmap=bitmap;
