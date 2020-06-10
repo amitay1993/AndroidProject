@@ -83,7 +83,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 builder.setCancelable(false);
                 final AlertDialog alertDialog=builder.create();
 
-                final ImageButton resumeBtn=view.findViewById(R.id.resume);
+                final ImageButton resumeBtn=view.findViewById(R.id.playagain);
                 final ImageButton menuBtn=view.findViewById(R.id.backtomenu);
 
                 resumeBtn.setOnClickListener(new View.OnClickListener() {
