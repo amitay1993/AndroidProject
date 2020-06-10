@@ -15,6 +15,8 @@ public class Coin extends Position implements ObjectsInterface {
 
     }
 
+
+
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap,x,y,null);

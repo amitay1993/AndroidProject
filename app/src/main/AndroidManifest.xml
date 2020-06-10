@@ -8,11 +8,15 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:imeOptions="flagNoExtractUi"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".GameActivity" android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+
             tools:ignore="LockedOrientationActivity"> </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

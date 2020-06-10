@@ -50,10 +50,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     SoundPool coinSound,explosionSound;
     Vibrator vibrator;
     private int indexBulletToChoose=0;
+    private ConstValues constValuesClass;
 
     public GameSurfaceView(Context context, int width, int height) {
         super(context);
-
+        constValuesClass=new ConstValues(getResources());
         gameListenerDialogBox=((GameListener)context);
         this.context=context;
         widthScreen = width;
@@ -172,7 +173,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             long coinTimeElapsed=(System.nanoTime()-coinStartTime)/MILLION;
             if(coinTimeElapsed>5000-player.getDistance()/4){
-                coins.add(new Coin(BitmapFactory.decodeResource(getResources(), R.drawable.coin), widthScreen + 10, (int) (random.nextDouble() * (heightScreen - COIN_HEIGHT))));
+                coins.add(new Coin(ConstValues.coinImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - COIN_HEIGHT))));
                 coinStartTime=System.nanoTime();
             }
             for(int i=0;i<coins.size();i++){
@@ -427,20 +428,20 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         if(backgroundNumber ==0) {
             enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
             enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
-            enemies.add(new Groll(BitmapFactory.decodeResource(getResources(), R.drawable.roll0), widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
+            enemies.add(new Groll(ConstValues.roll0, widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
 
         }else if(backgroundNumber ==1) {
-            enemies.add(new Missle(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_rotatemissile), widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(), random.nextInt(2)));
-            enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new SpaceShip(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_spaceship1), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
+            enemies.add(new Missle(ConstValues.missileUpImg, widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(), random.nextInt(2)));
+            enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
+            enemies.add(new SpaceShip(ConstValues.yellowSpaceshipImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
         }else if(backgroundNumber ==2) {
-            enemies.add(new UfoGreen(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_green), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new UfoYellow(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_yellow), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new UfoRed(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_red), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoGreen(ConstValues.ufoGreemImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoYellow(ConstValues.ufoYellowImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoRed(ConstValues.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
         }else{
             enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
-            enemies.add(new Walle(BitmapFactory.decodeResource(getResources(), R.drawable.walle), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new UfoRed(BitmapFactory.decodeResource(getResources(), R.drawable.ufo_green), widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
+            enemies.add(new UfoRed(ConstValues.ufoGreemImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
             enemies.add(new Skeleton(BitmapFactory.decodeResource(getResources(), R.drawable.keleton_slashing_002), widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
 
         }
