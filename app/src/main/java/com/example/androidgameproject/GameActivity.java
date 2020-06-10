@@ -70,7 +70,8 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
     }
     public void onClick(View v) {
-        gameSurfaceView.mediaPlayerGame.pause();
+    //    gameSurfaceView.mediaPlayerGame.pause();
+        gameSurfaceView.isPauseDialog=true;
         onPause();
         runOnUiThread(new Runnable() {
             @Override
@@ -89,6 +90,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 resumeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        gameSurfaceView.isPauseDialog=false;
                         alertDialog.dismiss();
                         gameSurfaceView.resumeOnPause();
                     }

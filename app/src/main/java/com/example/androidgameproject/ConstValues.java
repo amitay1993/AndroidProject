@@ -20,7 +20,7 @@ public class ConstValues {
         missileDownImg=BitmapFactory.decodeResource(res, R.drawable.rsz_downmissile);
         yellowSpaceshipImg= BitmapFactory.decodeResource(res, R.drawable.rsz_spaceship1);
 
-        roll0=BitmapFactory.decodeResource(res, R.drawable.roll0);
+      //  roll0=BitmapFactory.decodeResource(res, R.drawable.roll0);
         roll1=BitmapFactory.decodeResource(res, R.drawable.roll1);
         roll2=(BitmapFactory.decodeResource(res, R.drawable.roll2));
         roll3=BitmapFactory.decodeResource(res, R.drawable.roll4);
@@ -28,7 +28,7 @@ public class ConstValues {
 
 
 
-        skel0=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_003));
+       // skel0=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_003));
         skel1=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_004));
         skel2=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_005));
         skel3=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_006));
