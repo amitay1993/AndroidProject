@@ -27,8 +27,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     static int widthScreen, heightScreen;
     final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000, BULLET_HEIGHT =9, COIN_HEIGHT =20,DELTA_SCORE=20,POWER_HEIGHT=30,
-              FIRST_WORLD_DISTANCE=2000,SECOND_WORD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=10000;
-
+              FIRST_WORLD_DISTANCE=2000,SECOND_WORLD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=10000;
+    private int currentWorldDistance;
     MainThread mainThread;
     private Background[] backgrounds;
     Player player;
@@ -50,11 +50,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     SoundPool coinSound,explosionSound;
     Vibrator vibrator;
     private int indexBulletToChoose=0;
-<<<<<<< HEAD
     private ConstValues constValuesClass;
-=======
    static BitmapFactory.Options options;
->>>>>>> matan
+
 
     public GameSurfaceView(Context context, int width, int height) {
         super(context);
@@ -325,7 +323,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.WHITE);
         paint.setTextSize(75);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        if (player.getDistance()%1000<100) {
+        if (player.getDistance()%currentWorldDistance<100) {
             canvas.drawText("Level "+(++backgroundNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
         }else{
             isBackgroundChanged=false;
@@ -408,6 +406,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
 
     private void setBackNumber(){
+        currentWorldDistance=FIRST_WORLD_DISTANCE;
         if(player.getDistance()<FIRST_WORLD_DISTANCE) {
             backgroundNumber = 0;
             if(isOnce){
@@ -415,7 +414,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 isOnce=false;
             }
         }
-        else if(player.getDistance()<SECOND_WORD_DISTANCE) {
+        else if(player.getDistance()<SECOND_WORLD_DISTANCE) {
+            currentWorldDistance=SECOND_WORLD_DISTANCE;
             backgroundNumber = 1;
             bulletSpeed =21;
             if(!isOnce){
@@ -424,6 +424,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
         }
         else if(player.getDistance()<THIRD_WORLD_DISTANCE) {
+            currentWorldDistance=THIRD_WORLD_DISTANCE;
             bulletSpeed = 23;
             backgroundNumber = 2;
             if(isOnce){
@@ -432,8 +433,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
         }
         else if(bScore<FOURTH_WORLD_DISTANCE) {
+            currentWorldDistance=FOURTH_WORLD_DISTANCE;
             backgroundNumber = 3;
             bulletSpeed =25;
+            if(!isOnce){
+                isOnce=true;
+                isBackgroundChanged=true;
+            }
         }
     }
     private void addEnemies(){
