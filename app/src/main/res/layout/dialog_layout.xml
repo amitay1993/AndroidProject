@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutDialogContainer"
+    android:layout_margin="20dp"
+    android:background="@drawable/borderlayout"
+    >
+
+
+
+
+    <RelativeLayout
+
+        android:layout_marginBottom="20dp"
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightblue"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_alignTop="@+id/gameover"
+            android:layout_alignBottom="@+id/gameover"
+            android:id="@+id/sad"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/gamepaused" />
+        <TextView
+            android:gravity="center"
+            android:id="@+id/gameover"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+
+
+
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:layout_toEndOf="@+id/sad"
+            android:text="Game Paused"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <ImageButton
+            android:src="@drawable/playagain"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:id="@+id/playagain"
+            android:layout_marginStart="150dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+
+            android:layout_toEndOf="@+id/backtomenu"
+            android:layout_centerInParent="true"
+
+            android:text="Play Again">
+
+        </ImageButton>
+
+        <ImageButton
+
+            android:id="@+id/backtomenu"
+            android:src="@drawable/menu"
+            android:scaleType="fitCenter"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@null"
+            android:layout_toStartOf="@+id/save"
+            android:layout_marginTop="0dp">
+
+
+        </ImageButton>
+
+    </RelativeLayout>
+</RelativeLayout>
+
+
+
