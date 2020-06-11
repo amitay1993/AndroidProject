@@ -172,7 +172,25 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textSize="15sp" />
+
+
         </RelativeLayout>
+<RelativeLayout
+    android:layout_toEndOf="@+id/relativelayout4"
+    android:layout_below="@+id/relativelayout3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/checkpointcb"
+            android:visibility="invisible"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_width="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Would you like to start from checkout"
+            android:layout_height="wrap_content">
+        </CheckBox>
+</RelativeLayout>
 <RelativeLayout
     android:layout_marginBottom="20dp"
     android:layout_marginTop="20dp"

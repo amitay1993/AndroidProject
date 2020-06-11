@@ -30,7 +30,7 @@ public class Player extends Position implements ObjectsInterface {
     public void update() {
         long timeElapsed=System.nanoTime()-startTime/1000000;
         if(timeElapsed>10000){ //change
-            distance++;
+            distance+=10;
             startTime=System.nanoTime();
         }
 
