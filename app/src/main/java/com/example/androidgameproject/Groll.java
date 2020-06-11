@@ -10,7 +10,7 @@ public class Groll extends Enemy {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
 
         bitmaps.add(bitmap);
-        bitmaps.add(ConstValues.roll1);
+    //    bitmaps.add(ConstValues.roll1);
         bitmaps.add(ConstValues.roll2);
         bitmaps.add(ConstValues.roll3);
         bitmaps.add(ConstValues.roll4);
@@ -26,6 +26,6 @@ public class Groll extends Enemy {
         }
     }
     public Rect getRect(){
-        return new Rect(x+10,y-10,rightBorder()-10,bottomBorder());
+        return new Rect(x+10,y-10,rightBorder()-10,bottomBorder()+10);
     }
 }

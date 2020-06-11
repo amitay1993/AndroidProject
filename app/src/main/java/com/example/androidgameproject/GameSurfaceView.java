@@ -15,6 +15,7 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -52,6 +53,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private int indexBulletToChoose=0;
     private ConstValues constValuesClass;
    static BitmapFactory.Options options;
+   boolean isPauseDialog;
 
 
     public GameSurfaceView(Context context, int width, int height) {
@@ -96,8 +98,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        Log.d("pause","created");
         mainThread.setRunning(true);
         mainThread.start();
+        mediaPlayerGame.start();
     }
 
     @Override
@@ -204,7 +208,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
                 if (collisionDetectionPlayer(player, enemies.get(i))) {
                     int enemyY= enemies.get(i).getY();
-                    if(enemies.get(i).topBorder()>player.topBorder())
+                    if(enemies.get(i).topBorder()<player.topBorder())
                         enemyY=enemies.get(i).bottomBorder();
                     explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY);
                     vibrate();
@@ -307,6 +311,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
 
         }
+
     }
     public void drawTxt(Canvas canvas){
         Paint paint=new Paint();
@@ -445,8 +450,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private void addEnemies(){
         if(backgroundNumber ==0) {
             enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
-            enemies.add(new Skeleton(ConstValues.skel0, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
-            enemies.add(new Groll(ConstValues.roll0, widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
+            enemies.add(new Skeleton(ConstValues.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
+            enemies.add(new Groll(ConstValues.roll1, widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
 
         }else if(backgroundNumber ==1) {
             enemies.add(new Missle(ConstValues.missileUpImg, widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(), random.nextInt(2)));
@@ -467,22 +472,26 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public void pause() {
         try {
-            mediaPlayerGame.pause();
-            mainThread.setRunning(false);
-
-            mainThread.join();
+            if(mainThread.getRunning()) {
+                Log.d("pause", "pause");
+                mediaPlayerGame.pause();
+                mainThread.setRunning(false);
+                mainThread.join();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     public void resume() {
-        mainThread= new MainThread(getHolder(),this);
+         if(!isPauseDialog)
+            mainThread= new MainThread(getHolder(),this);
     }
 
     public void resumeOnPause(){
         resume();
         surfaceCreated(getHolder());
+        //mediaPlayerGame.start();
     }
 
     @Override
