@@ -40,6 +40,12 @@
             tools:ignore="LockedOrientationActivity">
         </activity>
 
+        <activity
+            android:name=".Tutorial"
+            android:screenOrientation="sensorLandscape"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+
     </application>
 
 </manifest>
