@@ -20,55 +20,7 @@ tools:context=".MainActivity">
     android:background="@color/colorPrimary"
     android:fontFamily="@font/gendarwo"
     android:textAllCaps="false"
-    android:text="Best Scores!"/>
-
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/easy_btn"
-    android:layout_marginTop="75dp"
-    android:layout_marginStart="20dp"
-    android:padding="10dp"
-    android:textSize="25sp"
-    android:textColor="@color/Green"
-    android:background="@color/colorPrimary"
-    android:fontFamily="@font/gendarwo"
-    android:textAllCaps="false"
-    android:layout_below="@id/scores_table_btn"
-    android:text="Easy"/>
-
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/medium_btn"
-    android:layout_marginTop="10dp"
-    android:layout_marginStart="20dp"
-    android:padding="10dp"
-    android:textSize="25sp"
-    android:textColor="@color/Yellow"
-    android:background="@color/colorPrimary"
-    android:fontFamily="@font/gendarwo"
-    android:textAllCaps="false"
-    android:layout_below="@id/easy_btn"
-    android:text="Medium"/>
-
-<Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/hard_btn"
-    android:layout_marginTop="10dp"
-    android:layout_marginStart="20dp"
-    android:padding="10dp"
-    android:textSize="25sp"
-    android:textColor="@color/Red"
-    android:background="@color/colorPrimary"
-    android:fontFamily="@font/gendarwo"
-    android:textAllCaps="false"
-    android:layout_below="@id/medium_btn"
-    android:text="Hard"/>
-
-
-
+    android:text="@string/best_scores_btn"/>
 
 <Button
     android:layout_width="30dp"
@@ -88,7 +40,7 @@ tools:context=".MainActivity">
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/scores_table_btn"
         android:padding="10dp"
-        android:text="How to play?"
+        android:text="@string/howtoplay_tv"
         android:textSize="20sp"
         android:textColor="#fff"
         android:background="@color/colorPrimary"

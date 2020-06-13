@@ -14,7 +14,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class ScoreListView extends ListActivity {
@@ -39,6 +41,7 @@ public class ScoreListView extends ListActivity {
             e.printStackTrace();
         }
 
+        Collections.sort(users);
         ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,android.R.layout.simple_list_item_1,users);
 
         setListAdapter(adapter);

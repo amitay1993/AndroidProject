@@ -11,32 +11,40 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="No."
-        android:textSize="15sp"
-        android:textColor="#fff"
-        android:layout_margin="5dp"
-        android:padding="5dp"/>
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Nickname:"
-        android:textSize="15sp"
-        android:textColor="#fff"
-        android:layout_margin="5dp"
-        android:padding="5dp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/nickname_tv"
+            android:id="@+id/nickname_tv"
+            android:textSize="25sp"
+            android:fontFamily="@font/gendarwo"
+            android:textColor="#fff"
+            android:layout_margin="5dp"
+            android:padding="5dp"/>
 
-    <TextView
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/score_tv"
+            android:id="@+id/score_tv"
+            android:textSize="25sp"
+            android:fontFamily="@font/gendarwo"
+            android:textColor="#fff"
+            android:layout_margin="5dp"
+            android:padding="5dp"/>
+
+
+        <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Score:"
-        android:textSize="15sp"
+        android:text="@string/distance_tv"
+        android:textSize="25sp"
+        android:id="@+id/distance_tv"
+        android:fontFamily="@font/gendarwo"
         android:textColor="#fff"
         android:layout_margin="5dp"
         android:padding="5dp"/>

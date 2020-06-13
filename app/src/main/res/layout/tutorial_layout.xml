@@ -12,7 +12,7 @@
     android:layout_centerHorizontal="true"
     android:layout_marginTop="20dp"
     android:padding="10dp"
-    android:text="How to play?"
+    android:text="@string/howtoplay_tv"
     android:textSize="40sp"
     android:fontFamily="@font/gendarwo"
     android:textColor="#fff"
