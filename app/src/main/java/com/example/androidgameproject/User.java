@@ -15,9 +15,9 @@ public class User implements Serializable, Comparable {
 
     @Override
     public String toString() {
-        return "Name=              " + name +
-                ", Score=              " + score +
-                ", Distance=           " + distance;
+        return "Name= " + name +
+                ",             Score= " + score +
+                ",             Distance= " + distance;
     }
 
     public User(String name, int score, long distance) {
