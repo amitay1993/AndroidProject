@@ -8,22 +8,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:imeOptions="flagNoExtractUi"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <activity android:name=".OpeningAnimation"
             android:screenOrientation="landscape"
-            tools:ignore="LockedOrientationActivity"/>
-
-
-        <activity android:name=".GameActivity" android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-
-            tools:ignore="LockedOrientationActivity"> </activity>
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden">
+            tools:ignore="LockedOrientationActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +22,7 @@
             </intent-filter>
         </activity>
 
-       <!-- <activity
+        <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity">
@@ -42,7 +32,7 @@
             android:name=".GameActivity"
             android:screenOrientation="sensorLandscape"
             tools:ignore="LockedOrientationActivity">
-        </activity>-->
+        </activity>
 
         <activity
             android:name=".ScoreListView"
