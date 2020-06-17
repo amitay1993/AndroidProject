@@ -11,18 +11,51 @@
         android:imeOptions="flagNoExtractUi"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <activity android:name=".OpeningAnimation"
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity">
+          
+
         <activity android:name=".GameActivity" android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="adjustResize|stateHidden"
 
             tools:ignore="LockedOrientationActivity"> </activity>
         <activity android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize|stateHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+
+        <activity
+            android:name=".GameActivity"
+            android:screenOrientation="sensorLandscape"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+
+        <activity
+            android:name=".ScoreListView"
+            android:screenOrientation="sensorLandscape"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+
+        <activity
+            android:name=".Tutorial"
+            android:screenOrientation="sensorLandscape"
+            tools:ignore="LockedOrientationActivity">
+        </activity>
+
     </application>
 
 </manifest>

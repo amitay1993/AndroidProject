@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -32,13 +33,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
+
     Point point;
     GameSurfaceView gameSurfaceView;
     List<User> users=new ArrayList<>();
+    MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mp = MediaPlayer.create(this,R.raw.playgame_sound);
+        mp.start();
+        mp.setLooping(true);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -169,11 +176,11 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                     public void onClick(View v) {
                         String name=nameEt.getText().toString();
                         if(name.length()==0){
-                            Toast.makeText(GameActivity.this, "You Must enter a Name", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameActivity.this, "Please enter a name", Toast.LENGTH_SHORT).show();
                         }
                         else{
                             try {
-                                FileInputStream fileInputStream=openFileInput("LeaderBoard");
+                                FileInputStream fileInputStream=openFileInput("LeaderBoard.txt");
                                 ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
                                 users=(ArrayList<User>) objectInputStream.readObject();
                                 for( User user:users){
@@ -237,12 +244,14 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     protected void onPause() {
         super.onPause();
         gameSurfaceView.pause();
+        mp.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         gameSurfaceView.resume();
+        mp.start();
     }
 
 }

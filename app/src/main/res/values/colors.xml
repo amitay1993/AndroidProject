@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="Green">#58F615</color>
+    <color name="Yellow">#FDF327</color>
     <color name="colorPrimary">#848cb7</color>
     <color name="colorPrimaryDark">#6d749f</color>
     <color name="red">#FF515A</color>
@@ -11,7 +14,4 @@
     <color name="pink">#ff4081</color>
     <color name="lightyellow">#FFF7E1</color>
     <color name="editText">#51DCDCDC</color>
-
-
-
 </resources>
