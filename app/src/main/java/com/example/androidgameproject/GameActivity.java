@@ -3,7 +3,6 @@ package com.example.androidgameproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -37,15 +35,15 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     Point point;
     GameSurfaceView gameSurfaceView;
     List<User> users=new ArrayList<>();
- //   MediaPlayer mp;
+    MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       /* mp = MediaPlayer.create(this,R.raw.playgame_sound);
+        mp = MediaPlayer.create(this,R.raw.playgame_sound);
         mp.start();
-        mp.setLooping(true);*/
+        mp.setLooping(true);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -78,6 +76,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     }
     public void onClick(View v) {
     //    gameSurfaceView.mediaPlayerGame.pause();
+        mp.pause();
         gameSurfaceView.isPauseDialog=true;
         onPause();
         runOnUiThread(new Runnable() {
@@ -99,6 +98,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                     public void onClick(View v) {
                         gameSurfaceView.isPauseDialog=false;
                         alertDialog.dismiss();
+                        mp.start();
                         gameSurfaceView.resumeOnPause();
                     }
                 });
@@ -122,9 +122,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        FullScreencall();
+        fullScreencall();
     }
-    public void FullScreencall() {
+    public void fullScreencall() {
         if(Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
             View v = this.getWindow().getDecorView();
             v.setSystemUiVisibility(View.GONE);
@@ -137,8 +137,8 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     }
     @Override
     public void onGameOver() {
-     //   mp.pause();
-        gameSurfaceView.mediaPlayerGame.stop();
+        mp.pause();
+       // gameSurfaceView.mediaPlayerGame.stop();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -180,7 +180,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                         }
                         else{
                             try {
-                                FileInputStream fileInputStream=openFileInput("LeaderBoard.txt");
+                                FileInputStream fileInputStream=openFileInput("LeaderBoard");
                                 ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
                                 users=(ArrayList<User>) objectInputStream.readObject();
                                 for( User user:users){
@@ -244,14 +244,15 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     protected void onPause() {
         super.onPause();
         gameSurfaceView.pause();
-        //mp.pause();
+        mp.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         gameSurfaceView.resume();
-        //mp.start();
+        if(!gameSurfaceView.isPauseDialog)
+            mp.start();
     }
 
 }
