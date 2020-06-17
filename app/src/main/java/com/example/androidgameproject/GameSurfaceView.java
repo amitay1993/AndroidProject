@@ -10,7 +10,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.VibrationEffect;
@@ -47,7 +46,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Bitmap coinImg,life;
     Context context;
     private GameListener gameListenerDialogBox;
-    MediaPlayer mediaPlayerGame;
+  //  MediaPlayer mediaPlayerGame;
     SoundPool coinSound,explosionSound;
     Vibrator vibrator;
     private int indexBulletToChoose=0;
@@ -78,14 +77,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
 
         backgrounds=new Background[NUMBER_OF_BACKGROUNDS];
-        backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background1));
-        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background2));
-        backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background3));
-        backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background4));
+        backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_1));
+        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_2));
+        backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron3));
+        backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron4));
 
         powerUpStartTime =bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
 
-        mediaPlayerGame=MediaPlayer.create(context,R.raw.playgame_sound);
+        //mediaPlayerGame=MediaPlayer.create(context,R.raw.playgame_sound);
         coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         coinSoundId=coinSound.load(context,R.raw.coin,1);
@@ -101,7 +100,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         Log.d("pause","created");
         mainThread.setRunning(true);
         mainThread.start();
-        mediaPlayerGame.start();
+        //mediaPlayerGame.start();
     }
 
     @Override
@@ -141,7 +140,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void update() {
 
         if (player.isPlaying()) {
-            mediaPlayerGame.start();
+            //mediaPlayerGame.start();
 
             setBackNumber();
             backgrounds[backgroundNumber].update();
@@ -149,7 +148,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
             long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION;
-            if (powerUpTimer > 6000 - player.getDistance() / 8) { //change 14000
+            if (powerUpTimer > 14000 - player.getDistance() / 8) { //change to 14000
                 powers.add(new PowerUp(BitmapFactory.decodeResource(getResources(), R.drawable.power_up),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -POWER_HEIGHT ))));
                 powerUpStartTime = System.nanoTime();
             }
@@ -165,7 +164,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
             long bulletTimer = (System.nanoTime() - bulletStartTime) / MILLION;
-            if (bulletTimer > 1500 - player.getDistance() / 4) { //change
+            int maxBulletDistance=player.getDistance();
+            if(maxBulletDistance>4000)
+                maxBulletDistance=4000;
+            if (bulletTimer > 1500 - maxBulletDistance / 4) { //change
                 bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,getResources(),indexBulletToChoose));
                 bulletStartTime = System.nanoTime();
             }
@@ -474,7 +476,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         try {
             if(mainThread.getRunning()) {
                 Log.d("pause", "pause");
-                mediaPlayerGame.pause();
+            //    mediaPlayerGame.pause();
                 mainThread.setRunning(false);
                 mainThread.join();
             }
