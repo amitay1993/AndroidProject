@@ -15,8 +15,8 @@
 
         <activity android:name=".OpeningAnimation"
             android:screenOrientation="landscape"
-            tools:ignore="LockedOrientationActivity">
-          
+            tools:ignore="LockedOrientationActivity"/>
+
 
         <activity android:name=".GameActivity" android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="adjustResize|stateHidden"
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <activity
+       <!-- <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity">
@@ -42,7 +42,7 @@
             android:name=".GameActivity"
             android:screenOrientation="sensorLandscape"
             tools:ignore="LockedOrientationActivity">
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".ScoreListView"

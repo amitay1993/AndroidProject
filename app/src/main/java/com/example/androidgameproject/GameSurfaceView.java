@@ -85,7 +85,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         powerUpStartTime =bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
 
-        mediaPlayerGame=MediaPlayer.create(context,R.raw.game);
+        mediaPlayerGame=MediaPlayer.create(context,R.raw.playgame_sound);
         coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         coinSoundId=coinSound.load(context,R.raw.coin,1);

@@ -37,15 +37,15 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     Point point;
     GameSurfaceView gameSurfaceView;
     List<User> users=new ArrayList<>();
-    MediaPlayer mp;
+ //   MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mp = MediaPlayer.create(this,R.raw.playgame_sound);
+       /* mp = MediaPlayer.create(this,R.raw.playgame_sound);
         mp.start();
-        mp.setLooping(true);
+        mp.setLooping(true);*/
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -137,7 +137,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     }
     @Override
     public void onGameOver() {
-
+     //   mp.pause();
         gameSurfaceView.mediaPlayerGame.stop();
         runOnUiThread(new Runnable() {
             @Override
@@ -244,14 +244,14 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     protected void onPause() {
         super.onPause();
         gameSurfaceView.pause();
-        mp.pause();
+        //mp.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         gameSurfaceView.resume();
-        mp.start();
+        //mp.start();
     }
 
 }
