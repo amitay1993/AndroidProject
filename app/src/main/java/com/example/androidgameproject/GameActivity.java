@@ -3,7 +3,6 @@ package com.example.androidgameproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -124,9 +122,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        FullScreencall();
+        fullScreencall();
     }
-    public void FullScreencall() {
+    public void fullScreencall() {
         if(Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
             View v = this.getWindow().getDecorView();
             v.setSystemUiVisibility(View.GONE);
