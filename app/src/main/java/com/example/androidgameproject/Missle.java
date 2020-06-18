@@ -18,18 +18,18 @@ public class Missle extends Enemy {
 
         this.upOrDown =upOrDown;
         speed = 4 + (int) (random.nextDouble() * score / 30); // change
-        if (speed >30) {
-            this.speed = 30;
+        if (speed >22) {
+            this.speed = 22;
         }
     }
     @Override
     public void update() {
         if(this.upOrDown ==1) {
             x -= speed + 30;
-            y -= speed + 2;
+            y -= speed + 1;
         }else{
             x-= speed + 30;
-            y+= speed + 2;
+            y+= speed + 1;
         }
     }
 }

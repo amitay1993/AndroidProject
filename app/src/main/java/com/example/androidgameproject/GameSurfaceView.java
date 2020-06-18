@@ -58,6 +58,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public GameSurfaceView(Context context, int width, int height,int checkPoint) {
         super(context);
+
         constValuesClass=new ConstValues(getResources());
         gameListenerDialogBox=((GameListener)context);
         this.context=context;
@@ -66,7 +67,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mainThread = new MainThread(getHolder(), this);
         getHolder().addCallback(this);
         setFocusable(true);
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+
         setCheckPoint(checkPoint);
+
         bullets = new ArrayList<>();
         enemies = new ArrayList<>();
         obstacles = new ArrayList<>();
@@ -75,7 +79,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+
 
         backgrounds=new Background[NUMBER_OF_BACKGROUNDS];
         backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background1));
@@ -414,8 +418,14 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         this.gameSurfaceCheckPoint=checkPoint;
         backgroundNumber=this.gameSurfaceCheckPoint;
-
-
+        if(backgroundNumber==0)
+            player.setDistance(0);
+        else if(backgroundNumber==1){
+            player.setDistance(FIRST_WORLD_DISTANCE);
+        }
+        else if(backgroundNumber==2){
+            player.setDistance(SECOND_WORLD_DISTANCE);
+        }
     }
 
     public int getCheckPoint() {
