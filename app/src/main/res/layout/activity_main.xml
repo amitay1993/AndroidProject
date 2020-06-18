@@ -17,18 +17,29 @@ tools:context=".MainActivity">
     android:padding="10dp"
     android:textSize="20sp"
     android:textColor="#fff"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     android:fontFamily="@font/gendarwo"
     android:textAllCaps="false"
     android:text="@string/best_scores_btn"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/copyright_tv"
+        android:textSize="12sp"
+        android:padding="3dp"
+        android:textColor="#fff"
+        android:fontFamily="@font/gendarwo"
+        android:layout_marginTop="385dp"
+        android:layout_marginStart="5dp"/>
 
 <Button
     android:layout_width="30dp"
     android:layout_height="30dp"
     android:id="@+id/sound_btn"
     android:layout_alignParentEnd="true"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="10dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="20dp"
     android:padding="5dp"
     android:background="@drawable/ic_speaker_icon"/>
 
@@ -43,7 +54,7 @@ tools:context=".MainActivity">
         android:text="@string/howtoplay_tv"
         android:textSize="20sp"
         android:textColor="#fff"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         android:fontFamily="@font/gendarwo"/>
 
 
@@ -69,8 +80,22 @@ tools:context=".MainActivity">
     android:fontFamily="@font/gendarwo"
     android:textStyle="bold"
     android:layout_centerHorizontal="true"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorPrimaryDark"
     android:id="@+id/startgame_btn"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="630dp"
+        android:textColor="#fff"
+        android:text="Exit"
+        android:textStyle="bold"
+        android:fontFamily="@font/gendarwo"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/red"
+        android:id="@+id/exit_btn"/>
 
 
 </RelativeLayout>

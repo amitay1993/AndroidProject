@@ -31,7 +31,9 @@ public class OpeningAnimation extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(OpeningAnimation.this, MainActivity.class);
+               // finish();
                 startActivity(intent);
+
             }
         }, 2500);
 
@@ -52,6 +54,6 @@ public class OpeningAnimation extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        fullScreencall();
+
     }
 }
