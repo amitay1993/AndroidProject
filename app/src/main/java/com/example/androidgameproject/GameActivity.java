@@ -1,19 +1,27 @@
 package com.example.androidgameproject;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SharedMemory;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -29,13 +37,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
 
     Point point;
     GameSurfaceView gameSurfaceView;
     List<User> users=new ArrayList<>();
+
+    int checkpoint=0;
+    SharedPreferences checkPointsharedPreferences;
+
     MediaPlayer mp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +64,14 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         point=new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
-        gameSurfaceView=new GameSurfaceView(this,point.x,point.y);
+
+        checkPointsharedPreferences=getSharedPreferences("usercheckpoint",MODE_PRIVATE);
+        checkpoint=checkPointsharedPreferences.getInt("checkpoint",0);
+        gameSurfaceView=new GameSurfaceView(this,point.x,point.y,checkpoint);
+        checkPointsharedPreferences.edit().putInt("checkpoint",0).commit();
+
+
+
 
         FrameLayout game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);
@@ -70,8 +92,6 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
         setContentView(game);
         pausebtn.setOnClickListener(this);
-
-
 
     }
     public void onClick(View v) {
@@ -149,11 +169,13 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 builder.setView(view);
                 builder.setCancelable(false);
                 final AlertDialog alertDialog=builder.create();
-
+                final CheckBox checkpointcb=view.findViewById(R.id.checkpointcb);
                 final ImageButton playAaginbtn=view.findViewById(R.id.playagain);
                 final ImageButton savebtn=view.findViewById(R.id.save);
                 final ImageButton backtomenu=view.findViewById(R.id.backtomenu);
                 final EditText nameEt=view.findViewById(R.id.entername);
+
+
 
                 TextView scoreTv=view.findViewById(R.id.score);
                 TextView distTv=view.findViewById(R.id.distance);
@@ -169,6 +191,21 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 distTv.setText("distance " + score);
 
 
+                if(gameSurfaceView.getCheckPoint()>0){
+                    checkpointcb.setVisibility(View.VISIBLE);
+                    checkpointcb.setText(checkpointcb.getText()+" " +gameSurfaceView.getCheckPoint()+"?");
+                }
+
+                checkpointcb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked){
+                            checkPointsharedPreferences.edit().putInt("checkpoint",gameSurfaceView.getCheckPoint()).commit();
+                        }else{
+                            checkPointsharedPreferences.edit().putInt("checkpoint",0).commit();
+                        }
+                    }
+                });
 
 
                 savebtn.setOnClickListener(new View.OnClickListener() {
@@ -228,9 +265,11 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                     @Override
                     public void onClick(View v) {
                         alertDialog.dismiss();
+
                         recreate();
                     }
                 });
+
                 alertDialog.show();
             }
 

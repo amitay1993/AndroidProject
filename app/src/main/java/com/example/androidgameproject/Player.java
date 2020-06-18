@@ -26,6 +26,10 @@ public class Player extends Position implements ObjectsInterface {
         canvas.drawBitmap(playerBitmap,x,y,null);
     }
 
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
     @Override
     public void update() {
         long timeElapsed=System.nanoTime()-startTime/1000000;

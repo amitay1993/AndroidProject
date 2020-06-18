@@ -27,11 +27,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     static int widthScreen, heightScreen;
     final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000, BULLET_HEIGHT =9, COIN_HEIGHT =20,DELTA_SCORE=20,POWER_HEIGHT=30,
-              FIRST_WORLD_DISTANCE=2000,SECOND_WORLD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=10000;
-    private int currentWorldDistance;
+              FIRST_WORLD_DISTANCE=2000,SECOND_WORLD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=12000;
+    private int currentWorldDistance,gameSurfaceCheckPoint=0;
     MainThread mainThread;
     private Background[] backgrounds;
     Player player;
+
 
     private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, powerUpStartTime;
     private List<Bullet> bullets;
@@ -55,8 +56,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
    boolean isPauseDialog;
 
 
-    public GameSurfaceView(Context context, int width, int height) {
+    public GameSurfaceView(Context context, int width, int height,int checkPoint) {
         super(context);
+
         constValuesClass=new ConstValues(getResources());
         gameListenerDialogBox=((GameListener)context);
         this.context=context;
@@ -65,6 +67,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         mainThread = new MainThread(getHolder(), this);
         getHolder().addCallback(this);
         setFocusable(true);
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+
+        setCheckPoint(checkPoint);
 
         bullets = new ArrayList<>();
         enemies = new ArrayList<>();
@@ -74,7 +79,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+
 
         backgrounds=new Background[NUMBER_OF_BACKGROUNDS];
         backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_1));
@@ -95,10 +100,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         options.inScaled = false;
     }
 
+
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d("pause","created");
         mainThread.setRunning(true);
+
         mainThread.start();
         //mediaPlayerGame.start();
     }
@@ -407,36 +415,77 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         enemies.clear();
         bullets.clear();
         obstacles.clear();
-    //    player=null;
         gameListenerDialogBox.onGameOver();
         mainThread.setRunning(false);
     }
 
+
+    public void setCheckPoint(int checkPoint) {
+
+        this.gameSurfaceCheckPoint=checkPoint;
+        backgroundNumber=this.gameSurfaceCheckPoint;
+        if(backgroundNumber==0)
+            player.setDistance(0);
+        else if(backgroundNumber==1){
+            player.setDistance(FIRST_WORLD_DISTANCE);
+        }
+        else if(backgroundNumber==2){
+            player.setDistance(SECOND_WORLD_DISTANCE);
+        }
+    }
+
+    public int getCheckPoint() {
+        return gameSurfaceCheckPoint;
+    }
+
     private void setBackNumber(){
-        currentWorldDistance=FIRST_WORLD_DISTANCE;
-        if(player.getDistance()<FIRST_WORLD_DISTANCE) {
-            backgroundNumber = 0;
-            if(isOnce){
-                isBackgroundChanged=true;
-                isOnce=false;
+
+
+
+        if(getCheckPoint()==0) {
+            if (player.getDistance() < FIRST_WORLD_DISTANCE) {
+                currentWorldDistance = FIRST_WORLD_DISTANCE;
+                backgroundNumber = 0;
+                if (isOnce) {
+                    isBackgroundChanged = true;
+                    isOnce = false;
+                }
+            }else{
+                Log.d("'worlds'","player finished world 1");
+                this.gameSurfaceCheckPoint=1;
             }
         }
-        else if(player.getDistance()<SECOND_WORLD_DISTANCE) {
-            currentWorldDistance=SECOND_WORLD_DISTANCE;
-            backgroundNumber = 1;
-            bulletSpeed =21;
-            if(!isOnce){
-                isBackgroundChanged=true;
-                isOnce=true;
+        else if(getCheckPoint()==1) {
+            Log.d("worlds","player got to world 2");
+            if (player.getDistance() < SECOND_WORLD_DISTANCE) {
+                this.gameSurfaceCheckPoint = 1;
+                currentWorldDistance = SECOND_WORLD_DISTANCE;
+                backgroundNumber = 1;
+                bulletSpeed = 21;
+                if (!isOnce) {
+                    isBackgroundChanged = true;
+                    isOnce = true;
+                }
             }
+            else{
+                this.gameSurfaceCheckPoint=2;
+            }
+
         }
-        else if(player.getDistance()<THIRD_WORLD_DISTANCE) {
-            currentWorldDistance=THIRD_WORLD_DISTANCE;
-            bulletSpeed = 23;
-            backgroundNumber = 2;
-            if(isOnce){
-                isOnce=false;
-                isBackgroundChanged=true;
+        else if(getCheckPoint()==2) {
+            if (player.getDistance() < THIRD_WORLD_DISTANCE) {
+                this.gameSurfaceCheckPoint = 2;
+                currentWorldDistance = THIRD_WORLD_DISTANCE;
+                bulletSpeed = 23;
+                backgroundNumber = 2;
+                if (isOnce) {
+
+                    isOnce = false;
+                    isBackgroundChanged = true;
+                }
+            }
+            else{
+                this.gameSurfaceCheckPoint=3;
             }
         }
         else if(bScore<FOURTH_WORLD_DISTANCE) {
@@ -474,12 +523,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public void pause() {
         try {
+
             if(mainThread.getRunning()) {
-                Log.d("pause", "pause");
-            //    mediaPlayerGame.pause();
                 mainThread.setRunning(false);
                 mainThread.join();
             }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
