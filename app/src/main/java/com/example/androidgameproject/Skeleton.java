@@ -9,7 +9,7 @@ public class Skeleton extends Enemy {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
 
         bitmaps.add(bitmap);
-        bitmaps.add(ConstValues.skel1);
+   //     bitmaps.add(ConstValues.skel1);
         bitmaps.add(ConstValues.skel2);
         bitmaps.add(ConstValues.skel3);
         bitmaps.add(ConstValues.skel4);

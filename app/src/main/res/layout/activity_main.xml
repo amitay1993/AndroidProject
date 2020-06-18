@@ -1,16 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/rsz_space_background"
+tools:context=".MainActivity">
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/scores_table_btn"
+    android:layout_marginTop="20dp"
+    android:layout_marginStart="20dp"
+    android:padding="10dp"
+    android:textSize="20sp"
+    android:textColor="#fff"
+    android:background="@color/colorPrimary"
+    android:fontFamily="@font/gendarwo"
+    android:textAllCaps="false"
+    android:text="@string/best_scores_btn"/>
+
+<Button
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:id="@+id/sound_btn"
+    android:layout_alignParentEnd="true"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="10dp"
+    android:padding="5dp"
+    android:background="@drawable/ic_speaker_icon"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:onClick="listnerGame"
-        android:text="game"/>
+        android:id="@+id/tutorial_btn"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@id/scores_table_btn"
+        android:padding="10dp"
+        android:text="@string/howtoplay_tv"
+        android:textSize="20sp"
+        android:textColor="#fff"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/gendarwo"/>
+
+
+
+<ImageView
+    android:id="@+id/start_anim"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="80dp"
+    android:layout_marginBottom="20dp"
+    android:src="@drawable/opening"/>
+
+<Button
+    android:onClick="listnerGame"
+    android:layout_width="200dp"
+    android:layout_height="50dp"
+    android:layout_below="@+id/start_anim"
+    android:textSize="45sp"
+    android:textAllCaps="false"
+    android:text="@string/startgame_btn"
+    android:textColor="#fff"
+    android:fontFamily="@font/gendarwo"
+    android:textStyle="bold"
+    android:layout_centerHorizontal="true"
+    android:background="@color/colorPrimary"
+    android:id="@+id/startgame_btn"/>
+
 
 </RelativeLayout>
+
 
 
 

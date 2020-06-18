@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AndroidGameProject</string>
+    <string name="startgame_btn">התחל משחק</string>
+    <string name="howtoplay_tv">איך משחקים?</string>
+    <string name="best_scores_btn">טבלת שיאים</string>
+    <string name="number_tv">מקום</string>
+    <string name="nickname_tv">כינוי:</string>
+    <string name="score_tv">ניקוד:</string>
+    <string name="distance_tv">מרחק:</string>
+    <string name="copyright_tv">Copyright © 2020 by SpaceTeam</string>
+    <string name="spaceship_tv">חללית</string>
+    <string name="loading_tv">טוען...</string>
+</resources>
