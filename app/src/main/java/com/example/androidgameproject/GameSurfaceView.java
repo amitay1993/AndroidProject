@@ -381,6 +381,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         int leftBorder=second.leftBorder();
         int bottomBorder=second.bottomBorder();
         int rightBorder=second.rightBorder();
+        if(second instanceof Obstacle ){
+            topBorder+=30;
+            leftBorder+=30;
+            rightBorder-=30;
+            bottomBorder-=30;
+        }
 
         rectangleLines[0]=new Line(new Point(leftBorder,topBorder),new Point(rightBorder,topBorder));
         rectangleLines[1]=new Line(new Point(rightBorder,topBorder),new Point(rightBorder,bottomBorder));
@@ -515,8 +521,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }else{
             enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
             enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new UfoRed(ConstValues.ufoGreemImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new Skeleton(ConstValues.skel0, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
+            enemies.add(new UfoRed(ConstValues.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new Skeleton(ConstValues.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
 
         }
     }

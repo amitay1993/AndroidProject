@@ -31,7 +31,7 @@ public class OpeningAnimation extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(OpeningAnimation.this, MainActivity.class);
-               // finish();
+                finish();
                 startActivity(intent);
 
             }

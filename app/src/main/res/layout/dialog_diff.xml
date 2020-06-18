@@ -3,8 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/layoutDialogContainer"
-    android:layout_margin="20dp"
-    android:background="@drawable/gameoverlayout"
+
     >
 
 
@@ -15,7 +14,7 @@
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/red"
+            android:background="@color/colorPrimaryDark"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -35,15 +34,13 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-
-
-
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="@font/gendarwo"
                     android:layout_toEndOf="@+id/sad"
                     android:text="Game Over"
-                    android:textSize="25sp" />
+                    android:textColor="#fff"
+                    android:textSize="35sp" />
 
         </RelativeLayout>
 
@@ -72,6 +69,8 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:layout_width="200dp"
+                    android:paddingTop="7dp"
+                    android:fontFamily="@font/gendarwo"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/retype_pass"
                     android:layout_alignParentTop="true"
@@ -104,6 +103,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/user_icon"
                     android:layout_alignParentTop="true"
+                    android:paddingTop="7dp"
+                    android:fontFamily="@font/gendarwo"
                     android:layout_toEndOf="@+id/user_icon"
                     android:background="@color/editText"/>
         </RelativeLayout>
@@ -132,11 +133,16 @@
                     android:textSize="15sp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
+                   android:text="sss"
+                    android:paddingTop="7dp"
+
+
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/password"
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@+id/password"
+                    android:fontFamily="@font/gendarwo"
                     android:background="@color/editText"/>
         </RelativeLayout>
 
@@ -167,6 +173,7 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/email"
             android:background="@color/editText"
+            android:fontFamily="@font/gendarwo"
             android:hint="Enter Your name"
             android:inputType="textEmailAddress"
             android:paddingStart="10dp"

@@ -187,8 +187,8 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 final int score=gameSurfaceView.bScore;
 
                 coinsTv.setText("coins " + coins);
-                scoreTv.setText("score " + dist);
-                distTv.setText("distance " + score);
+                scoreTv.setText("score " + score);
+                distTv.setText("distance " + dist);
 
 
                 if(gameSurfaceView.getCheckPoint()>0){
