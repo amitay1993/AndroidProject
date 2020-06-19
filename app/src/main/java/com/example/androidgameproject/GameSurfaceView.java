@@ -381,7 +381,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         int leftBorder=second.leftBorder();
         int bottomBorder=second.bottomBorder();
         int rightBorder=second.rightBorder();
-        if(second instanceof Obstacle ){
+        if(second instanceof Obstacle|| second instanceof Missile ){
             topBorder+=30;
             leftBorder+=30;
             rightBorder-=30;
@@ -511,7 +511,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             enemies.add(new Groll(ConstValues.roll1, widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
 
         }else if(backgroundNumber ==1) {
-            enemies.add(new Missle(ConstValues.missileUpImg, widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(), random.nextInt(2)));
+            enemies.add(new Missile(ConstValues.missile,widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)),player.getX() ,player.getY()));
             enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
             enemies.add(new SpaceShip(ConstValues.yellowSpaceshipImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
         }else if(backgroundNumber ==2) {
