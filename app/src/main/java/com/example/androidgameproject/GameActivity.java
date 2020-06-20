@@ -1,6 +1,5 @@
 package com.example.androidgameproject;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -10,7 +9,6 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SharedMemory;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
@@ -37,8 +34,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
 
@@ -47,8 +42,8 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     List<User> users=new ArrayList<>();
 
     int checkpoint=0;
-    SharedPreferences checkPointsharedPreferences;
-
+    SharedPreferences sharedPreferences;
+    boolean sound_bool;
     MediaPlayer mp;
 
 
@@ -56,21 +51,24 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mp = MediaPlayer.create(this,R.raw.playgame_sound);
-        mp.start();
-        mp.setLooping(true);
+
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         point=new Point();
         getWindowManager().getDefaultDisplay().getSize(point);
 
-        checkPointsharedPreferences=getSharedPreferences("usercheckpoint",MODE_PRIVATE);
-        checkpoint=checkPointsharedPreferences.getInt("checkpoint",0);
+        sharedPreferences =getSharedPreferences(MainActivity.USER_SP_FILE,MODE_PRIVATE);
+        checkpoint= sharedPreferences.getInt("checkpoint",0);
         gameSurfaceView=new GameSurfaceView(this,point.x,point.y,checkpoint);
-        checkPointsharedPreferences.edit().putInt("checkpoint",0).commit();
+        sharedPreferences.edit().putInt("checkpoint",0).commit();
 
+        sound_bool=sharedPreferences.getBoolean(MainActivity.SOUND_KEY,true);
 
+        mp = MediaPlayer.create(this,R.raw.playgame_sound);
+        mp.setLooping(true);
+        if(sound_bool)
+            mp.start();
 
 
         FrameLayout game =new FrameLayout(this);
@@ -96,7 +94,8 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     }
     public void onClick(View v) {
     //    gameSurfaceView.mediaPlayerGame.pause();
-        mp.pause();
+        if(sound_bool)
+            mp.pause();
         gameSurfaceView.isPauseDialog=true;
         onPause();
         runOnUiThread(new Runnable() {
@@ -112,13 +111,34 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
                 final ImageButton resumeBtn=view.findViewById(R.id.playagain);
                 final ImageButton menuBtn=view.findViewById(R.id.backtomenu);
+                final ImageButton soundBtn=view.findViewById(R.id.sound_game_btn);
+
+                if(!sound_bool)
+                    soundBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mute_icon_black));
+                soundBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (sound_bool) {
+                            soundBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_mute_icon_black));
+                            sharedPreferences.edit().putBoolean(MainActivity.SOUND_KEY, false).commit();
+                            sound_bool = false;
+                            mp.pause();
+                        } else {
+                            soundBtn.setImageDrawable(getResources().getDrawable(R.drawable.ic_speaker_icon_black));
+                            sharedPreferences.edit().putBoolean(MainActivity.SOUND_KEY, true).commit();
+                            sound_bool = true;
+                        }
+                    }
+                });
+
 
                 resumeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         gameSurfaceView.isPauseDialog=false;
                         alertDialog.dismiss();
-                        mp.start();
+                        if(sound_bool)
+                            mp.start();
                         gameSurfaceView.resumeOnPause();
                     }
                 });
@@ -157,7 +177,8 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     }
     @Override
     public void onGameOver() {
-        mp.pause();
+        if(sound_bool)
+            mp.pause();
        // gameSurfaceView.mediaPlayerGame.stop();
         runOnUiThread(new Runnable() {
             @Override
@@ -200,9 +221,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if(isChecked){
-                            checkPointsharedPreferences.edit().putInt("checkpoint",gameSurfaceView.getCheckPoint()).commit();
+                            sharedPreferences.edit().putInt("checkpoint",gameSurfaceView.getCheckPoint()).commit();
                         }else{
-                            checkPointsharedPreferences.edit().putInt("checkpoint",0).commit();
+                            sharedPreferences.edit().putInt("checkpoint",0).commit();
                         }
                     }
                 });
@@ -283,14 +304,16 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     protected void onPause() {
         super.onPause();
         gameSurfaceView.pause();
-        mp.pause();
+        if(sound_bool)
+            mp.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        fullScreencall();
         gameSurfaceView.resume();
-        if(!gameSurfaceView.isPauseDialog)
+        if(!gameSurfaceView.isPauseDialog&&sound_bool)
             mp.start();
     }
 

@@ -16,6 +16,7 @@ public class Background  implements ObjectsInterface {
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap,x,y,null);
         if(x<0){
+
             canvas.drawBitmap(bitmap,x+GameSurfaceView.widthScreen,y,null);
         }
     }
