@@ -22,4 +22,5 @@
     <string name="Score">תוצאה</string>
     <string name="Saved">נשמר</string>
     <string name="exit">יציאה</string>
+    <string name="level">רמה</string>
 </resources>

@@ -73,9 +73,10 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
         FrameLayout game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);
-        gameWidgets.setGravity(Gravity.BOTTOM | Gravity.END);
+        gameWidgets.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
 
         ImageButton pausebtn = new ImageButton(this);
+
         pausebtn.setImageDrawable(getResources().getDrawable(R.drawable.pausebtn));
         pausebtn.setBackground(null);
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

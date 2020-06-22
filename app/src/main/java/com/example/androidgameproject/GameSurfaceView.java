@@ -332,8 +332,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.WHITE);
         paint.setTextSize(50);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        canvas.drawText("Distance "+player.getDistance(),player.rightBorder()+5,65,paint); // player score is distance
-        canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-65,paint); // player score is distance
+        canvas.drawText(context.getString(R.string.Distance)+" "+player.getDistance(),player.rightBorder()+5,65,paint); // player score is distance
+        canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5,heightScreen-65,paint); // player score is distance
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
 
     }
@@ -343,7 +343,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setTextSize(75);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
         if (player.getDistance()%currentWorldDistance<100) {
-            canvas.drawText("Level "+(++backgroundNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
+            canvas.drawText(context.getString(R.string.level)+" "+(++backgroundNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
         }else{
             isBackgroundChanged=false;
 
