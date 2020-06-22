@@ -10,4 +10,16 @@
     <string name="copyright_tv">Copyright © 2020 by SpaceTeam</string>
     <string name="spaceship_tv">Spaceship</string>
     <string name="loading_tv">Loading...</string>
+    <string name="play_again">Play Again</string>
+    <string name="save">Save</string>
+    <string name="return_to_checkpoint">return to checkpoint</string>
+    <string name="enter_your_name">Enter Your name</string>
+    <string name="game_over">Game Over</string>
+    <string name="game_paused">Game Paused</string>
+    <string name="Distance">distance</string>
+    <string name="Coins">coins</string>
+    <string name="Score">score</string>
+    <string name="Saved">saved</string>
+    <string name="exit">Exit</string>
+
 </resources>

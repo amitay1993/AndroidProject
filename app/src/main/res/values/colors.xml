@@ -12,6 +12,7 @@
     <color name="lightgreen">#3eb959</color>
     <color name="white">#ffffff</color>
     <color name="pink">#ff4081</color>
+    <color name="exitRed">#FF1E1E</color>
     <color name="lightyellow">#FFF7E1</color>
     <color name="editText">#51DCDCDC</color>
 </resources>

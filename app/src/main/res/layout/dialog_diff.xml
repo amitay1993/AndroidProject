@@ -38,7 +38,7 @@
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/gendarwo"
                     android:layout_toEndOf="@+id/sad"
-                    android:text="Game Over"
+                    android:text="@string/game_over"
                     android:textColor="#fff"
                     android:textSize="35sp" />
 
@@ -165,7 +165,7 @@
             android:layout_toEndOf="@+id/email"
             android:background="@color/editText"
             android:fontFamily="@font/gendarwo"
-            android:hint="Enter Your name"
+            android:hint="@string/enter_your_name"
             android:inputType="textEmailAddress"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
@@ -183,7 +183,7 @@
             android:id="@+id/checkpointcb"
             android:layout_width="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="return to checkpoint"
+            android:text="@string/return_to_checkpoint"
             android:layout_height="wrap_content">
         </CheckBox>
 </RelativeLayout>
@@ -204,7 +204,7 @@
             android:scaleType="fitCenter"
             android:layout_centerInParent="true"
             android:src="@drawable/save"
-            android:text="Save">
+            android:text="@string/save">
         </ImageButton>
 
         <ImageButton
@@ -218,8 +218,7 @@
 
             android:layout_toEndOf="@+id/save"
             android:layout_centerInParent="true"
-
-            android:text="Play Again">
+            android:text="@string/play_again">
 
         </ImageButton>
 
