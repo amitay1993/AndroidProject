@@ -25,7 +25,7 @@ import java.util.Random;
 
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
-    static int widthScreen, heightScreen;
+    static int widthScreen, heightscreen;
     final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000, BULLET_HEIGHT =9, COIN_HEIGHT =20,DELTA_SCORE=20,POWER_HEIGHT=30,
               FIRST_WORLD_DISTANCE=2000,SECOND_WORLD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=12000;
     private int currentWorldDistance,gameSurfaceCheckPoint=0;
@@ -64,11 +64,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         gameListenerDialogBox=((GameListener)context);
         this.context=context;
         widthScreen = width;
-        heightScreen = height;
+        heightscreen = height;
         mainThread = new MainThread(getHolder(), this);
         getHolder().addCallback(this);
         setFocusable(true);
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player));
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player), heightscreen);
 
         setCheckPoint(checkPoint);
 
@@ -110,11 +110,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        Log.d("pause","created");
         mainThread.setRunning(true);
-
         mainThread.start();
-        //mediaPlayerGame.start();
     }
 
     @Override
@@ -163,7 +160,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
             long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION;
             if (powerUpTimer > 14000 - player.getDistance() / 8) { //change to 14000
-                powers.add(new PowerUp(BitmapFactory.decodeResource(getResources(), R.drawable.power_up),widthScreen + 10, (int) (random.nextDouble() * (heightScreen -POWER_HEIGHT ))));
+                powers.add(new PowerUp(BitmapFactory.decodeResource(getResources(), R.drawable.power_up),widthScreen + 10, (int) (random.nextDouble() * (heightscreen -POWER_HEIGHT ))));
                 powerUpStartTime = System.nanoTime();
             }
             for(int i = 0; i< powers.size(); i++){
@@ -198,7 +195,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             }
             long coinTimeElapsed=(System.nanoTime()-coinStartTime)/MILLION;
             if(coinTimeElapsed>5000-player.getDistance()/4){
-                coins.add(new Coin(ConstValues.coinImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - COIN_HEIGHT))));
+                coins.add(new Coin(ConstValues.coinImg, widthScreen + 10, (int) (random.nextDouble() * (heightscreen - COIN_HEIGHT))));
                 coinStartTime=System.nanoTime();
             }
             for(int i=0;i<coins.size();i++){
@@ -261,7 +258,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             long obstacleTimer = (System.nanoTime() - obstacleStartTime) / MILLION;
             if (obstacleTimer > 8000 - player.getDistance() / 6) {
                 if(random.nextInt(2)==1) {
-                    obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.new_pillar), widthScreen + 10, heightScreen / 2 + 150));
+                    obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.new_pillar), widthScreen + 10, heightscreen / 2 + 150));
                 }
                 else {
                     obstacles.add(new Obstacle(BitmapFactory.decodeResource(getResources(), R.drawable.new_pillar), widthScreen + 10, -350));
@@ -346,7 +343,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setTextSize(50);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
         canvas.drawText(context.getString(R.string.Distance)+" "+player.getDistance(),player.rightBorder()+5,65,paint); // player score is distance
-        canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5,heightScreen-65,paint); // player score is distance
+        canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5, heightscreen -65,paint); // player score is distance
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
 
     }
@@ -523,23 +520,23 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     }
     private void addEnemies(){
         if(backgroundNumber ==0) {
-            enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
-            enemies.add(new Skeleton(ConstValues.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
-            enemies.add(new Groll(ConstValues.roll1, widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
+            enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightscreen - 150)), player.getDistance(), getResources(),200));
+            enemies.add(new Skeleton(ConstValues.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightscreen - 150)), player.getDistance(), getResources(),120));
+            enemies.add(new Groll(ConstValues.roll1, widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightscreen - 150)), player.getDistance(), getResources(),150));
 
         }else if(backgroundNumber ==1) {
-            enemies.add(new Missile(ConstValues.missile,widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)),player.getX() ,player.getY()));
-            enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new SpaceShip(ConstValues.yellowSpaceshipImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
+            enemies.add(new Missile(ConstValues.missile,widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightscreen - 150)),player.getX() ,player.getY()));
+            enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightscreen - 150)), player.getDistance(), 150));
+            enemies.add(new SpaceShip(ConstValues.yellowSpaceshipImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightscreen - 150)), player.getDistance(),  0));
         }else if(backgroundNumber ==2) {
-            enemies.add(new UfoGreen(ConstValues.ufoGreemImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new UfoYellow(ConstValues.ufoYellowImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new UfoRed(ConstValues.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoGreen(ConstValues.ufoGreemImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightscreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoYellow(ConstValues.ufoYellowImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightscreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoRed(ConstValues.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightscreen - 182)), player.getDistance(), 0));
         }else{
-            enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
-            enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new UfoRed(ConstValues.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new Skeleton(ConstValues.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
+            enemies.add(new Dragon(BitmapFactory.decodeResource(getResources(), R.drawable.rsz_dragon1), widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightscreen - 150)), player.getDistance(), getResources(),200));
+            enemies.add(new Walle(ConstValues.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightscreen - 150)), player.getDistance(), 150));
+            enemies.add(new UfoRed(ConstValues.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightscreen - 182)), player.getDistance(), 0));
+            enemies.add(new Skeleton(ConstValues.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightscreen - 150)), player.getDistance(), getResources(),120));
 
         }
     }

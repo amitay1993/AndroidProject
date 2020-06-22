@@ -10,19 +10,20 @@ public class Player extends Position implements ObjectsInterface {
     private double deltaYplayer;
     private boolean isUp,isPlaying;
     private long startTime;
+    private int heightScreen;
 
-    public Player(Bitmap bitmap) { //change
-        super(100,GameSurfaceView.heightScreen /2-bitmap.getHeight()/2,bitmap.getWidth(),bitmap.getHeight());
+    public Player(Bitmap bitmap,int heightScreen) { //change
+        super(100,heightScreen /2-bitmap.getHeight()/2,bitmap.getWidth(),bitmap.getHeight());
         this.playerBitmap = bitmap;
         deltaYplayer =0;
         distance =0;
-
+        this.heightScreen=heightScreen;
     }
+
 
 
     @Override
     public void draw(Canvas canvas) {
-
         canvas.drawBitmap(playerBitmap,x,y,null);
     }
 
@@ -52,8 +53,8 @@ public class Player extends Position implements ObjectsInterface {
             deltaY=-14;
           y+=deltaY*2; // change ****
           deltaY=0;
-          if(bottomBorder()>GameSurfaceView.heightScreen) {
-              y = GameSurfaceView.heightScreen - height;
+          if(bottomBorder()>this.heightScreen) {
+              y = this.heightScreen - height;
               deltaYplayer=0;
           }
           else if(topBorder()<0) {
@@ -64,6 +65,7 @@ public class Player extends Position implements ObjectsInterface {
 
 
     }
+
 
     public void setUp(boolean up) {
        this.isUp = up;
