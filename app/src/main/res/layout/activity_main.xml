@@ -17,7 +17,7 @@ tools:context=".MainActivity">
     android:padding="10dp"
     android:textSize="20sp"
     android:textColor="#fff"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/start_game_tv"
     android:fontFamily="@font/gendarwo"
     android:textAllCaps="false"
     android:text="@string/best_scores_btn"/>
@@ -54,7 +54,7 @@ tools:context=".MainActivity">
         android:text="@string/howtoplay_tv"
         android:textSize="20sp"
         android:textColor="#fff"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/start_game_tv"
         android:fontFamily="@font/gendarwo"/>
 
 
@@ -80,23 +80,24 @@ tools:context=".MainActivity">
     android:fontFamily="@font/gendarwo"
     android:textStyle="bold"
     android:layout_centerHorizontal="true"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/start_game_tv"
     android:id="@+id/startgame_btn"/>
 
     <Button
+        android:layout_marginStart="20dp"
+        android:id="@+id/exit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="20dp"
-        android:textColor="#fff"
-        android:text="Exit"
-        android:textStyle="bold"
-        android:fontFamily="@font/gendarwo"
-        android:textSize="20sp"
         android:layout_marginBottom="10dp"
-        android:background="@color/red"
-        android:id="@+id/exit_btn"/>
+        android:background="@drawable/exit_button_selector"
+        android:fontFamily="@font/gendarwo"
+        android:text="@string/exit"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

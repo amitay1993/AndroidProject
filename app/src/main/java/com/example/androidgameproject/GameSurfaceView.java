@@ -40,15 +40,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private List<Obstacle> obstacles;
     private List<Coin> coins;
     private List<PowerUp> powers;
+    private List<Explosion> explosions;
     private Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false,isBackgroundChanged=false,isOnce=true;
-    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId,explosionSoundId;
+    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId,explosionSoundId,powerUpSoundId;
     private Bitmap coinImg,life;
     Context context;
     private GameListener gameListenerDialogBox;
   //  MediaPlayer mediaPlayerGame;
-    SoundPool coinSound,explosionSound;
+    SoundPool coinSound,explosionSound,powerUpSound;
     Vibrator vibrator;
     private int indexBulletToChoose=0;
     private ConstValues constValuesClass;
@@ -76,6 +77,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         obstacles = new ArrayList<>();
         coins=new ArrayList<>();
         powers =new ArrayList<>();
+        explosions=new ArrayList<>();
 
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
@@ -83,17 +85,21 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         backgrounds=new Background[NUMBER_OF_BACKGROUNDS];
         backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_1));
-        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_2));
+        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.oron_background2_new));
         backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron3));
         backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron4));
 
         powerUpStartTime =bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
 
-        //mediaPlayerGame=MediaPlayer.create(context,R.raw.playgame_sound);
+
         coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+        powerUpSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+
         coinSoundId=coinSound.load(context,R.raw.coin,1);
         explosionSoundId=explosionSound.load(context,R.raw.explosion_sound,1);
+        powerUpSoundId=powerUpSound.load(context,R.raw.power,1);
+
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 
         options = new BitmapFactory.Options();
@@ -163,7 +169,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for(int i = 0; i< powers.size(); i++){
                 powers.get(i).update();
                 if (collisionDetectionPlayer(player, powers.get(i))) {
-                    coinSound.play(coinSoundId,1,1,0,0,1);
+                    powerUpSound.play(powerUpSoundId,1,1,0,0,1);
                     powers.remove(i);
                     indexBulletToChoose=random.nextInt(2)+1;
                     break;
@@ -220,7 +226,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     int enemyY= enemies.get(i).getY();
                     if(enemies.get(i).topBorder()<player.topBorder())
                         enemyY=enemies.get(i).bottomBorder();
-                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY);
+  //                  explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY);
+                    explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY));
                     vibrate();
                     enemies.remove(i);
                     life_counter--;
@@ -239,7 +246,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     if (collisionDetection(enemies.get(i), bullets.get(j))) {
 
 
-                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY());
+                      //  explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY());
+                       explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY()));
                         explosionSound.play(explosionSoundId,1,1,0,0,1);
                         enemies.remove(i);
                         bullets.remove(j);
@@ -304,8 +312,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (Obstacle obstacle : obstacles) {
                 obstacle.draw(canvas);
             }
-            if (explosion != null) {
+            /*if (explosion != null) {
                 explosion.draw(canvas);
+            }*/
+            for(int i=0;i<explosions.size();i++)
+            {
+                explosions.get(i).draw(canvas);
+                if(explosions.get(i).removeExplosion()){
+                    explosions.remove(i);
+                    break;
+                }
+
             }
             for (Coin coin: coins){
                 coin.draw(canvas);
@@ -328,8 +345,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.WHITE);
         paint.setTextSize(50);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        canvas.drawText("Distance "+player.getDistance(),player.rightBorder()+5,65,paint); // player score is distance
-        canvas.drawText("Score "+bScore,player.rightBorder()+5,heightScreen-65,paint); // player score is distance
+        canvas.drawText(context.getString(R.string.Distance)+" "+player.getDistance(),player.rightBorder()+5,65,paint); // player score is distance
+        canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5,heightScreen-65,paint); // player score is distance
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
 
     }
@@ -339,7 +356,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setTextSize(75);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
         if (player.getDistance()%currentWorldDistance<100) {
-            canvas.drawText("Level "+(++backgroundNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
+            canvas.drawText(context.getString(R.string.level)+" "+(++backgroundNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
         }else{
             isBackgroundChanged=false;
 

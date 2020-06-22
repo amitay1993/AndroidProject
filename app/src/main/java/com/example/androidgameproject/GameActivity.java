@@ -73,9 +73,10 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
         FrameLayout game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);
-        gameWidgets.setGravity(Gravity.BOTTOM | Gravity.END);
+        gameWidgets.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
 
         ImageButton pausebtn = new ImageButton(this);
+
         pausebtn.setImageDrawable(getResources().getDrawable(R.drawable.pausebtn));
         pausebtn.setBackground(null);
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -135,6 +136,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 resumeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        fullScreencall();
                         gameSurfaceView.isPauseDialog=false;
                         alertDialog.dismiss();
                         if(sound_bool)
@@ -207,9 +209,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 final long dist=gameSurfaceView.player.getDistance();
                 final int score=gameSurfaceView.bScore;
 
-                coinsTv.setText("coins " + coins);
-                scoreTv.setText("score " + score);
-                distTv.setText("distance " + dist);
+                coinsTv.setText(getString(R.string.Coins)+ coins);
+                scoreTv.setText(getString(R.string.Score) + score);
+                distTv.setText(getString(R.string.Distance) + dist);
 
 
                 if(gameSurfaceView.getCheckPoint()>0){
@@ -234,7 +236,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                     public void onClick(View v) {
                         String name=nameEt.getText().toString();
                         if(name.length()==0){
-                            Toast.makeText(GameActivity.this, "Please enter a name", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GameActivity.this,getString(R.string.enter_your_name), Toast.LENGTH_SHORT).show();
                         }
                         else{
                             try {
@@ -257,7 +259,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                                 objectOutputStream.close();
 
                                 nameEt.setText("");
-                                Toast.makeText(GameActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(GameActivity.this, getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                                 savebtn.setClickable(false);
 
                             } catch (FileNotFoundException e) {
@@ -317,4 +319,11 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
             mp.start();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(GameActivity.this,MainActivity.class);
+        finish();
+        startActivity(intent);
+
+    }
 }
