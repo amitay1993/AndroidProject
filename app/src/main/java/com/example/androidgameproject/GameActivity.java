@@ -70,6 +70,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
         if(sound_bool)
             mp.start();
 
+        
 
         FrameLayout game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);

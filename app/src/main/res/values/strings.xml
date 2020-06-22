@@ -22,5 +22,6 @@
     <string name="Saved">saved</string>
     <string name="exit">Exit</string>
     <string name="level">Level</string>
+    <string name="back_to_menu">Back to menu</string>
 
 </resources>

@@ -47,13 +47,9 @@ public class ScoreListView extends AppCompatActivity {
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
-
         Collections.sort(users);
-
         CustomAdapter customAdapter = new CustomAdapter(users,this);
         listView.setAdapter(customAdapter);
-
-
     }
 
 
