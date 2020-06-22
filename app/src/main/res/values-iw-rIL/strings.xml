@@ -11,4 +11,16 @@
     <string name="copyright_tv">Copyright © 2020 by SpaceTeam</string>
     <string name="spaceship_tv">חללית</string>
     <string name="loading_tv">טוען...</string>
+    <string name="play_again">שחק שוב</string>
+    <string name="save">שמור</string>
+    <string name="return_to_checkpoint">חזור לנקודת ציון</string>
+    <string name="enter_your_name">הכנס את שמך</string>
+    <string name="game_over">המשחק הסתיים</string>
+    <string name="game_paused">המשחק הושהה</string>
+    <string name="Distance">מרחק</string>
+    <string name="Coins">מטבעות</string>
+    <string name="Score">תוצאה</string>
+    <string name="Saved">נשמר</string>
+    <string name="exit">יציאה</string>
+    <string name="level">רמה</string>
 </resources>

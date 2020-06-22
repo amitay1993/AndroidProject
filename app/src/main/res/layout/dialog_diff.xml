@@ -38,7 +38,7 @@
                     android:layout_marginBottom="20dp"
                     android:fontFamily="@font/gendarwo"
                     android:layout_toEndOf="@+id/sad"
-                    android:text="Game Over"
+                    android:text="@string/game_over"
                     android:textColor="#fff"
                     android:textSize="35sp" />
 
@@ -58,17 +58,15 @@
                     android:id="@+id/retype_pass"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
                     android:src="@drawable/distancedlg"
-                    android:padding="5dp"
-                    />
+                    android:padding="5dp" />
 
                 <TextView
                     android:id="@+id/distance"
                     android:textSize="15sp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_width="200dp"
+                    android:layout_width="150dp"
                     android:paddingTop="7dp"
                     android:fontFamily="@font/gendarwo"
                     android:layout_height="wrap_content"
@@ -99,7 +97,7 @@
                     android:textSize="15sp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_width="200dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/user_icon"
                     android:layout_alignParentTop="true"
@@ -120,12 +118,10 @@
             android:layout_marginStart="15dp"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="15dp">
-
                 <ImageView
                     android:id="@+id/password"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
                     android:src="@drawable/coindlg"
                     android:padding="3dp"/>
                 <TextView
@@ -133,11 +129,9 @@
                     android:textSize="15sp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                   android:text="sss"
+                    android:text="sss"
                     android:paddingTop="7dp"
-
-
-                    android:layout_width="200dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/password"
                     android:layout_alignParentTop="true"
@@ -148,53 +142,49 @@
 
 
         <RelativeLayout
+            android:layout_marginBottom="10dp"
             android:id="@+id/relativelayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/relativelayout3"
             android:layout_marginStart="15dp"
-
-            android:layout_marginEnd="30dp">
-
+            android:layout_marginEnd="15dp">
                 <ImageView
                     android:id="@+id/email"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
                     android:padding="5dp"
-                    android:src="@drawable/userdlg"
-                    />
+                    android:src="@drawable/userdlg"/>
         <EditText
             android:imeOptions="flagNoExtractUi|flagNoFullscreen"
             android:id="@+id/entername"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/email"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/email"
             android:background="@color/editText"
             android:fontFamily="@font/gendarwo"
-            android:hint="Enter Your name"
+            android:hint="@string/enter_your_name"
             android:inputType="textEmailAddress"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:textSize="15sp" />
-
-
+            android:textSize="15sp"/>
         </RelativeLayout>
 <RelativeLayout
-    android:layout_toEndOf="@+id/relativelayout4"
+    android:id="@+id/relativelayout5"
+    android:layout_toEndOf="@id/relativelayout3"
     android:layout_below="@+id/relativelayout3"
     android:layout_width="wrap_content"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
     android:layout_height="wrap_content">
         <CheckBox
-            android:id="@+id/checkpointcb"
             android:visibility="invisible"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:id="@+id/checkpointcb"
             android:layout_width="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="Would you like to start from checkout"
+            android:text="@string/return_to_checkpoint"
             android:layout_height="wrap_content">
         </CheckBox>
 </RelativeLayout>
@@ -202,7 +192,7 @@
     android:layout_marginBottom="20dp"
     android:layout_marginTop="20dp"
     android:layout_centerInParent="true"
-    android:layout_below="@id/relativelayout4"
+    android:layout_below="@id/relativelayout5"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
         <ImageButton
@@ -215,8 +205,7 @@
             android:scaleType="fitCenter"
             android:layout_centerInParent="true"
             android:src="@drawable/save"
-            android:text="Save">
-
+            android:text="@string/save">
         </ImageButton>
 
         <ImageButton
@@ -230,8 +219,7 @@
 
             android:layout_toEndOf="@+id/save"
             android:layout_centerInParent="true"
-
-            android:text="Play Again">
+            android:text="@string/play_again">
 
         </ImageButton>
 
