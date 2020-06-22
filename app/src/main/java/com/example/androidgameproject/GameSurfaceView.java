@@ -43,12 +43,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false,isBackgroundChanged=false,isOnce=true;
-    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId,explosionSoundId;
+    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId,explosionSoundId,powerUpSoundId;
     private Bitmap coinImg,life;
     Context context;
     private GameListener gameListenerDialogBox;
   //  MediaPlayer mediaPlayerGame;
-    SoundPool coinSound,explosionSound;
+    SoundPool coinSound,explosionSound,powerUpSound;
     Vibrator vibrator;
     private int indexBulletToChoose=0;
     private ConstValues constValuesClass;
@@ -92,8 +92,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         //mediaPlayerGame=MediaPlayer.create(context,R.raw.playgame_sound);
         coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+        powerUpSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+
         coinSoundId=coinSound.load(context,R.raw.coin,1);
         explosionSoundId=explosionSound.load(context,R.raw.explosion_sound,1);
+        powerUpSoundId=powerUpSound.load(context,R.raw.power,1);
+
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 
         options = new BitmapFactory.Options();
@@ -163,7 +167,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for(int i = 0; i< powers.size(); i++){
                 powers.get(i).update();
                 if (collisionDetectionPlayer(player, powers.get(i))) {
-                    coinSound.play(coinSoundId,1,1,0,0,1);
+                    powerUpSound.play(powerUpSoundId,1,1,0,0,1);
                     powers.remove(i);
                     indexBulletToChoose=random.nextInt(2)+1;
                     break;
