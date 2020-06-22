@@ -135,6 +135,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 resumeBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        fullScreencall();
                         gameSurfaceView.isPauseDialog=false;
                         alertDialog.dismiss();
                         if(sound_bool)
@@ -317,4 +318,11 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
             mp.start();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(GameActivity.this,MainActivity.class);
+        finish();
+        startActivity(intent);
+
+    }
 }

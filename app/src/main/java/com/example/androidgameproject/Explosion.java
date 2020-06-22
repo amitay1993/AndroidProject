@@ -44,4 +44,9 @@ public class Explosion extends Position implements ObjectsInterface {
 
 
     }
+    public boolean removeExplosion(){
+        if(frame>=bitmaps.length)
+            return true;
+        return false;
+    }
 }
