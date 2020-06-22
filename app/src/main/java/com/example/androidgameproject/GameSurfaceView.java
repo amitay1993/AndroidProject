@@ -40,6 +40,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private List<Obstacle> obstacles;
     private List<Coin> coins;
     private List<PowerUp> powers;
+    private List<Explosion> explosions;
     private Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false,isBackgroundChanged=false,isOnce=true;
@@ -76,6 +77,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         obstacles = new ArrayList<>();
         coins=new ArrayList<>();
         powers =new ArrayList<>();
+        explosions=new ArrayList<>();
 
         coinImg=BitmapFactory.decodeResource(getResources(),R.drawable.coin);
         life=BitmapFactory.decodeResource(getResources(),R.drawable.heart);
@@ -83,13 +85,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
         backgrounds=new Background[NUMBER_OF_BACKGROUNDS];
         backgrounds[0] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_1));
-        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_2));
+        backgrounds[1] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.oron_background2_new));
         backgrounds[2] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron3));
         backgrounds[3] = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron4));
 
         powerUpStartTime =bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
 
-        //mediaPlayerGame=MediaPlayer.create(context,R.raw.playgame_sound);
+
         coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         coinSoundId=coinSound.load(context,R.raw.coin,1);
@@ -220,7 +222,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     int enemyY= enemies.get(i).getY();
                     if(enemies.get(i).topBorder()<player.topBorder())
                         enemyY=enemies.get(i).bottomBorder();
-                    explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY);
+  //                  explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY);
+                    explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY));
                     vibrate();
                     enemies.remove(i);
                     life_counter--;
@@ -239,7 +242,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     if (collisionDetection(enemies.get(i), bullets.get(j))) {
 
 
-                        explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY());
+                      //  explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY());
+                       explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY()));
                         explosionSound.play(explosionSoundId,1,1,0,0,1);
                         enemies.remove(i);
                         bullets.remove(j);
@@ -304,8 +308,17 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (Obstacle obstacle : obstacles) {
                 obstacle.draw(canvas);
             }
-            if (explosion != null) {
+            /*if (explosion != null) {
                 explosion.draw(canvas);
+            }*/
+            for(int i=0;i<explosions.size();i++)
+            {
+                explosions.get(i).draw(canvas);
+                if(explosions.get(i).removeExplosion()){
+                    explosions.remove(i);
+                    break;
+                }
+
             }
             for (Coin coin: coins){
                 coin.draw(canvas);

@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     boolean sound_bool;
     SharedPreferences soundSP;
     public static final String USER_SP_FILE ="user_file",SOUND_KEY="sound";
+    Button sound_btn;
 
     @SuppressLint("NewApi")
     @Override
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        final Button sound_btn = findViewById(R.id.sound_btn);
+        sound_btn = findViewById(R.id.sound_btn);
 
         mp = MediaPlayer.create(this,R.raw.opening_sound_liran);
         mp.setLooping(true);
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent= new Intent(MainActivity.this,Tutorial.class);
                 startActivity(intent);
+
             }
         });
         Button exitButton=findViewById(R.id.exit_btn);
@@ -89,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 homeIntent.addCategory( Intent.CATEGORY_HOME );
                 homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
+
             }
         });
 
@@ -112,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
     public void listnerGame(View view) {
         Intent intent =new Intent(this,GameActivity.class);
         startActivity(intent);
+        finish();
+
     }
     public void fullScreencall() {
         if(Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
@@ -125,5 +130,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*@Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        sound_btn = findViewById(R.id.sound_btn);
 
+        mp = MediaPlayer.create(this,R.raw.opening_sound_liran);
+        mp.setLooping(true);
+        sound_bool=soundSP.getBoolean(SOUND_KEY,true);
+        if(sound_bool)
+            mp.start();
+        else
+            sound_btn.setBackground(getResources().getDrawable(R.drawable.ic_mute_icon));
+    }*/
 }
