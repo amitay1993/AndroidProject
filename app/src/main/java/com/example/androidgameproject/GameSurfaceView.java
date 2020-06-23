@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
+import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -220,16 +221,30 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 enemies.get(i).update();
 
                 if (collisionDetectionPlayer(player, enemies.get(i))) {
-                    int enemyY= enemies.get(i).getY();
+                   /* int explosionY= enemies.get(i).getY();
                     if(enemies.get(i).topBorder()<player.topBorder())
-                        enemyY=enemies.get(i).bottomBorder();
-  //                  explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY);
-                    explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemyY));
+                        explosionY=enemies.get(i).bottomBorder();*/
+  //                  explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), explosionY);
+                    int explosionY,explosionX;
+                    if(enemies.get(i).leftBorder()<player.leftBorder()){
+                        explosionX=player.leftBorder()+10;
+                    }
+                    else{
+                        explosionX=enemies.get(i).getX();
+                    }
+                    explosionY=getExplosionY(enemies.get(i),explosionX);
+                    int width,height;
+                    width=enemies.get(i).getWidth()*2/3;
+                    height=enemies.get(i).getHeight()*2/3;
+
+                    explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), explosionX-width/2, explosionY-height/2,width,height));
                     vibrate();
                     enemies.remove(i);
                     life_counter--;
                     indexBulletToChoose=0;
                     if(life_counter==0){
+
+                        explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), player.getX()+player.getWidth()/2-1000/2, player.getY()+player.getHeight()/2-1000/2,1000,1000));
                         gameOver();
                     }
                     break;
@@ -244,7 +259,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
 
                       //  explosion = new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY());
-                       explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY()));
+                        explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), enemies.get(i).getX(), enemies.get(i).getY(),enemies.get(i).getWidth(),enemies.get(i).getHeight()));
                         explosionSound.play(explosionSoundId,1,1,0,0,1);
                         enemies.remove(i);
                         bullets.remove(j);
@@ -271,7 +286,9 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 if (collisionDetectionPlayer(player, obstacles.get(i))) {
                     vibrate();
                     life_counter=0;
+                    explosions.add(new Explosion(BitmapFactory.decodeResource(getResources(), R.drawable.explosion_new,options), player.getX()+player.getWidth()/2-1000/2, player.getY()+player.getHeight()/2-1000/2,1000,1000));
                     gameOver();
+                    break;
                 }
 
                 for(int j=0;j<bullets.size();j++){
@@ -577,6 +594,26 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             //deprecated in API 26
             vibrator.vibrate(500);
         }
+    }
+    private int getExplosionY(Enemy enemy,int x){
+        int spaceShipMidY=player.getY()+player.getHeight()/2;
+        double slope,freeNumber;
+        int explosionY;
+
+        if(enemy.bottomBorder()<spaceShipMidY){
+            slope = (double) (player.getY() - spaceShipMidY) / (player.getX()+10 - player.rightBorder());
+            freeNumber = player.getY() - slope * player.getX()+10;
+            explosionY = (int) (slope * x + freeNumber);
+        }
+        else if(enemy.topBorder()>spaceShipMidY){
+            slope=(double)(player.bottomBorder()-spaceShipMidY)/(player.getX()+10-player.rightBorder());
+            freeNumber=player.bottomBorder()-slope*player.getX()+10;
+            explosionY= (int) (slope*x+freeNumber);
+        }
+        else {
+            explosionY=spaceShipMidY;
+        }
+        return explosionY;
     }
 }
 
