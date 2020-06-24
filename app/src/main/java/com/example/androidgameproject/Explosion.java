@@ -32,22 +32,11 @@ public class Explosion extends Position implements ObjectsInterface {
     @Override
     public void draw(Canvas canvas) {
         if (frame < bitmaps.length) {
-            //  long animTimer = (System.nanoTime() - startTime) / 1000000;
-            //    if (animTimer > delay) {
             canvas.drawBitmap(bitmaps[frame++],x,y,null);
-            //   startTime = System.nanoTime();
         }
     }
-    //   while (frame<bitmaps.length)
-    //     canvas.drawBitmap(bitmaps[frame++],x,y,null);
-
-
-
     @Override
-    public void update() {
-
-
-    }
+    public void update() {}
     public boolean removeExplosion(){
         if(frame>=bitmaps.length)
             return true;

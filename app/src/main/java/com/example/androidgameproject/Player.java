@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 public class Player extends Position implements ObjectsInterface {
 
     private Bitmap playerBitmap;
-    private int distance;
+    private int distance,deltaY;
     private double deltaYplayer;
     private boolean isUp,isPlaying;
     private long startTime;
@@ -20,8 +20,6 @@ public class Player extends Position implements ObjectsInterface {
         this.heightScreen=heightScreen;
     }
 
-
-
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(playerBitmap,x,y,null);
@@ -34,41 +32,39 @@ public class Player extends Position implements ObjectsInterface {
     @Override
     public void update() {
         long timeElapsed=System.nanoTime()-startTime/1000000;
-        if(timeElapsed>10000){ //change
+        if(timeElapsed>10000){
             distance++;
             startTime=System.nanoTime();
         }
 
         if(isUp){
             deltaYplayer-=0.8;
-            deltaY=(int)deltaYplayer;  //change
+            deltaY=(int)deltaYplayer;
         }
-        else{   //change
-            deltaYplayer+=0.2;
+        else{
+            deltaYplayer+=0.4;
             deltaY=(int)deltaYplayer;
         }
         if(deltaY>14)
-            deltaY=14;   //change
+            deltaY=14;
         if(deltaY<-14)
             deltaY=-14;
-          y+=deltaY*2; // change ****
-          deltaY=0;
-          if(bottomBorder()>this.heightScreen) {
-              y = this.heightScreen - height;
-              deltaYplayer=0;
-          }
-          else if(topBorder()<0) {
-              y = 0;
-              deltaYplayer=0;
-          }
-
-
+        y+=deltaY*2;
+        deltaY=0;
+        if(bottomBorder()>this.heightScreen) {
+            y = this.heightScreen - height;
+            deltaYplayer=0;
+        }
+        else if(topBorder()<0) {
+            y = 0;
+            deltaYplayer=0;
+        }
 
     }
 
 
     public void setUp(boolean up) {
-       this.isUp = up;
+        this.isUp = up;
     }
 
     public int getDistance() {
@@ -82,12 +78,7 @@ public class Player extends Position implements ObjectsInterface {
     public void setPlaying(boolean playing) {
         isPlaying = playing;
     }
-    public void resetDeltaY(){
-        deltaY=0;
-    }
-    public void resetScore(){
-        distance =0;
-    }
+
 
     public Bitmap getPlayerBitmap() {
         return playerBitmap;

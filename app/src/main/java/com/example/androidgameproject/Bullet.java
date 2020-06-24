@@ -15,19 +15,15 @@ public class Bullet extends Position implements ObjectsInterface {
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
         this.bulletIndex=bulletIndex;
         this.speed = speed;
-
         this.bitmaps =new Bitmap[3];
         bitmaps[0]=bitmap;
         bitmaps[1]=BitmapFactory.decodeResource(res,R.drawable.superblue);
         bitmaps[2]=BitmapFactory.decodeResource(res,R.drawable.supered);
         bulletPos();
-
-
     }
 
     @Override
     public void draw(Canvas canvas) {
-
         canvas.drawBitmap(bitmaps[bulletIndex],x,y,null);
     }
 
