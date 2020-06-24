@@ -46,6 +46,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     SharedPreferences sharedPreferences;
     boolean sound_bool;
     MediaPlayer mp;
+    ImageButton pausebtn;
 
 
     @Override
@@ -77,7 +78,8 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
         LinearLayout gameWidgets = new LinearLayout (this);
         gameWidgets.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
 
-        ImageButton pausebtn = new ImageButton(this);
+        pausebtn = new ImageButton(this);
+
 
         pausebtn.setImageDrawable(getResources().getDrawable(R.drawable.pausebtn));
         pausebtn.setBackground(null);
@@ -96,7 +98,6 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
 
     }
     public void onClick(View v) {
-    //    gameSurfaceView.mediaPlayerGame.pause();
         if(sound_bool)
             mp.pause();
         gameSurfaceView.isPauseDialog=true;
@@ -183,7 +184,6 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     public void onGameOver() {
         if(sound_bool)
             mp.pause();
-       // gameSurfaceView.mediaPlayerGame.stop();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -316,9 +316,10 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     protected void onResume() {
         super.onResume();
         fullScreencall();
-        gameSurfaceView.resume();
+
+        /*gameSurfaceView.resume();
         if(!gameSurfaceView.isPauseDialog&&sound_bool)
-            mp.start();
+            mp.start();*/
     }
 
     @Override

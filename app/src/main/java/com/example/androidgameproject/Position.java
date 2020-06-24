@@ -3,7 +3,7 @@ package com.example.androidgameproject;
 import android.graphics.Rect;
 
 abstract public class Position {
-    protected int y,x,deltaY,deltaX,width,height;
+    protected int y,x,width,height;
 
     public Position(int x,int y, int width, int height) {
         this.y = y;
@@ -42,22 +42,6 @@ abstract public class Position {
 
     public void setX(int x) {
         this.x = x;
-    }
-
-    public int getDeltaY() {
-        return deltaY;
-    }
-
-    public void setDeltaY(int deltaY) {
-        this.deltaY = deltaY;
-    }
-
-    public int getDeltaX() {
-        return deltaX;
-    }
-
-    public void setDeltaX(int deltaX) {
-        this.deltaX = deltaX;
     }
 
     public int getWidth() {

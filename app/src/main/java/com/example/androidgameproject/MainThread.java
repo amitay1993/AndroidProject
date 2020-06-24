@@ -67,15 +67,7 @@ public class MainThread extends Thread implements Runnable {
                 frameCount=0;
             }
         }
-
-
-
-
     }
-
-
-
-
     public void setRunning(boolean bool){
         running=bool;
     }

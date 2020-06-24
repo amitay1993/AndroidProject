@@ -18,7 +18,7 @@ public class Skeleton extends Enemy {
         bitmaps.add(ConstValues.skel7);
 
 
-        speed = 10 + (int) (random.nextDouble() * distance / 30); // change
+        speed = 10 + (int) (random.nextDouble() * distance / 30);
         if (speed >28) {
             this.speed = 28;
         }

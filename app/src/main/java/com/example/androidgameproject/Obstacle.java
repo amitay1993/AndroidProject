@@ -13,7 +13,6 @@ public class Obstacle extends Position implements ObjectsInterface{
         super(x,y,bitmap.getWidth(),bitmap.getHeight());
         this.bitmap = bitmap;
     }
-
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap,x,y,null);

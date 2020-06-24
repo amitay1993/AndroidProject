@@ -81,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent= new Intent(MainActivity.this,Tutorial.class);
                 startActivity(intent);
                 finish();
-
-
             }
         });
         Button exitButton=findViewById(R.id.exit_btn);
@@ -96,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     @Override
@@ -118,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent =new Intent(this,GameActivity.class);
         startActivity(intent);
         finish();
-
     }
     public void fullScreencall() {
         if(Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) { // lower api
@@ -132,17 +128,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*@Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        sound_btn = findViewById(R.id.sound_btn);
-
-        mp = MediaPlayer.create(this,R.raw.opening_sound_liran);
-        mp.setLooping(true);
-        sound_bool=soundSP.getBoolean(SOUND_KEY,true);
-        if(sound_bool)
-            mp.start();
-        else
-            sound_btn.setBackground(getResources().getDrawable(R.drawable.ic_mute_icon));
-    }*/
 }

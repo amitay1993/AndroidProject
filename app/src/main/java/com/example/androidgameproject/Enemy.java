@@ -24,7 +24,6 @@ public abstract class Enemy extends Position implements ObjectsInterface {
         bitmaps=new ArrayList<>();
         startTime=System.nanoTime();
     }
-
     @Override
     public void draw(Canvas canvas)
     {
@@ -36,11 +35,8 @@ public abstract class Enemy extends Position implements ObjectsInterface {
             canvas.drawBitmap(bitmaps.get(frame % bitmaps.size()), x, y, null);
         }
     }
-
     @Override
     public void update() {
         x-=speed;
-
     }
-
 }

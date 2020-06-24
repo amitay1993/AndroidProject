@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 
 public class YellowMissile extends Enemy {
 
-    public YellowMissile(Bitmap bitmap, int x, int y, int score, Resources res, int delay) {
+    public YellowMissile(Bitmap bitmap, int x, int y, int score, int delay) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(), delay);
-        this.speed = 10 + (int) (random.nextDouble() * score / 30); // change
+        this.speed = 10 + (int) (random.nextDouble() * score / 30);
         if (speed >30) {
             this.speed = 30;
         }

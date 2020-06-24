@@ -9,7 +9,7 @@ public class SpaceShip extends Enemy{
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
         bitmaps.add(bitmap);
 
-        speed = 12 + (int) (random.nextDouble() * distance / 30); // change
+        speed = 12 + (int) (random.nextDouble() * distance / 30);
         if (speed >30) {
             this.speed = 30;
         }

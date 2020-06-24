@@ -6,10 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 
-
 public class Missile extends Enemy {
-    int upOrDown;
-    float x,y,velocityX, velocityY;
+    private float x,y,velocityX, velocityY;
     public Missile(Bitmap bitmap, int x, int y, int playerX, int playerY) {
         super(x, y, bitmap.getWidth(),bitmap.getHeight(),0);
         this.x=x;
@@ -20,10 +18,6 @@ public class Missile extends Enemy {
         Matrix matrix = new Matrix();
         matrix.setRotate(degrees);
        bitmaps.add(Bitmap.createBitmap(bInput, 0, 0, bInput.getWidth(), bInput.getHeight(), matrix, true));
-
-
-         this.upOrDown =upOrDown;
-
     }
     @Override
     public void update() {
@@ -36,7 +30,6 @@ public class Missile extends Enemy {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmaps.get(0),this.x,this.y,null);
-
     }
 
     private void calculateDirection(float x, float y){
@@ -46,6 +39,5 @@ public class Missile extends Enemy {
         float realDistance= (float) Math.sqrt(distanceX*distanceX+distanceY*distanceY);
         velocityX=(distanceX/realDistance)*15;
         velocityY =(distanceY/realDistance)*15;
-
     }
 }

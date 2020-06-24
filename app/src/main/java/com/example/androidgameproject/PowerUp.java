@@ -9,7 +9,6 @@ public class PowerUp extends Position implements ObjectsInterface {
     private Bitmap bitmap;
     public PowerUp(Bitmap bitmap, int x, int y) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight());
-
         this.bitmap=bitmap;
     }
 
