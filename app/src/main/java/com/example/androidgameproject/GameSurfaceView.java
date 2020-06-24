@@ -19,6 +19,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -295,6 +298,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
@@ -340,11 +344,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         }
 
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void drawTxt(Canvas canvas){
         Paint paint=new Paint();
         paint.setColor(Color.WHITE);
-        paint.setTextSize(50);
+        paint.setTextSize(80);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+        paint.setTypeface(getResources().getFont(R.font.gendarwo));
         canvas.drawText(context.getString(R.string.Distance)+" "+player.getDistance(),player.rightBorder()+5,65,paint); // player score is distance
         canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5,heightScreen-65,paint); // player score is distance
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
