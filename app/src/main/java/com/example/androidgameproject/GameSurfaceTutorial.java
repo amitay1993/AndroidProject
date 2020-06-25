@@ -36,7 +36,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         tutorialThread = new TutorialThread(getHolder(), this);
         getHolder().addCallback(this);
         setFocusable(true);
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player),heightScreen);
+        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player),heightScreen,getResources());
         bullets = new ArrayList<>();
     }
 

@@ -15,4 +15,7 @@
     <color name="exitRed">#FF1E1E</color>
     <color name="lightyellow">#FFF7E1</color>
     <color name="editText">#51DCDCDC</color>
+
+    <color name="lightpurplealpha">#6BA258F8</color>
+    <color name="lightbluealpha">#B458F8F8</color>
 </resources>
