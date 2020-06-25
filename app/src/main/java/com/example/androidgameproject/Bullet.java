@@ -2,7 +2,6 @@ package com.example.androidgameproject;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
@@ -17,8 +16,8 @@ public class Bullet extends Position implements ObjectsInterface {
         this.speed = speed;
         this.bitmaps =new Bitmap[3];
         bitmaps[0]=bitmap;
-        bitmaps[1]=BitmapFactory.decodeResource(res,R.drawable.superblue);
-        bitmaps[2]=BitmapFactory.decodeResource(res,R.drawable.supered);
+        bitmaps[1]= ImageBitmaps.bulletImg1;
+        bitmaps[2]= ImageBitmaps.bulletImg2;
         bulletPos();
     }
 
