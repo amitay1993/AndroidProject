@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 
 public class ConstValues {
     static Bitmap coinImg,ufoGreemImg,ufoRedImg,ufoYellowImg,ufoLightGreenImg,missile,walleImg,
-    yellowSpaceshipImg,roll0,roll1,roll2,roll3,roll4,skel0,skel1,skel2,skel3,skel4,skel5,skel6,skel7,skel8;
+    yellowSpaceshipImg,roll0,roll1,roll2,roll3,roll4,skel0,skel1,skel2,skel3,skel4,skel5,skel6,skel7,skel8,shieldImg;
     public ConstValues(Resources res){
         coinImg=BitmapFactory.decodeResource(res, R.drawable.coin);
         ufoGreemImg = BitmapFactory.decodeResource(res, R.drawable.ufo_green);
@@ -18,6 +18,7 @@ public class ConstValues {
         missile=BitmapFactory.decodeResource(res, R.drawable.rsz_straightmissile);
         walleImg=BitmapFactory.decodeResource(res, R.drawable.walle);
         yellowSpaceshipImg= BitmapFactory.decodeResource(res, R.drawable.rsz_spaceship1);
+        shieldImg =BitmapFactory.decodeResource(res,R.drawable.shield);
 
       //  roll0=BitmapFactory.decodeResource(res, R.drawable.roll0);
         roll1=BitmapFactory.decodeResource(res, R.drawable.roll1);
