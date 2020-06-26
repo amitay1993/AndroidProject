@@ -36,11 +36,11 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    android:fontFamily="@font/gendarwo"
+                    android:fontFamily="@font/hippopotamus"
                     android:layout_toEndOf="@+id/sad"
                     android:text="@string/game_over"
                     android:textColor="#fff"
-                    android:textSize="35sp" />
+                    android:textSize="25sp" />
 
         </RelativeLayout>
 
@@ -63,12 +63,12 @@
 
                 <TextView
                     android:id="@+id/distance"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:layout_width="150dp"
                     android:paddingTop="7dp"
-                    android:fontFamily="@font/gendarwo"
+                    android:fontFamily="@font/hippopotamus"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/retype_pass"
                     android:layout_alignParentTop="true"
@@ -94,7 +94,7 @@
                     android:src="@drawable/scoredlg" />
                 <TextView
                     android:id="@+id/score"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:layout_width="150dp"
@@ -102,7 +102,7 @@
                     android:layout_alignBottom="@+id/user_icon"
                     android:layout_alignParentTop="true"
                     android:paddingTop="7dp"
-                    android:fontFamily="@font/gendarwo"
+                    android:fontFamily="@font/hippopotamus"
                     android:layout_toEndOf="@+id/user_icon"
                     android:background="@color/editText"/>
         </RelativeLayout>
@@ -126,17 +126,16 @@
                     android:padding="3dp"/>
                 <TextView
                     android:id="@+id/coins"
-                    android:textSize="25sp"
+                    android:textSize="12sp"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:text="sss"
                     android:paddingTop="7dp"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/password"
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@+id/password"
-                    android:fontFamily="@font/gendarwo"
+                    android:fontFamily="@font/hippopotamus"
                     android:background="@color/editText"/>
         </RelativeLayout>
 
@@ -164,12 +163,12 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/email"
             android:background="@color/editText"
-            android:fontFamily="@font/gendarwo"
+            android:fontFamily="@font/hippopotamus"
             android:hint="@string/enter_your_name"
             android:inputType="textEmailAddress"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:textSize="25sp"/>
+            android:textSize="12sp"/>
         </RelativeLayout>
 <RelativeLayout
     android:id="@+id/relativelayout5"

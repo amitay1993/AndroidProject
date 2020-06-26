@@ -18,7 +18,7 @@ tools:context=".MainActivity">
     android:textSize="20sp"
     android:textColor="#fff"
     android:background="@drawable/start_game_tv"
-    android:fontFamily="@font/gendarwo"
+    android:fontFamily="@font/hippopotamus"
     android:textAllCaps="false"
     android:text="@string/best_scores_btn"/>
 
@@ -29,7 +29,7 @@ tools:context=".MainActivity">
         android:textSize="12sp"
         android:padding="3dp"
         android:textColor="#fff"
-        android:fontFamily="@font/gendarwo"
+        android:fontFamily="@font/hippopotamus"
         android:layout_marginTop="385dp"
         android:layout_marginStart="5dp"/>
 
@@ -55,7 +55,7 @@ tools:context=".MainActivity">
         android:textSize="20sp"
         android:textColor="#fff"
         android:background="@drawable/start_game_tv"
-        android:fontFamily="@font/gendarwo"/>
+        android:fontFamily="@font/hippopotamus"/>
 
 
 
@@ -73,11 +73,11 @@ tools:context=".MainActivity">
     android:layout_width="200dp"
     android:layout_height="50dp"
     android:layout_below="@+id/start_anim"
-    android:textSize="45sp"
+    android:textSize="30sp"
     android:textAllCaps="false"
     android:text="@string/startgame_btn"
     android:textColor="#fff"
-    android:fontFamily="@font/gendarwo"
+    android:fontFamily="@font/hippopotamus"
     android:textStyle="bold"
     android:layout_centerHorizontal="true"
     android:background="@drawable/start_game_tv"
@@ -93,7 +93,7 @@ tools:context=".MainActivity">
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/exit_button_selector"
-        android:fontFamily="@font/gendarwo"
+        android:fontFamily="@font/hippopotamus"
         android:text="@string/exit"
         android:textColor="#fff"
         android:textSize="20sp"

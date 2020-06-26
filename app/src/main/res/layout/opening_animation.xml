@@ -16,7 +16,7 @@
         android:textSize="12sp"
         android:padding="3dp"
         android:textColor="#fff"
-        android:fontFamily="@font/gendarwo"
+        android:fontFamily="@font/hippopotamus"
         android:layout_margin="5dp"/>
 
     <TextView
@@ -28,7 +28,7 @@
         android:text="@string/spaceship_tv"
         android:textSize="50sp"
         android:textColor="#fff"
-        android:fontFamily="@font/gendarwo"/>
+        android:fontFamily="@font/hippopotamus"/>
 
     <ImageView
         android:layout_width="150dp"
@@ -47,7 +47,7 @@
         android:layout_centerInParent="true"
         android:textSize="15sp"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/gendarwo"/>
+        android:fontFamily="@font/hippopotamus"/>
 
     <ProgressBar
         android:layout_width="wrap_content"
