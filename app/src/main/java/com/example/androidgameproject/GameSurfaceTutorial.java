@@ -1,7 +1,6 @@
 package com.example.androidgameproject;
 
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -19,7 +18,7 @@ import java.util.List;
 public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
     private TutorialThread tutorialThread;
     private Player player;
-    private ImageBitmaps imageBitmapsClass;
+    private ImageBitmaps imageBitmaps;
     private Context context;
     private int widthScreen, heightScreen;
     private long bulletStartTime;
@@ -31,8 +30,8 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
 
     public GameSurfaceTutorial(Context context, int width, int height) {
         super(context);
-        background = new Background(ImageBitmaps.backgroundImg1);
-        imageBitmapsClass = new ImageBitmaps(getResources());
+        imageBitmaps = new ImageBitmaps(getResources());
+        background = new Background(ImageBitmaps.backgroundImg1);;
         this.context = context;
         widthScreen = width;
         heightScreen = height;

@@ -55,7 +55,7 @@ public class Bullet extends Position implements ObjectsInterface {
         }
     }
     public Rect getRect(){
-        return new Rect(x,y-5,rightBorder(),bottomBorder()+5);
+        return new Rect(x+8,y-5,rightBorder()-8,bottomBorder()+5);
     }
 
 }
