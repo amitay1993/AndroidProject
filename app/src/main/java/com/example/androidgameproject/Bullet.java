@@ -21,6 +21,7 @@ public class Bullet extends Position implements ObjectsInterface {
         bulletPos();
     }
 
+
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmaps[bulletIndex],x,y,null);
