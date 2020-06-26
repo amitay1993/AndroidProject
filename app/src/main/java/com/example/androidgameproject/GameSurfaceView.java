@@ -18,9 +18,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-
 import androidx.core.content.res.ResourcesCompat;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -56,7 +54,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     Typeface typeface;
     private int indexBulletToChoose=0;
-    private ImageBitmaps imageBitmapsClass;
+    private ImageBitmaps imageBitmaps;
     boolean isPauseDialog;
 
 
@@ -64,7 +62,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         super(context);
       
         typeface = ResourcesCompat.getFont(context, R.font.hippopotamus);
-        imageBitmapsClass =new ImageBitmaps(getResources());
+        imageBitmaps =new ImageBitmaps(getResources());
         gameListenerDialogBox=((GameListener)context);
         this.context=context;
         widthScreen = width;
@@ -85,7 +83,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         coinImg= ImageBitmaps.coinImg;
         life= ImageBitmaps.heartImg;
 
-
         backgrounds=new Background[NUMBER_OF_BACKGROUNDS];
         backgrounds[0] = new Background(ImageBitmaps.backgroundImg1);
         backgrounds[1] = new Background(ImageBitmaps.backgroundImg2);
@@ -93,7 +90,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         backgrounds[3] = new Background(ImageBitmaps.backgroundImg4);
 
         shieldStartTime=powerUpStartTime =bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
-
 
         coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
@@ -161,16 +157,16 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
             long shieldTimer = (System.nanoTime() - shieldStartTime) / MILLION; // time in ms that passed since the last time entered the if statement and added last object
             if (shieldTimer > 17000 - player.getDistance() / 8) { // timing the object to show on screen more often when distance is bigger
-                if(!player.isHasShield())
+                if(!player.isHasShield()) //if player with shield wont add another shield
                     allies.add(new Shield(ImageBitmaps.shieldImg,widthScreen + 10, (int) (random.nextDouble() * (heightScreen -SHIELD_HEIGHT ))));
                 shieldStartTime = System.nanoTime(); // reset the timer
             }
 
-            long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION; // time in ms that passed since the last time entered the if statement and added last object
-            if (powerUpTimer > 14000 - player.getDistance() / 8) { // timing the object to show on screen more often when distance is bigger
-                if(indexBulletToChoose==0)
+            long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION;
+            if (powerUpTimer > 14000 - player.getDistance() / 8) {
+                if(indexBulletToChoose==0) //if player with power up wont add another one
                     allies.add(new PowerUp(ImageBitmaps.powerUpImg,widthScreen + 10, (int) (random.nextDouble() * (heightScreen -POWER_HEIGHT ))));
-                powerUpStartTime = System.nanoTime(); // reset the timer
+                powerUpStartTime = System.nanoTime();
             }
 
             long coinTimeElapsed=(System.nanoTime()-coinStartTime)/MILLION;
@@ -356,7 +352,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             drawHeats(canvas);
             drawTxt(canvas);
             if(isBackgroundChanged) {
-                Log.d("'worlds'"," isBackgroundChanged");
                 drawLevel(canvas);
             }
 
@@ -378,7 +373,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         paint.setColor(Color.WHITE);
         paint.setTextSize(70);
         paint.setTypeface(typeface);
-        Log.d("'worlds'",player.getDistance()+" "+currentWorldDistance);
         if (player.getDistance()%1000<100) {
             canvas.drawText(context.getString(R.string.level)+" "+(++backgroundNumber),widthScreen/2f-life.getWidth()/1.5f,life.getHeight()+100,paint);
         }else{
