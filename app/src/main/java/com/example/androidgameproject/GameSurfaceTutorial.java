@@ -19,7 +19,7 @@ import java.util.List;
 public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
     private TutorialThread tutorialThread;
     private Player player;
-    private ConstValues constValuesClass;
+    private ImageBitmaps imageBitmapsClass;
     private Context context;
     private int widthScreen, heightScreen;
     private long bulletStartTime;
@@ -31,15 +31,15 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
 
     public GameSurfaceTutorial(Context context, int width, int height) {
         super(context);
-        background = new Background(BitmapFactory.decodeResource(getResources(), R.drawable.background_oron_1));
-        constValuesClass = new ConstValues(getResources());
+        background = new Background(ImageBitmaps.backgroundImg1);
+        imageBitmapsClass = new ImageBitmaps(getResources());
         this.context = context;
         widthScreen = width;
         heightScreen = height;
         tutorialThread = new TutorialThread(getHolder(), this);
         getHolder().addCallback(this);
         setFocusable(true);
-        player = new Player(BitmapFactory.decodeResource(getResources(), R.drawable.player),heightScreen);
+        player = new Player(ImageBitmaps.playerImg,heightScreen,getResources());
         bullets = new ArrayList<>();
         typeface= ResourcesCompat.getFont(context, R.font.hippopotamus);
     }
@@ -96,7 +96,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         if (player.isPlaying()) {
         long bulletTimer = (System.nanoTime() - bulletStartTime) / 1000000;
         if (bulletTimer > 1500) { //change
-            bullets.add(new Bullet(BitmapFactory.decodeResource(getResources(), R.drawable.bullet), player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9, 17,getResources(),0));
+            bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9, 17,getResources(),0));
             bulletStartTime = System.nanoTime();
         }
         for (int i=0;i<bullets.size();i++) {

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 
 public class Missile extends Enemy {
     private float x,y,velocityX, velocityY;
@@ -39,5 +40,10 @@ public class Missile extends Enemy {
         float realDistance= (float) Math.sqrt(distanceX*distanceX+distanceY*distanceY);
         velocityX=(distanceX/realDistance)*15;
         velocityY =(distanceY/realDistance)*15;
+    }
+
+    @Override
+    public Rect getRect() {
+        return new Rect(super.x+10,super.y+20,rightBorder()-10,bottomBorder()-20);
     }
 }

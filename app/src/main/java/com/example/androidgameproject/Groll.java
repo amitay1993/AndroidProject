@@ -2,7 +2,6 @@ package com.example.androidgameproject;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 
 public class Groll extends Enemy {
@@ -11,9 +10,9 @@ public class Groll extends Enemy {
 
         bitmaps.add(bitmap);
     //   bitmaps.add(ConstValues.roll1);
-        bitmaps.add(ConstValues.roll2);
-        bitmaps.add(ConstValues.roll3);
-        bitmaps.add(ConstValues.roll4);
+        bitmaps.add(ImageBitmaps.roll2);
+        bitmaps.add(ImageBitmaps.roll3);
+        bitmaps.add(ImageBitmaps.roll4);
 
         speed = 10 + (int) (random.nextDouble() * distance / 30); 
         if (speed >28) {

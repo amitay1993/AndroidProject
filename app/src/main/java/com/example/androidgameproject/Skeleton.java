@@ -2,7 +2,6 @@ package com.example.androidgameproject;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class Skeleton extends Enemy {
     public Skeleton(Bitmap bitmap, int x, int y, int distance, Resources res,int delay) {
@@ -10,12 +9,12 @@ public class Skeleton extends Enemy {
 
         bitmaps.add(bitmap);
    //     bitmaps.add(ConstValues.skel1);
-        bitmaps.add(ConstValues.skel2);
-        bitmaps.add(ConstValues.skel3);
-        bitmaps.add(ConstValues.skel4);
-        bitmaps.add(ConstValues.skel5);
-        bitmaps.add(ConstValues.skel6);
-        bitmaps.add(ConstValues.skel7);
+        bitmaps.add(ImageBitmaps.skel2);
+        bitmaps.add(ImageBitmaps.skel3);
+        bitmaps.add(ImageBitmaps.skel4);
+        bitmaps.add(ImageBitmaps.skel5);
+        bitmaps.add(ImageBitmaps.skel6);
+        bitmaps.add(ImageBitmaps.skel7);
 
 
         speed = 10 + (int) (random.nextDouble() * distance / 30);
