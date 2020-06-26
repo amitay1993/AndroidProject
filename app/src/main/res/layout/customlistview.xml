@@ -14,7 +14,7 @@
         android:textStyle="bold"
         android:padding="5dp"
         android:layout_margin="5dp"
-        android:fontFamily="@font/gendarwo"
+        android:fontFamily="@font/hippopotamus"
         android:id="@+id/name1_tv"/>
 
     <TextView
@@ -26,7 +26,7 @@
         android:textStyle="bold"
         android:padding="5dp"
         android:layout_margin="5dp"
-        android:fontFamily="@font/gendarwo"
+        android:fontFamily="@font/hippopotamus"
         android:id="@+id/score2_tv"/>
 
     <TextView
@@ -38,7 +38,7 @@
         android:textStyle="bold"
         android:padding="5dp"
         android:layout_margin="5dp"
-        android:fontFamily="@font/gendarwo"
+        android:fontFamily="@font/hippopotamus"
         android:id="@+id/distance_tv3"/>
 
 </LinearLayout>

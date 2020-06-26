@@ -25,10 +25,11 @@
             android:layout_alignTop="@+id/gameover"
             android:layout_alignBottom="@+id/gameover"
             android:id="@+id/sad"
-            android:layout_width="35dp"
+            android:layout_width="45dp"
             android:layout_height="35dp"
             android:src="@drawable/gamepaused" />
         <TextView
+
             android:gravity="center"
             android:id="@+id/gameover"
             android:paddingStart="10dp"
@@ -36,15 +37,13 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-
-
-
+            android:textColor="#fff"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="@font/hippopotamus"
             android:layout_toEndOf="@+id/sad"
             android:text="@string/game_paused"
-            android:textSize="20sp" />
+            android:textSize="23sp" />
 
     </RelativeLayout>
 

@@ -18,6 +18,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,13 +28,14 @@ import java.util.Random;
 public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
     static int widthScreen, heightScreen;
+
     final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000, BULLET_HEIGHT =9, COIN_HEIGHT =30,DELTA_SCORE=20,POWER_HEIGHT=30,SHIELD_HEIGHT=43,
             FIRST_WORLD_DISTANCE=2000,SECOND_WORLD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=12000;
     private int currentWorldDistance,gameSurfaceCheckPoint=0;
+  
     MainThread mainThread;
     private Background[] backgrounds;
     Player player;
-
 
     private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, powerUpStartTime,shieldStartTime;
     private List<Bullet> bullets;
@@ -49,6 +53,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     SoundPool coinSound,explosionSound,powerUpSound,shieldSound;
     Vibrator vibrator;
+
+    Typeface typeface;
     private int indexBulletToChoose=0;
     private ImageBitmaps imageBitmapsClass;
     boolean isPauseDialog;
@@ -56,7 +62,8 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public GameSurfaceView(Context context, int width, int height,int checkPoint) {
         super(context);
-
+      
+        typeface = ResourcesCompat.getFont(context, R.font.hippopotamus);
         imageBitmapsClass =new ImageBitmaps(getResources());
         gameListenerDialogBox=((GameListener)context);
         this.context=context;
@@ -349,6 +356,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             drawHeats(canvas);
             drawTxt(canvas);
             if(isBackgroundChanged) {
+                Log.d("'worlds'"," isBackgroundChanged");
                 drawLevel(canvas);
             }
 
@@ -358,20 +366,21 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void drawTxt(Canvas canvas){
         Paint paint=new Paint();
         paint.setColor(Color.WHITE);
-        paint.setTextSize(50);
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        canvas.drawText(context.getString(R.string.Distance)+" "+player.getDistance(),player.rightBorder()+5,65,paint);
-        canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5, heightScreen -65,paint);
+        paint.setTextSize(60);
+        paint.setTypeface(typeface);
+        canvas.drawText(context.getString(R.string.Distance)+" "+player.getDistance(),player.rightBorder()+5,85,paint);
+        canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5, heightScreen -85,paint);
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
 
     }
     public void drawLevel(Canvas canvas){
         Paint paint=new Paint();
         paint.setColor(Color.WHITE);
-        paint.setTextSize(75);
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
-        if (player.getDistance()%currentWorldDistance<100) {
-            canvas.drawText(context.getString(R.string.level)+" "+(++backgroundNumber),widthScreen/2f-2*life.getWidth()/2f,life.getHeight()+100,paint);
+        paint.setTextSize(70);
+        paint.setTypeface(typeface);
+        Log.d("'worlds'",player.getDistance()+" "+currentWorldDistance);
+        if (player.getDistance()%1000<100) {
+            canvas.drawText(context.getString(R.string.level)+" "+(++backgroundNumber),widthScreen/2f-life.getWidth()/1.5f,life.getHeight()+100,paint);
         }else{
             isBackgroundChanged=false;
 
@@ -527,10 +536,15 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         if(backgroundNumber==0)
             player.setDistance(0);
         else if(backgroundNumber==1){
+            isOnce=false;
             player.setDistance(FIRST_WORLD_DISTANCE);
         }
         else if(backgroundNumber==2){
+            isOnce=true;
             player.setDistance(SECOND_WORLD_DISTANCE);
+        }else if(backgroundNumber==3){
+            isOnce=false;
+            player.setDistance(THIRD_WORLD_DISTANCE);
         }
     }
 
@@ -551,12 +565,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                     isOnce = false;
                 }
             }else{
-                Log.d("'worlds'","player finished world 1");
                 this.gameSurfaceCheckPoint=1;
             }
         }
         else if(getCheckPoint()==1) {
-            Log.d("worlds","player got to world 2");
             if (player.getDistance() < SECOND_WORLD_DISTANCE) {
                 this.gameSurfaceCheckPoint = 1;
                 currentWorldDistance = SECOND_WORLD_DISTANCE;
@@ -579,7 +591,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 bulletSpeed = 23;
                 backgroundNumber = 2;
                 if (isOnce) {
-
                     isOnce = false;
                     isBackgroundChanged = true;
                 }

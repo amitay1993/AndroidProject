@@ -11,6 +11,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     private Background background;
     private List<Bullet> bullets;
     private boolean isGameOver = false,isPressed=false,isStarted=false;
+    private Typeface typeface;
 
 
     public GameSurfaceTutorial(Context context, int width, int height) {
@@ -38,6 +41,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         setFocusable(true);
         player = new Player(ImageBitmaps.playerImg,heightScreen,getResources());
         bullets = new ArrayList<>();
+        typeface= ResourcesCompat.getFont(context, R.font.hippopotamus);
     }
 
 
@@ -126,18 +130,13 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(50);
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        paint.setTypeface(typeface);
         if(!isStarted) {
-            canvas.drawText("Press to start", widthScreen / 2, heightScreen / 2, paint);
+            canvas.drawText(context.getString(R.string.press_hold_screen), widthScreen / 2-100, heightScreen / 2, paint);
         }
 
         if (isStarted) {
-            if (!isPressed) {
-                canvas.drawText("tap  and hold screen to go up", widthScreen / 2, heightScreen / 2, paint);
-            }// player score is distance
-            else {
-                canvas.drawText("release the screen to go down", widthScreen / 2, heightScreen / 2, paint);
+                canvas.drawText(context.getString(R.string.tap_up), widthScreen / 2-200, heightScreen / 2, paint);
             }
-        }
     }
 }

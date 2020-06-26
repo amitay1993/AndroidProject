@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,7 +14,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -62,22 +60,22 @@ public class Tutorial extends AppCompatActivity {
         params.setMargins(30,50,30,0);
 
 
-        backBtn.setPadding(5,5,5,5);
+        backBtn.setPadding(25,10,25,10);
         backBtn.setLayoutParams(params);
         backBtn.setText(R.string.back_to_menu);
         backBtn.setTextColor(Color.WHITE);
         backBtn.setTextSize(20);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            Typeface typeface = getResources().getFont(R.font.gendarwo);
+            Typeface typeface = getResources().getFont(R.font.hippopotamus);
         }
         //or to support all versions use
-        Typeface typeface = ResourcesCompat.getFont(this, R.font.gendarwo);
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.hippopotamus);
         backBtn.setTypeface(typeface);
         startGamebtn.setTypeface(typeface);
 
         startGamebtn.setLayoutParams(params);
-        startGamebtn.setPadding(15,5,15,5);
+        startGamebtn.setPadding(25,10,25,10);
 
         startGamebtn.setTextSize(20);
         startGamebtn.setTextColor(Color.WHITE);

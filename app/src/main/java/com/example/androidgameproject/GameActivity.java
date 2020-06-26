@@ -211,9 +211,9 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                 final long dist=gameSurfaceView.player.getDistance();
                 final int score=gameSurfaceView.bScore;
 
-                coinsTv.setText(getString(R.string.Coins)+ coins);
-                scoreTv.setText(getString(R.string.Score) + score);
-                distTv.setText(getString(R.string.Distance) + dist);
+                coinsTv.setText(getString(R.string.Coins)+" "+ coins);
+                scoreTv.setText(getString(R.string.Score) +" "+ score);
+                distTv.setText(getString(R.string.Distance) +" "+ dist);
 
 
                 if(gameSurfaceView.getCheckPoint()>0){

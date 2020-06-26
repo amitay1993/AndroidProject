@@ -14,7 +14,7 @@
     android:padding="10dp"
     android:text="@string/howtoplay_tv"
     android:textSize="40sp"
-    android:fontFamily="@font/gendarwo"
+    android:fontFamily="@font/hippopotamus"
     android:textColor="#fff"
     android:background="@color/colorPrimaryDark"/>
 
