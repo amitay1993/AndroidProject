@@ -2,7 +2,7 @@
     <string name="app_name">AndroidGameProject</string>
     <string name="startgame_btn">Start Game</string>
     <string name="howtoplay_tv">How to play?</string>
-    <string name="best_scores_btn">Best scores!</string>
+    <string name="best_scores_btn">Best scores!" "</string>
     <string name="number_tv">No.</string>
     <string name="nickname_tv">Nickname:</string>
     <string name="score_tv">Score:</string>
@@ -25,5 +25,6 @@
     <string name="back_to_menu">Back to menu</string>
     <string name="press_hold_screen">Press to start</string>
     <string name="tap_up">Tap and hold to go up</string>
+
 
 </resources>
