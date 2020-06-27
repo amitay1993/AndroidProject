@@ -28,7 +28,7 @@
         android:pivotY="50%"
         android:fromDegrees="0"
         android:toDegrees="-30"
-        android:startOffset="1000">
+        android:startOffset="750">
     </rotate>
 
 

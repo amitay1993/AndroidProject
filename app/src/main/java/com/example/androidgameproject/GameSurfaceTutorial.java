@@ -140,7 +140,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         paint.setTextSize(50);
         paint.setTypeface(typeface);
         if(!isStarted) {
-            canvas.drawText(context.getString(R.string.press_hold_screen), widthScreen / 2f-100, heightScreen / 2f-60, paint);
+            canvas.drawText(context.getString(R.string.press_hold_screen), widthScreen / 2f-100, heightScreen / 2f-70, paint);
         }
         else {
                 canvas.drawText(context.getString(R.string.tap_up), widthScreen / 2f-200, heightScreen / 2f, paint);
