@@ -9,12 +9,14 @@ android:background="@drawable/rsz_space_background"
 tools:context=".MainActivity">
 
 <Button
+    android:drawableEnd="@drawable/leader"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/scores_table_btn"
+    android:paddingVertical="3dp"
     android:layout_marginTop="20dp"
     android:layout_marginStart="20dp"
-    android:padding="10dp"
+    android:paddingHorizontal="10dp"
     android:textSize="20sp"
     android:textColor="#fff"
     android:background="@drawable/start_game_tv"
@@ -31,7 +33,7 @@ tools:context=".MainActivity">
         android:textColor="#fff"
         android:fontFamily="@font/hippopotamus"
         android:layout_marginTop="385dp"
-        android:layout_marginStart="5dp"/>
+        android:layout_marginStart="10dp"/>
 
 <Button
     android:layout_width="30dp"
@@ -44,17 +46,19 @@ tools:context=".MainActivity">
     android:background="@drawable/ic_speaker_icon"/>
 
     <Button
+        android:paddingVertical="3dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tutorial_btn"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/scores_table_btn"
-        android:padding="10dp"
+        android:paddingHorizontal="12dp"
         android:text="@string/howtoplay_tv"
         android:textSize="20sp"
         android:textColor="#fff"
         android:background="@drawable/start_game_tv"
+        android:drawableEnd="@drawable/tutorial"
         android:fontFamily="@font/hippopotamus"/>
 
 
@@ -90,7 +94,7 @@ tools:context=".MainActivity">
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/exit_button_selector"
         android:fontFamily="@font/hippopotamus"
