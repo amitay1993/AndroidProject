@@ -14,11 +14,12 @@ public class Missile extends Enemy {
         this.x=x;
         this.y=y;
         calculateDirection(playerX,playerY);
+
         Bitmap bInput= bitmap;
         float degrees = (float) Math.toDegrees(Math.tan(velocityY/velocityX)); //rotation degree
         Matrix matrix = new Matrix();
         matrix.setRotate(degrees);
-       bitmaps.add(Bitmap.createBitmap(bInput, 0, 0, bInput.getWidth(), bInput.getHeight(), matrix, true));
+        bitmaps.add(Bitmap.createBitmap(bInput, 0, 0, bInput.getWidth(), bInput.getHeight(), matrix, true));
     }
     @Override
     public void update() {
