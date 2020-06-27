@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+// every "bad" object inherit from this class
+
 public abstract class Enemy extends Position implements ObjectsInterface {
     protected int speed;
     protected Random random;
@@ -25,7 +27,7 @@ public abstract class Enemy extends Position implements ObjectsInterface {
         startTime=System.nanoTime();
     }
     @Override
-    public void draw(Canvas canvas)
+    public void draw(Canvas canvas) // draw animation of enemy with proportion to the speed and delay get from specific enemy class
     {
         long animTimer=(System.nanoTime()-startTime)/1000000;
         if(animTimer>delay-speed) {

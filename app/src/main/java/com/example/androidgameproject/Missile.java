@@ -19,7 +19,7 @@ public class Missile extends Enemy {
         float degrees = (float) Math.toDegrees(Math.tan(velocityY/velocityX)); //rotation degree
         Matrix matrix = new Matrix();
         matrix.setRotate(degrees);
-        bitmaps.add(Bitmap.createBitmap(bInput, 0, 0, bInput.getWidth(), bInput.getHeight(), matrix, true));
+        bitmaps.add(Bitmap.createBitmap(bInput, 0, 0, bInput.getWidth(), bInput.getHeight(), matrix, true)); // rotate image
     }
     @Override
     public void update() {
@@ -34,7 +34,7 @@ public class Missile extends Enemy {
         canvas.drawBitmap(bitmaps.get(0),this.x,this.y,null);
     }
 
-    private void calculateDirection(float x, float y){
+    private void calculateDirection(float x, float y){ // calculate the direction to the player
         float distanceX,distanceY;
         distanceX=x-this.x;
         distanceY=y-this.y;

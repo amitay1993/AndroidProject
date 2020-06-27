@@ -92,7 +92,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         if (player.isPlaying()) {
         long bulletTimer = (System.nanoTime() - bulletStartTime) / 1000000;
         if (bulletTimer > 1500) { //change
-            bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9, 17,getResources(),0));
+            bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - 9, 17,0));
             bulletStartTime = System.nanoTime();
         }
         for (int i=0;i<bullets.size();i++) {

@@ -213,7 +213,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             if(maxBulletDistance>4000)
                 maxBulletDistance=4000;
             if (bulletTimer > 1500 - maxBulletDistance / 4) {
-                bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,getResources(),indexBulletToChoose));
+                bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,indexBulletToChoose));
                 bulletStartTime = System.nanoTime();
             }
 
