@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -12,9 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +28,7 @@ import androidx.core.content.res.ResourcesCompat;
 public class Tutorial extends AppCompatActivity {
     Point point;
     GameSurfaceTutorial gameSurfaceTutorial;
+    public ImageView fingerImg;
 
     @Override
     protected void onResume() {
@@ -44,6 +50,9 @@ public class Tutorial extends AppCompatActivity {
 
         FrameLayout game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);
+        RelativeLayout fingerLayout=new RelativeLayout(this);
+
+
         gameWidgets.setGravity(Gravity.TOP | Gravity.CENTER);
 
         Drawable buttonDrawable =getResources().getDrawable(R.drawable.start_game_tv);
@@ -57,8 +66,10 @@ public class Tutorial extends AppCompatActivity {
         startGamebtn.setBackground(buttonDrawa);
 
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(30,50,30,0);
+        LinearLayout.LayoutParams linearparams= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
+        gameWidgets.setLayoutParams(linearparams);
+        params.setMargins(30,50,30,0);
 
         backBtn.setPadding(25,10,25,10);
         backBtn.setLayoutParams(params);
@@ -79,16 +90,34 @@ public class Tutorial extends AppCompatActivity {
 
         startGamebtn.setTextSize(20);
         startGamebtn.setTextColor(Color.WHITE);
-        startGamebtn.setText("Start Playing");
+        startGamebtn.setText(getString(R.string.startgame_btn));
 
+        fingerImg=new ImageView(this);
+        fingerImg.setImageResource(R.drawable.rsz_finger);
+        Animation pressAnim= AnimationUtils.loadAnimation(this,R.anim.press_to_start);
+        fingerImg.startAnimation(pressAnim);
 
+        RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        RelativeLayout.LayoutParams RelativelayoutParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+        fingerLayout.setLayoutParams(RelativelayoutParams);
+        fingerImg.setLayoutParams(layoutParams);
 
         gameWidgets.requestLayout();
+        fingerLayout.requestLayout();
+        fingerLayout.addView(gameWidgets);
+        fingerLayout.addView(fingerImg);
         gameWidgets.addView(startGamebtn);
         gameWidgets.addView(backBtn);
-
         game.addView(gameSurfaceTutorial);
-        game.addView(gameWidgets);
+        game.addView(fingerLayout);
+
+//        gameWidgets.addView(fingerLayout);
+//        fingerLayout.addView(fingerImg);
+//        gameWidgets.addView(startGamebtn);
+//        gameWidgets.addView(backBtn);
+//        game.addView(gameSurfaceTutorial);
+//        game.addView(gameWidgets);
         setContentView(game);
 
         backBtn.setOnClickListener(new View.OnClickListener() {

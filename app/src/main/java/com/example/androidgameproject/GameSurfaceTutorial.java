@@ -26,6 +26,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     private List<Bullet> bullets;
     private boolean isGameOver = false,isPressed=false,isStarted=false;
     private Typeface typeface;
+    private Tutorial tutorial;
 
 
     public GameSurfaceTutorial(Context context, int width, int height) {
@@ -131,7 +132,8 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         paint.setTextSize(50);
         paint.setTypeface(typeface);
         if(!isStarted) {
-            canvas.drawText(context.getString(R.string.press_hold_screen), widthScreen / 2-100, heightScreen / 2, paint);
+            canvas.drawText(context.getString(R.string.press_hold_screen), widthScreen / 2-100, heightScreen / 2-50, paint);
+            tutorial.fingerImg.setVisibility(GONE);
         }
 
         if (isStarted) {
