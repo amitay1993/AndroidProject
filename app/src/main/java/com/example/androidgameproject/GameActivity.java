@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -189,7 +188,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
             public void run() {
                 final AlertDialog.Builder builder=new AlertDialog.Builder(GameActivity.this);
 
-                View view= LayoutInflater.from(GameActivity.this).inflate(R.layout.dialog_diff,null);
+                View view= LayoutInflater.from(GameActivity.this).inflate(R.layout.game_over_dialog,null);
 
                 builder.setView(view);
                 builder.setCancelable(false);
