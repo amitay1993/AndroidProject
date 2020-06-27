@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+// this class get sprite sheet and draw it frame by frame
+
 public class Explosion extends Position implements ObjectsInterface {
 
     private int frame;
@@ -37,7 +39,7 @@ public class Explosion extends Position implements ObjectsInterface {
     }
     @Override
     public void update() {}
-    public boolean removeExplosion(){
+    public boolean removeExplosion(){ // if all frames drawn return true
         if(frame>=bitmaps.length)
             return true;
         return false;

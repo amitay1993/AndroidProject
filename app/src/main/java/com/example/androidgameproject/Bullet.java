@@ -5,12 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+// draw bullet according to the bulledIndex, each bullet is different image
+
 public class Bullet extends Position implements ObjectsInterface {
     private int speed;
     private Bitmap[] bitmaps;
     private int bulletIndex;
 
-    public Bullet(Bitmap bitmap , int x, int y, int speed, Resources res,int bulletIndex) {
+    public Bullet(Bitmap bitmap , int x, int y, int speed,int bulletIndex) {
         super(x,y,bitmap.getWidth()/2,bitmap.getHeight());
         this.bulletIndex=bulletIndex;
         this.speed = speed;

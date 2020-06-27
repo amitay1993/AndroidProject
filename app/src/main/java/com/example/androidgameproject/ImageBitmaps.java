@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 
-
+// this class holds all bitmaps in the game
 
 public class ImageBitmaps {
     static Bitmap coinImg,ufoGreemImg,ufoRedImg,ufoYellowImg,ufoLightGreenImg,missile,walleImg,heartImg,powerUpImg,bulletImg,bulletImg2,bulletImg1,

@@ -9,7 +9,6 @@ public class Groll extends Enemy {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
 
         bitmaps.add(bitmap);
-    //   bitmaps.add(ConstValues.roll1);
         bitmaps.add(ImageBitmaps.roll2);
         bitmaps.add(ImageBitmaps.roll3);
         bitmaps.add(ImageBitmaps.roll4);
