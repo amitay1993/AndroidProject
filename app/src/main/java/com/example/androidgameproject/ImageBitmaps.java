@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 
 public class ImageBitmaps {
     static Bitmap coinImg,ufoGreemImg,ufoRedImg,ufoYellowImg,ufoLightGreenImg,missile,walleImg,heartImg,powerUpImg,bulletImg,bulletImg2,bulletImg1,
-
     yellowSpaceshipImg,roll0,roll1,roll2,roll3,roll4,skel0,skel1,skel2,skel3,skel4,skel5,skel6,skel7,skel8,shieldImg,dragonImg1,dragonImg2,playerImg,
     explosionImg,obstacleImg,backgroundImg1,backgroundImg2,backgroundImg3,backgroundImg4,backgroundTutorialImg;
 
@@ -19,6 +18,7 @@ public class ImageBitmaps {
         options.inScaled = false;
         coinImg=BitmapFactory.decodeResource(res, R.drawable.coin);
         heartImg=BitmapFactory.decodeResource(res, R.drawable.heartrsz);
+        heartImg= Bitmap.createScaledBitmap(heartImg,100,100,false);
         powerUpImg=BitmapFactory.decodeResource(res, R.drawable.power_up);
         bulletImg=BitmapFactory.decodeResource(res, R.drawable.bullet);
         bulletImg1=BitmapFactory.decodeResource(res, R.drawable.superblue);

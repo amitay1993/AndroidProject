@@ -24,11 +24,7 @@ public class MainThread extends Thread implements Runnable {
     @Override
     public void run() {
         super.run();
-        long timeMillis, startTime, waitTime,totalTime,targetTime;
-        int frameCount;
-
-        totalTime=0;
-        frameCount=0;
+        long timeMillis, startTime, waitTime,targetTime;
         targetTime=1000/fps;
 
         while (running) {
@@ -59,13 +55,7 @@ public class MainThread extends Thread implements Runnable {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-            totalTime+=System.nanoTime()-startTime;
-            frameCount++;
-            if(frameCount==fps){
-                avgFps=1000/((totalTime/frameCount)/1000000);
-                totalTime=0;
-                frameCount=0;
-            }
+
         }
     }
     public void setRunning(boolean bool){
