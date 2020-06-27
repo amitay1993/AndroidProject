@@ -35,7 +35,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         super(context);
 //        tutorial=new Tutorial();
         imageBitmaps = new ImageBitmaps(getResources());
-        background = new Background(ImageBitmaps.backgroundImg1);;
+        background = new Background(ImageBitmaps.backgroundTutorialImg);
         this.context = context;
         widthScreen = width;
         heightScreen = height;
