@@ -51,6 +51,4 @@ public class ScoreListView extends AppCompatActivity {
         CustomAdapter customAdapter = new CustomAdapter(users,this);
         listView.setAdapter(customAdapter);
     }
-
-
 }
