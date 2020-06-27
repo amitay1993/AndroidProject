@@ -25,7 +25,7 @@
         android:layout_above="@+id/opening_anim_iv"
         android:layout_centerInParent="true"
         android:layout_marginBottom="15dp"
-        android:text="@string/spaceship_tv"
+        android:text="Space Battles"
         android:textSize="50sp"
         android:textColor="#fff"
         android:fontFamily="@font/hippopotamus"/>

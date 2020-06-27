@@ -55,40 +55,7 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_below="@+id/top_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/gold"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/medalgold"/>
-
-        <ImageView
-            android:id="@+id/silver"
-            android:layout_below="@+id/gold"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/medalsilver"/>
-        <ImageView
-            android:layout_below="@+id/silver"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/bronzemedal"/>
-
-
-    </RelativeLayout>
 
     <ListView
         android:layout_below="@+id/top_container"

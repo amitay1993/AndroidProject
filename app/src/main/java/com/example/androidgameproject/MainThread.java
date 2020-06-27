@@ -26,28 +26,11 @@ public class MainThread extends Thread implements Runnable {
         super.run();
         long timeMillis, startTime, waitTime,targetTime;
         targetTime=1000/fps;
-
         while (running) {
             startTime = System.nanoTime();
-            canvas = null;
-            try {
-                canvas = surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder) {
-                    gameSurfaceView.update();
-                    gameSurfaceView.draw(canvas);
-                }
 
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            } finally {
-                if (canvas != null)
-                    try {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                    } catch (Exception exception) {
-                        exception.printStackTrace();
-                    }
+            updateGame();
 
-            }
             timeMillis = (System.nanoTime() - startTime) / 1000000;
             waitTime = targetTime - timeMillis;
             try {
@@ -55,7 +38,25 @@ public class MainThread extends Thread implements Runnable {
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
-
+        }
+    }
+    private void updateGame(){
+        canvas = null;
+        try {
+            canvas = surfaceHolder.lockCanvas();
+            synchronized (surfaceHolder) {
+                gameSurfaceView.update();
+                gameSurfaceView.draw(canvas);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            if (canvas != null)
+                try {
+                    surfaceHolder.unlockCanvasAndPost(canvas);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
         }
     }
     public void setRunning(boolean bool){

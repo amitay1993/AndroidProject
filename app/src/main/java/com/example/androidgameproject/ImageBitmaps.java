@@ -37,13 +37,13 @@ public class ImageBitmaps {
         dragonImg2 =BitmapFactory.decodeResource(res,R.drawable.rsz_dragon2);
         playerImg=BitmapFactory.decodeResource(res,R.drawable.player);
 
-      //  roll0=BitmapFactory.decodeResource(res, R.drawable.roll0);
+
         roll1=BitmapFactory.decodeResource(res, R.drawable.roll1);
         roll2=(BitmapFactory.decodeResource(res, R.drawable.roll2));
         roll3=BitmapFactory.decodeResource(res, R.drawable.roll4);
         roll4=BitmapFactory.decodeResource(res, R.drawable.roll6);
 
-       // skel0=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_003));
+
         skel1=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_004));
         skel2=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_005));
         skel3=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_006));
