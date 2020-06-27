@@ -10,7 +10,8 @@ import android.graphics.BitmapFactory;
 public class ImageBitmaps {
     static Bitmap coinImg,ufoGreemImg,ufoRedImg,ufoYellowImg,ufoLightGreenImg,missile,walleImg,heartImg,powerUpImg,bulletImg,bulletImg2,bulletImg1,
     yellowSpaceshipImg,roll0,roll1,roll2,roll3,roll4,skel1,skel2,skel3,skel4,skel5,skel6,skel7,skel8,shieldImg,dragonImg1,dragonImg2,playerImg,
-    explosionImg,obstacleImg,backgroundImg1,backgroundImg2,backgroundImg3,backgroundImg4,fingerTutotial;
+    explosionImg,obstacleImg,backgroundImg1,backgroundImg2,backgroundImg3,backgroundImg4,fingerTutotial,
+    goldMedal,silverMedal,bronzeMedal;
 
     public ImageBitmaps(Resources res){
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -58,6 +59,10 @@ public class ImageBitmaps {
 
 
         fingerTutotial=BitmapFactory.decodeResource(res,R.drawable.rsz_finger);
+
+        goldMedal=BitmapFactory.decodeResource(res,R.drawable.medalgold);
+        silverMedal=BitmapFactory.decodeResource(res,R.drawable.medalsilver);
+        bronzeMedal=BitmapFactory.decodeResource(res,R.drawable.bronzemedal);
 
 
 

@@ -167,4 +167,5 @@ public class Tutorial extends AppCompatActivity {
 //        this.fingerLayout.setVisibility(View.GONE);
 //        this.game.requestLayout();
 //    }
+
 }

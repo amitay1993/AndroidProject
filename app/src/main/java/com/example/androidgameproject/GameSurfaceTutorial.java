@@ -60,19 +60,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        boolean retry = true;
-        while (retry) {
-            try {
-                tutorialThread.setRunning(false);
-                tutorialThread.join();
-                retry = false;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
+    public void surfaceDestroyed(SurfaceHolder holder) { }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -146,4 +134,5 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
                 canvas.drawText(context.getString(R.string.tap_up), widthScreen / 2f-200, heightScreen / 2f, paint);
         }
     }
+
 }
