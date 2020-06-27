@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,9 @@ import androidx.core.content.res.ResourcesCompat;
 public class Tutorial extends AppCompatActivity {
     Point point;
     GameSurfaceTutorial gameSurfaceTutorial;
-    public ImageView fingerImg;
+    public static ImageView fingerImg;
+    public static RelativeLayout fingerLayout;
+    public static FrameLayout game;
 
     @Override
     protected void onResume() {
@@ -48,9 +51,9 @@ public class Tutorial extends AppCompatActivity {
 
 
 
-        FrameLayout game =new FrameLayout(this);
+        game =new FrameLayout(this);
         LinearLayout gameWidgets = new LinearLayout (this);
-        RelativeLayout fingerLayout=new RelativeLayout(this);
+        fingerLayout=new RelativeLayout(this);
 
 
         gameWidgets.setGravity(Gravity.TOP | Gravity.CENTER);
@@ -156,4 +159,12 @@ public class Tutorial extends AppCompatActivity {
         startActivity(intent);
 
     }
+//    public RelativeLayout getLayout(){
+//        return this.fingerLayout;
+//    }
+//    public void deleteFinger(){
+////        this.fingerImg.setVisibility(View.GONE);
+//        this.fingerLayout.setVisibility(View.GONE);
+//        this.game.requestLayout();
+//    }
 }

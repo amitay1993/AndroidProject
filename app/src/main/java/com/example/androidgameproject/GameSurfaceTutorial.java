@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -26,11 +27,13 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     private List<Bullet> bullets;
     private boolean isGameOver = false,isPressed=false,isStarted=false;
     private Typeface typeface;
-    private Tutorial tutorial;
+//    private Tutorial tutorial;
+    private boolean tappedOnce=false;
 
 
     public GameSurfaceTutorial(Context context, int width, int height) {
         super(context);
+//        tutorial=new Tutorial();
         imageBitmaps = new ImageBitmaps(getResources());
         background = new Background(ImageBitmaps.backgroundImg1);;
         this.context = context;
@@ -77,6 +80,11 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         if (!isGameOver) {
             if (action == MotionEvent.ACTION_DOWN) {
                 isStarted=true;
+                if(!tappedOnce) {
+                    Tutorial.fingerImg.setVisibility(GONE);
+                    Tutorial.fingerImg.clearAnimation();
+                    Tutorial.game.requestLayout();
+                }
 
                 if (!player.isPlaying()) {
                     player.setPlaying(true);
@@ -132,12 +140,10 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
         paint.setTextSize(50);
         paint.setTypeface(typeface);
         if(!isStarted) {
-            canvas.drawText(context.getString(R.string.press_hold_screen), widthScreen / 2-100, heightScreen / 2-50, paint);
-            tutorial.fingerImg.setVisibility(GONE);
+            canvas.drawText(context.getString(R.string.press_hold_screen), widthScreen / 2f-100, heightScreen / 2f-60, paint);
         }
-
-        if (isStarted) {
-                canvas.drawText(context.getString(R.string.tap_up), widthScreen / 2-200, heightScreen / 2, paint);
-            }
+        else {
+                canvas.drawText(context.getString(R.string.tap_up), widthScreen / 2f-200, heightScreen / 2f, paint);
+        }
     }
 }

@@ -20,7 +20,17 @@
         android:repeatMode="reverse"
         android:duration="1000"/>
 
-    <translate
-        
+
+
+    <rotate
+        android:duration="1500"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:fromDegrees="0"
+        android:toDegrees="-30"
+        android:startOffset="1000">
+    </rotate>
+
+
 
 </set>
