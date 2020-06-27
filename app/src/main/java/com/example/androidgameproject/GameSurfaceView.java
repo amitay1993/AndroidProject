@@ -155,7 +155,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             player.update();
 
             long heartTimeElapsed=(System.nanoTime()-heartStartTime)/MILLION;
-            if(heartTimeElapsed>50000-player.getDistance()/8){
+            if(heartTimeElapsed>15000-player.getDistance()/8){
                 if(life_counter==1&&backgroundNumber>0)
                     allies.add(new Heart(ImageBitmaps.heartImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - HEART_HEIGHT))));
                 heartStartTime=System.nanoTime();
