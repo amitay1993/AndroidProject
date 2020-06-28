@@ -60,7 +60,17 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) { }
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        boolean retry = true;
+        while (retry) {
+            try {
+                tutorialThread.setRunning(false);
+                tutorialThread.join();
+                retry=false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }}
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

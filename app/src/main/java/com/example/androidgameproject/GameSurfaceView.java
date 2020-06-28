@@ -43,12 +43,12 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Random random = new Random();
     private Explosion explosion;
     private boolean isGameOver=false,isBackgroundChanged=false,isOnce=true;
-    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId,explosionSoundId,powerUpSoundId,shieldSoundId;
+    int bScore,coin_counter, backgroundNumber,life_counter=3, bulletSpeed =17,coinSoundId,explosionSoundId,powerUpSoundId,shieldSoundId,heartSoundId;
     private Bitmap coinImg,life;
     Context context;
     private GameListener gameListenerDialogBox;
 
-    SoundPool coinSound,explosionSound,powerUpSound,shieldSound;
+    SoundPool coinSound,explosionSound,powerUpSound,shieldSound,heartSound;
     Vibrator vibrator;
 
     Typeface typeface;
@@ -94,11 +94,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         powerUpSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         shieldSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
+        heartSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
 
         coinSoundId=coinSound.load(context,R.raw.coin,1);
         explosionSoundId=explosionSound.load(context,R.raw.explosion_sound,1);
         powerUpSoundId=powerUpSound.load(context,R.raw.power,1);
         shieldSoundId=shieldSound.load(context,R.raw.shield_sound_effect,1);
+        heartSoundId=heartSound.load(context,R.raw.health_sound,1);
 
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -156,7 +158,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
             long heartTimeElapsed=(System.nanoTime()-heartStartTime)/MILLION;
             if(heartTimeElapsed>15000-player.getDistance()/8){
-                if(life_counter==1&&backgroundNumber>0)
+                if(life_counter==1&&backgroundNumber>0) // add new heart if passed the first level and one life left
                     allies.add(new Heart(ImageBitmaps.heartImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - HEART_HEIGHT))));
                 heartStartTime=System.nanoTime();
             }
@@ -198,6 +200,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         coin_counter++;
                     }
                     else if(allies.get(i)instanceof Heart){
+                        heartSound.play(heartSoundId, 1, 1, 0, 0, 1);
                         if(life_counter<3)
                             life_counter++;
                     }
@@ -212,7 +215,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             int maxBulletDistance=player.getDistance();
             if(maxBulletDistance>4000)
                 maxBulletDistance=4000;
-            if (bulletTimer > 1500 - maxBulletDistance / 4) {
+            if (bulletTimer > 1500 - maxBulletDistance / 4) { // add bullets
                 bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,indexBulletToChoose));
                 bulletStartTime = System.nanoTime();
             }
@@ -221,7 +224,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 bullets.get(i).update();
 
 
-                if (bullets.get(i).leftBorder() > widthScreen + 200)
+                if (bullets.get(i).leftBorder() > widthScreen + 200) // if bullet past screen remove
                 {
                     bullets.remove(i);
                     break;
@@ -238,13 +241,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             for (int i=0 ;i<enemies.size();i++) {
                 enemies.get(i).update();
 
-                if (collisionDetectionPlayer(player, enemies.get(i))) {
+                if (collisionDetectionPlayer(player, enemies.get(i))) { //collision between player and enemy
 
                     if(player.isHasShield()){
-                        player.setHasShield(false);
+                        player.setHasShield(false); // remove shield
                         explosions.add(new Explosion(ImageBitmaps.explosionImg, enemies.get(i).getX(), enemies.get(i).getY(), enemies.get(i).getWidth(), enemies.get(i).getHeight()));
                         explosionSound.play(explosionSoundId,1,1,0,0,1);
-                        enemies.remove(i);
+                        enemies.remove(i); // remove enemy
                     }
                     else {
                         int explosionY, explosionX;
@@ -262,7 +265,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         vibrate();
                         enemies.remove(i);
                         life_counter--;
-                        indexBulletToChoose = 0;
+                        indexBulletToChoose = 0; // reset bullet
                         if (life_counter == 0) {
 
                             explosions.add(new Explosion(ImageBitmaps.explosionImg, player.getX() + player.getWidth() / 2 - 1000 / 2, player.getY() + player.getHeight() / 2 - 1000 / 2, 1000, 1000));
@@ -292,10 +295,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             long obstacleTimer = (System.nanoTime() - obstacleStartTime) / MILLION;
             if (obstacleTimer > 8000 - player.getDistance() / 6) {
                 if(random.nextInt(2)==1) {
-                    obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, heightScreen / 2 + 150));
+                    obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, heightScreen / 2 + 150)); // bottom screen
                 }
                 else {
-                    obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, -350));
+                    obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, -350)); // top screen
                 }
 
                 obstacleStartTime = System.nanoTime();
@@ -304,7 +307,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                 obstacles.get(i).update();
                 if (collisionDetectionPlayer(player, obstacles.get(i))) {
                     if(player.isHasShield()){
-                        player.setHasShield(false);
+                        player.setHasShield(false); // destroy shield
                     }
                     else {
                         vibrate();
