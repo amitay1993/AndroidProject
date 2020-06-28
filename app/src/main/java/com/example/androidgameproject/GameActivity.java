@@ -312,11 +312,12 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     @Override
     protected void onResume() {
         super.onResume();
+        if(sound_bool)
+            mp.start();
+        gameSurfaceView.resume();
         fullScreencall();
 
-        /*gameSurfaceView.resume();
-        if(!gameSurfaceView.isPauseDialog&&sound_bool)
-            mp.start();*/
+
     }
 
     @Override
