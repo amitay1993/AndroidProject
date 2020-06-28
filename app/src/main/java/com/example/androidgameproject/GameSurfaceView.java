@@ -372,7 +372,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         Paint paint=new Paint();
         paint.setColor(Color.WHITE);
         paint.setTextSize(60);
-        paint.setTypeface(typeface);
+
+        if(context.getString(R.string.language).equals("hebrew")){
+           paint.setTypeface(Typeface.DEFAULT_BOLD);
+        }
+        else
+            paint.setTypeface(typeface);
+
         canvas.drawText(context.getString(R.string.Distance)+" "+player.getDistance(),player.rightBorder()+5,85,paint);
         canvas.drawText(context.getString(R.string.Score)+" "+bScore,player.rightBorder()+5, heightScreen -85,paint);
         canvas.drawText(""+coin_counter,widthScreen-80+coinImg.getWidth(),30+coinImg.getHeight(),paint);
@@ -387,12 +393,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             canvas.drawText(context.getString(R.string.level)+" "+(++backgroundNumber),widthScreen/2f-life.getWidth()/1.5f,life.getHeight()+100,paint);
         }else{
             isBackgroundChanged=false;
-
         }
     }
     // draw coins
     public void drawCoinScore(Canvas canvas){
-        canvas.drawBitmap(coinImg,widthScreen-130,40,null);
+        canvas.drawBitmap(coinImg,widthScreen-130,35,null);
     }
 
     // draw hearts top of the screen
@@ -619,7 +624,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             enemies.add(new Walle(ImageBitmaps.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
             enemies.add(new SpaceShip(ImageBitmaps.yellowSpaceshipImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
         }else if(backgroundNumber ==2) {
-            enemies.add(new UfoGreen(ImageBitmaps.ufoGreemImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(new UfoGreen(ImageBitmaps.ufoGreenImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
             enemies.add(new UfoYellow(ImageBitmaps.ufoYellowImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
             enemies.add(new UfoRed(ImageBitmaps.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
         }else{

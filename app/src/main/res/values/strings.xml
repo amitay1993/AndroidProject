@@ -25,6 +25,7 @@
     <string name="back_to_menu">Back to menu</string>
     <string name="press_hold_screen">Press to start</string>
     <string name="tap_up">Tap and hold to go up</string>
+    <string name="language">english</string>
 
 
 </resources>
