@@ -8,7 +8,7 @@ import android.graphics.BitmapFactory;
 // this class holds all bitmaps in the game
 
 public class ImageBitmaps {
-    static Bitmap coinImg,ufoGreemImg,ufoRedImg,ufoYellowImg,ufoLightGreenImg,missile,walleImg,heartImg,powerUpImg,bulletImg,bulletImg2,bulletImg1,
+    static Bitmap coinImg, ufoGreenImg,ufoRedImg,ufoYellowImg,ufoLightGreenImg,missile,walleImg,heartImg,powerUpImg,bulletImg,bulletImg2,bulletImg1,
     yellowSpaceshipImg,roll0,roll1,roll2,roll3,roll4,skel0,skel1,skel2,skel3,skel4,skel5,skel6,skel7,skel8,shieldImg,dragonImg1,dragonImg2,playerImg,
     explosionImg,obstacleImg,backgroundImg1,backgroundImg2,backgroundImg3,backgroundImg4,backgroundTutorialImg,fingerTutotial,goldMedal,silverMedal,bronzeMedal;
 
@@ -25,7 +25,7 @@ public class ImageBitmaps {
         bulletImg2=BitmapFactory.decodeResource(res, R.drawable.supered);
         explosionImg=BitmapFactory.decodeResource(res, R.drawable.explosion_new,options);
         obstacleImg=BitmapFactory.decodeResource(res, R.drawable.new_pillar);
-        ufoGreemImg = BitmapFactory.decodeResource(res, R.drawable.ufo_green);
+        ufoGreenImg = BitmapFactory.decodeResource(res, R.drawable.ufo_green);
         ufoRedImg=BitmapFactory.decodeResource(res, R.drawable.ufo_red);
         ufoYellowImg= BitmapFactory.decodeResource(res, R.drawable.ufo_yellow);
         ufoLightGreenImg=BitmapFactory.decodeResource(res, R.drawable.ufo_green);

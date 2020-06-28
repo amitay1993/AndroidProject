@@ -80,7 +80,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
 
-            android:layout_toEndOf="@+id/save"
+
             android:layout_centerInParent="true">
 
         </ImageButton>
@@ -94,7 +94,6 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:background="@null"
-            android:layout_toStartOf="@+id/save"
             android:layout_marginTop="0dp">
         </ImageButton>
     </RelativeLayout>

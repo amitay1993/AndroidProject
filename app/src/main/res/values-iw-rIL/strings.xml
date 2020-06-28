@@ -26,6 +26,7 @@
     <string name="back_to_menu">חזור לתפריט</string>
     <string name="press_hold_screen">לחץ כדי להתחיל</string>
     <string name="tap_up">החזק את האצבע על המסך כדי לעלות</string>
+    <string name="language">hebrew</string>
 
 
 </resources>
