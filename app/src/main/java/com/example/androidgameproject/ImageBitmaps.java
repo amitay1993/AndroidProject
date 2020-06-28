@@ -5,19 +5,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 
-
+// this class holds all bitmaps in the game
 
 public class ImageBitmaps {
     static Bitmap coinImg,ufoGreemImg,ufoRedImg,ufoYellowImg,ufoLightGreenImg,missile,walleImg,heartImg,powerUpImg,bulletImg,bulletImg2,bulletImg1,
-    yellowSpaceshipImg,roll0,roll1,roll2,roll3,roll4,skel1,skel2,skel3,skel4,skel5,skel6,skel7,skel8,shieldImg,dragonImg1,dragonImg2,playerImg,
-    explosionImg,obstacleImg,backgroundImg1,backgroundImg2,backgroundImg3,backgroundImg4,fingerTutotial,
-    goldMedal,silverMedal,bronzeMedal;
+    yellowSpaceshipImg,roll0,roll1,roll2,roll3,roll4,skel0,skel1,skel2,skel3,skel4,skel5,skel6,skel7,skel8,shieldImg,dragonImg1,dragonImg2,playerImg,
+    explosionImg,obstacleImg,backgroundImg1,backgroundImg2,backgroundImg3,backgroundImg4,backgroundTutorialImg,fingerTutotial,goldMedal,silverMedal,bronzeMedal;
+
 
     public ImageBitmaps(Resources res){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inScaled = false;
         coinImg=BitmapFactory.decodeResource(res, R.drawable.coin);
         heartImg=BitmapFactory.decodeResource(res, R.drawable.heartrsz);
+        heartImg= Bitmap.createScaledBitmap(heartImg,100,100,false);
         powerUpImg=BitmapFactory.decodeResource(res, R.drawable.power_up);
         bulletImg=BitmapFactory.decodeResource(res, R.drawable.bullet);
         bulletImg1=BitmapFactory.decodeResource(res, R.drawable.superblue);
@@ -36,13 +37,13 @@ public class ImageBitmaps {
         dragonImg2 =BitmapFactory.decodeResource(res,R.drawable.rsz_dragon2);
         playerImg=BitmapFactory.decodeResource(res,R.drawable.player);
 
-      //  roll0=BitmapFactory.decodeResource(res, R.drawable.roll0);
+
         roll1=BitmapFactory.decodeResource(res, R.drawable.roll1);
         roll2=(BitmapFactory.decodeResource(res, R.drawable.roll2));
         roll3=BitmapFactory.decodeResource(res, R.drawable.roll4);
         roll4=BitmapFactory.decodeResource(res, R.drawable.roll6);
 
-       // skel0=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_003));
+
         skel1=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_004));
         skel2=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_005));
         skel3=(BitmapFactory.decodeResource(res, R.drawable.keleton_slashing_006));
@@ -56,6 +57,7 @@ public class ImageBitmaps {
         backgroundImg2=BitmapFactory.decodeResource(res,R.drawable.oron_background2_new);
         backgroundImg3=BitmapFactory.decodeResource(res,R.drawable.background_oron3);
         backgroundImg4=BitmapFactory.decodeResource(res,R.drawable.background_oron4);
+        backgroundTutorialImg=BitmapFactory.decodeResource(res,R.drawable.background_oron_1);
 
 
         fingerTutotial=BitmapFactory.decodeResource(res,R.drawable.rsz_finger);

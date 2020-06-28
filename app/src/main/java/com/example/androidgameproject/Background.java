@@ -15,8 +15,7 @@ public class Background  implements ObjectsInterface {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap,x,y,null);
-        if(x<0){
-
+        if(x<0){ // when background out of screen draw it from start
             canvas.drawBitmap(bitmap,x+GameSurfaceView.widthScreen,y,null);
         }
     }

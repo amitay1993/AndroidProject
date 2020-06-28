@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">AndroidGameProject</string>
+    <string name="app_name">Space Battles</string>
     <string name="startgame_btn">Start Game</string>
     <string name="howtoplay_tv">How to play?</string>
-    <string name="best_scores_btn">Best scores!" "</string>
+    <string name="best_scores_btn">Best scores" "</string>
     <string name="number_tv">No.</string>
     <string name="nickname_tv">Nickname:</string>
     <string name="score_tv">Score:</string>

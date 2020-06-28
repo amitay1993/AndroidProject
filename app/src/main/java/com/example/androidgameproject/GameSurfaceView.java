@@ -13,7 +13,6 @@ import android.media.SoundPool;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -27,7 +26,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     static int widthScreen, heightScreen;
 
-    final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000, BULLET_HEIGHT =9, COIN_HEIGHT =30,DELTA_SCORE=20,POWER_HEIGHT=30,SHIELD_HEIGHT=43,
+    final int NUMBER_OF_BACKGROUNDS=4,MILLION=1000000, BULLET_HEIGHT =9, COIN_HEIGHT =30,DELTA_SCORE=20,POWER_HEIGHT=30,SHIELD_HEIGHT=73,HEART_HEIGHT=90,
             FIRST_WORLD_DISTANCE=2000,SECOND_WORLD_DISTANCE=4000,THIRD_WORLD_DISTANCE=7000,FOURTH_WORLD_DISTANCE=12000;
     private int currentWorldDistance,gameSurfaceCheckPoint=0;
   
@@ -35,7 +34,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Background[] backgrounds;
     Player player;
 
-    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, powerUpStartTime,shieldStartTime;
+    private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, powerUpStartTime,shieldStartTime,heartStartTime;
     private List<Bullet> bullets;
     private List<Enemy> enemies;
     private List<Obstacle> obstacles;
@@ -89,7 +88,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         backgrounds[2] = new Background(ImageBitmaps.backgroundImg3);
         backgrounds[3] = new Background(ImageBitmaps.backgroundImg4);
 
-        shieldStartTime=powerUpStartTime =bulletStartTime = enemyStartTime = obstacleStartTime = System.nanoTime();
+        heartStartTime=powerUpStartTime =bulletStartTime=enemyStartTime = obstacleStartTime = System.nanoTime();
 
         coinSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
         explosionSound=new SoundPool(5, AudioManager.STREAM_MUSIC,0);
@@ -155,6 +154,13 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             backgrounds[backgroundNumber].update();
             player.update();
 
+            long heartTimeElapsed=(System.nanoTime()-heartStartTime)/MILLION;
+            if(heartTimeElapsed>15000-player.getDistance()/8){
+                if(life_counter==1&&backgroundNumber>0)
+                    allies.add(new Heart(ImageBitmaps.heartImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - HEART_HEIGHT))));
+                heartStartTime=System.nanoTime();
+            }
+
             long shieldTimer = (System.nanoTime() - shieldStartTime) / MILLION; // time in ms that passed since the last time entered the if statement and added last object
             if (shieldTimer > 17000 - player.getDistance() / 8) { // timing the object to show on screen more often when distance is bigger
                 if(!player.isHasShield()) //if player with shield wont add another shield
@@ -191,6 +197,10 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
                         bScore+=DELTA_SCORE;
                         coin_counter++;
                     }
+                    else if(allies.get(i)instanceof Heart){
+                        if(life_counter<3)
+                            life_counter++;
+                    }
                     allies.remove(i);
                     break;
                 }
@@ -203,7 +213,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             if(maxBulletDistance>4000)
                 maxBulletDistance=4000;
             if (bulletTimer > 1500 - maxBulletDistance / 4) {
-                bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,getResources(),indexBulletToChoose));
+                bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,indexBulletToChoose));
                 bulletStartTime = System.nanoTime();
             }
 
@@ -389,7 +399,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     public void drawHeats(Canvas canvas){
 
         for(int i=0;i<life_counter;i++){
-            canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+i*life.getWidth()/1.5f,30,null);
+            canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+2*i*life.getWidth()/1.5f,30,null);
         }
 
     }
@@ -449,14 +459,11 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         return false;
     }
     private boolean collisionWithShield(Player first,Position second){
-        if (second instanceof Obstacle) {
-
-
+        if (second instanceof Obstacle) { // checking collision between circle and rectangle
             int middlePlayerX = first.x + first.width / 2 - 20;
             int middlePlayerY = first.y + first.height / 2;
             float testX = middlePlayerX;
             float testY = middlePlayerY;
-
             // which edge is closest?
             if (middlePlayerX < second.leftBorder())
                 testX = second.leftBorder();      // test left edge
@@ -465,28 +472,25 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
             if (middlePlayerY < second.topBorder()) testY = second.topBorder();      // top edge
             else if (middlePlayerY > second.bottomBorder())
                 testY = second.bottomBorder();   // bottom edge
-
             // get distance from closest edges
             float distX = middlePlayerX - testX;
             float distY = middlePlayerY - testY;
             float distance = (float) Math.sqrt((distX * distX) + (distY * distY));
-
-            // if the distance is less than the radius, collision!
-            if (distance <= first.getShieldRadius()) {
+            if (distance <= first.getShieldRadius()) { // if the distance is less than the radius, collision!
                 return true;
             }
             return false;
         }
-        else {
+        else { // checking collision between two circles
             int enemyRadius = second.width / 2;
             int middleEnemyX = second.getX() + enemyRadius, middleEnemyY = second.getY() + enemyRadius;
             int middlePlayerX = first.x + first.width / 2 - 20, middlePlayerY = first.y + first.height / 2;
-            int distanceBetweenMidPoints = (int) Math.sqrt((middleEnemyX - middlePlayerX) * (middleEnemyX - middlePlayerX) + (middleEnemyY - middlePlayerY) * (middleEnemyY - middlePlayerY));
-            if (distanceBetweenMidPoints <= enemyRadius + first.getShieldRadius())
-                return true;
+            int distanceBetweenMidPoints = (int) Math.sqrt((middleEnemyX - middlePlayerX) *
+                    (middleEnemyX - middlePlayerX) + (middleEnemyY - middlePlayerY) * (middleEnemyY - middlePlayerY));
+            if (distanceBetweenMidPoints <= enemyRadius + first.getShieldRadius()) // if distance between circles is less than
+                return true;                                                       // sum of radius collision!
             return false;
         }
-
     }
 
     private boolean collisionDetectionPlayer(Player first, Position second) {

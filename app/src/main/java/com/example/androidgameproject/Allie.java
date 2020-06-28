@@ -3,7 +3,9 @@ package com.example.androidgameproject;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
-public class Allie extends Position implements ObjectsInterface {
+   /* Every "good" object will inherit from this class */
+
+public abstract class Allie extends Position implements ObjectsInterface {
     protected Bitmap bitmap;
     public Allie(Bitmap bitmap, int x, int y) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight());
