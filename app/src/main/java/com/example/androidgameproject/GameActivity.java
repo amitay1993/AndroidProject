@@ -104,7 +104,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
             public void run() {
                 final AlertDialog.Builder builder=new AlertDialog.Builder(GameActivity.this);
 
-                View view= LayoutInflater.from(GameActivity.this).inflate(R.layout.dialog_layout,null);
+                View view= LayoutInflater.from(GameActivity.this).inflate(R.layout.pause_dialog_layout,null);
 
                 builder.setView(view);
                 builder.setCancelable(false);
