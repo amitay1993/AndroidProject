@@ -3,10 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/layoutDialogContainer"
-
-    >
-
-
+    android:background="@color/lightyellow">
 
 
         <RelativeLayout
@@ -168,6 +165,7 @@
             android:inputType="textEmailAddress"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
+            android:textAllCaps="false"
             android:textSize="12sp"/>
         </RelativeLayout>
 <RelativeLayout
@@ -231,12 +229,11 @@
             android:layout_height="35dp"
             android:background="@null"
             android:layout_toStartOf="@+id/save"
-            android:layout_marginStart="-72dp"
             android:layout_marginTop="0dp">
 
         </ImageButton>
 </RelativeLayout>
-    </RelativeLayout>
+</RelativeLayout>
 
 
 

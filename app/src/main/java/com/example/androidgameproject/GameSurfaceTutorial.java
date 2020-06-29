@@ -27,7 +27,6 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     private List<Bullet> bullets;
     private boolean isGameOver = false,isPressed=false,isStarted=false;
     private Typeface typeface;
-//    private Tutorial tutorial;
     private boolean tappedOnce=false;
 
 
@@ -136,7 +135,6 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     }
     public void pause() {
         try {
-
             if(tutorialThread.getRunning()) {
                 tutorialThread.setRunning(false);
                 tutorialThread.join();
