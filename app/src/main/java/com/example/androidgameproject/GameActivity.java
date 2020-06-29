@@ -52,8 +52,6 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         point=new Point();
@@ -314,11 +312,12 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     @Override
     protected void onResume() {
         super.onResume();
+        if(sound_bool)
+            mp.start();
+        gameSurfaceView.resume();
         fullScreencall();
 
-        /*gameSurfaceView.resume();
-        if(!gameSurfaceView.isPauseDialog&&sound_bool)
-            mp.start();*/
+
     }
 
     @Override

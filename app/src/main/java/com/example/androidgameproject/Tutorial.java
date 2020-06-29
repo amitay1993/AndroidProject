@@ -33,11 +33,7 @@ public class Tutorial extends AppCompatActivity {
     public static RelativeLayout fingerLayout;
     public static FrameLayout game;
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        fullScreencall();
-    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,13 +155,17 @@ public class Tutorial extends AppCompatActivity {
         startActivity(intent);
 
     }
-//    public RelativeLayout getLayout(){
-//        return this.fingerLayout;
-//    }
-//    public void deleteFinger(){
-////        this.fingerImg.setVisibility(View.GONE);
-//        this.fingerLayout.setVisibility(View.GONE);
-//        this.game.requestLayout();
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gameSurfaceTutorial.pause();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fullScreencall();
+        gameSurfaceTutorial.resume();
+    }
+
 
 }

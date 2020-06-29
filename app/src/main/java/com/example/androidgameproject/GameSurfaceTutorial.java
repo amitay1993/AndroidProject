@@ -33,7 +33,7 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
 
     public GameSurfaceTutorial(Context context, int width, int height) {
         super(context);
-//        tutorial=new Tutorial();
+
         imageBitmaps = new ImageBitmaps(getResources());
         background = new Background(ImageBitmaps.backgroundTutorialImg);
         this.context = context;
@@ -60,7 +60,17 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) { }
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        boolean retry = true;
+        while (retry) {
+            try {
+                tutorialThread.setRunning(false);
+                tutorialThread.join();
+                retry=false;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }}
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -86,6 +96,9 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
             }
         }
         return true;
+    }
+    public void resume() {
+        tutorialThread= new TutorialThread(getHolder(),this);
     }
 
     public void update() {
@@ -119,6 +132,18 @@ public class GameSurfaceTutorial extends SurfaceView implements SurfaceHolder.Ca
             for (Bullet bullet : bullets)
                 bullet.draw(canvas);
             drawTxt(canvas);
+        }
+    }
+    public void pause() {
+        try {
+
+            if(tutorialThread.getRunning()) {
+                tutorialThread.setRunning(false);
+                tutorialThread.join();
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
