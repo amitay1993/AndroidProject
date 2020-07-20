@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 public class Dragon extends Enemy {
-    public Dragon(Bitmap bitmap, int x, int y, int distance, Resources res, int delay) {
+    public Dragon(Bitmap bitmap, int x, int y, int distance, int delay) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
         bitmaps.add(bitmap);
         bitmaps.add(ImageBitmaps.dragonImg2);
@@ -13,5 +13,4 @@ public class Dragon extends Enemy {
             this.speed = 30;
         }
     }
-
 }

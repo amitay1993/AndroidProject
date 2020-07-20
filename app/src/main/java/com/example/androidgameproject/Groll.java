@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 public class Groll extends Enemy {
-    public Groll(Bitmap bitmap, int x, int y, int distance, Resources res,int delay) {
+    public Groll(Bitmap bitmap, int x, int y, int distance,int delay) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
 
         bitmaps.add(bitmap);
