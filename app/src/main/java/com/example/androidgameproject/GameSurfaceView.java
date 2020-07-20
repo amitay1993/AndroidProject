@@ -619,35 +619,31 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     // add enemies for each level
     private void addEnemies(){
         if(backgroundNumber ==0) {
-            enemies.add(enemyShipFactory.makeEnemy("D"));
-            enemies.add(enemyShipFactory.makeEnemy("S"));
-            enemies.add(enemyShipFactory.makeEnemy("G"));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Dragon));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Skeleton));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Groll));
         }else if(backgroundNumber ==1) {
-            enemies.add(enemyShipFactory.makeEnemy("M"));
-            enemies.add(enemyShipFactory.makeEnemy("W"));
-            enemies.add(enemyShipFactory.makeEnemy("SP"));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Missile));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Walle));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.SpaceShip));
         }else if(backgroundNumber ==2) {
-            enemies.add(enemyShipFactory.makeEnemy("UR"));
-            enemies.add(enemyShipFactory.makeEnemy("UY"));
-            enemies.add(enemyShipFactory.makeEnemy("UR"));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.UfoRed));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.UfoYellow));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Ufogreen));
         }else{
-            enemies.add(enemyShipFactory.makeEnemy("D"));
-            enemies.add(enemyShipFactory.makeEnemy("w"));
-            enemies.add(enemyShipFactory.makeEnemy("UR"));
-            enemies.add(enemyShipFactory.makeEnemy("S"));
-
-
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Dragon));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Walle));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.UfoRed));
+            enemies.add(enemyShipFactory.makeEnemy(eEnemies.Skeleton));
         }
     }
 
     public void pause() {
         try {
-
             if(mainThread.getRunning()) {
                 mainThread.setRunning(false);
                 mainThread.join();
             }
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
