@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 public class Skeleton extends Enemy {
-    public Skeleton(Bitmap bitmap, int x, int y, int distance, Resources res,int delay) {
+    public Skeleton(Bitmap bitmap, int x, int y, int distance,int delay) {
         super(x, y, bitmap.getWidth(), bitmap.getHeight(),delay);
 
         bitmaps.add(bitmap);

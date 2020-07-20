@@ -32,7 +32,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
   
     MainThread mainThread;
     private Background[] backgrounds;
-    Player player;
+    static Player player;
 
     private long bulletStartTime, enemyStartTime, obstacleStartTime,coinStartTime, powerUpStartTime,shieldStartTime,heartStartTime;
     private List<Bullet> bullets;
@@ -47,6 +47,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     private Bitmap coinImg,life;
     Context context;
     private GameListener gameListenerDialogBox;
+    private EnemyShipFactory enemyShipFactory;
 
     SoundPool coinSound,explosionSound,powerUpSound,shieldSound,heartSound;
     Vibrator vibrator;
@@ -59,7 +60,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
 
     public GameSurfaceView(Context context, int width, int height,int checkPoint) {
         super(context);
-      
+        enemyShipFactory=new EnemyShipFactory();
         typeface = ResourcesCompat.getFont(context, R.font.hippopotamus);
         imageBitmaps =new ImageBitmaps(getResources());
         gameListenerDialogBox=((GameListener)context);
@@ -618,23 +619,23 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
     // add enemies for each level
     private void addEnemies(){
         if(backgroundNumber ==0) {
-            enemies.add(new Dragon(ImageBitmaps.dragonImg1, widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
-            enemies.add(new Skeleton(ImageBitmaps.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
-            enemies.add(new Groll(ImageBitmaps.roll1, widthScreen + random.nextInt(20) + 300, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),150));
-
+            enemies.add(enemyShipFactory.makeEnemy("D"));
+            enemies.add(enemyShipFactory.makeEnemy("S"));
+            enemies.add(enemyShipFactory.makeEnemy("G"));
         }else if(backgroundNumber ==1) {
-            enemies.add(new Missile(ImageBitmaps.missile,widthScreen + random.nextInt(20) + 400, (int) (random.nextDouble() * (heightScreen - 150)),player.getX() ,player.getY()));
-            enemies.add(new Walle(ImageBitmaps.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new SpaceShip(ImageBitmaps.yellowSpaceshipImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(),  0));
+            enemies.add(enemyShipFactory.makeEnemy("M"));
+            enemies.add(enemyShipFactory.makeEnemy("W"));
+            enemies.add(enemyShipFactory.makeEnemy("SP"));
         }else if(backgroundNumber ==2) {
-            enemies.add(new UfoGreen(ImageBitmaps.ufoGreenImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new UfoYellow(ImageBitmaps.ufoYellowImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new UfoRed(ImageBitmaps.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
+            enemies.add(enemyShipFactory.makeEnemy("UR"));
+            enemies.add(enemyShipFactory.makeEnemy("UY"));
+            enemies.add(enemyShipFactory.makeEnemy("UR"));
         }else{
-            enemies.add(new Dragon(ImageBitmaps.dragonImg1, widthScreen + random.nextInt(20) + 100, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),200));
-            enemies.add(new Walle(ImageBitmaps.walleImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 150)), player.getDistance(), 150));
-            enemies.add(new UfoRed(ImageBitmaps.ufoRedImg, widthScreen + random.nextInt(20) + 400, (int) ((random.nextDouble()) * (heightScreen - 182)), player.getDistance(), 0));
-            enemies.add(new Skeleton(ImageBitmaps.skel1, widthScreen + random.nextInt(20) + 200, (int) (random.nextDouble() * (heightScreen - 150)), player.getDistance(), getResources(),120));
+            enemies.add(enemyShipFactory.makeEnemy("D"));
+            enemies.add(enemyShipFactory.makeEnemy("w"));
+            enemies.add(enemyShipFactory.makeEnemy("UR"));
+            enemies.add(enemyShipFactory.makeEnemy("S"));
+
 
         }
     }
