@@ -40,7 +40,7 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
     Point point;
     GameSurfaceView gameSurfaceView;
     List<User> users=new ArrayList<>();
-
+    final String fileName="LeaderBoard";
     int checkpoint=0;
     SharedPreferences sharedPreferences;
     boolean sound_bool;
@@ -238,34 +238,13 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                             Toast.makeText(GameActivity.this,getString(R.string.enter_your_name), Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            try {
-                                FileInputStream fileInputStream=openFileInput("LeaderBoard");
-                                ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-                                users=(ArrayList<User>) objectInputStream.readObject();
-                                for( User user:users){
-                                    System.out.println(user.toString());
-                                }
-                                objectInputStream.close();
-
-                            } catch (ClassNotFoundException | IOException e) {
-                                        e.printStackTrace();
-                                    }
-                            try{
-                                FileOutputStream fileOutputStream=openFileOutput("LeaderBoard",MODE_PRIVATE);
-                                ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
+                                users=(ArrayList<User>) FileManager.readFromFile(GameActivity.this,fileName);
                                 users.add(new User(name,score,dist));
-                                objectOutputStream.writeObject(users);
-                                objectOutputStream.close();
-
+                                FileManager.writeToFile(GameActivity.this,users,fileName);
                                 nameEt.setText("");
                                 Toast.makeText(GameActivity.this, getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                                 savebtn.setClickable(false);
 
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
                         }
 
                     }
