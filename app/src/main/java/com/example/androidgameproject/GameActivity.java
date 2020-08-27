@@ -37,15 +37,15 @@ import java.util.List;
 
 public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
 
-    Point point;
-    GameSurfaceView gameSurfaceView;
-    List<User> users=new ArrayList<>();
-    final String fileName="LeaderBoard";
-    int checkpoint=0;
-    SharedPreferences sharedPreferences;
-    boolean sound_bool;
-    MediaPlayer mp;
-    ImageButton pausebtn;
+    private Point point;
+    private GameSurfaceView gameSurfaceView;
+    private List<User> users=new ArrayList<>();
+    private final String fileName="LeaderBoard";
+    private int checkpoint=0;
+    private SharedPreferences sharedPreferences;
+    private boolean sound_bool;
+    private MediaPlayer mp;
+    private ImageButton pausebtn;
 
 
     @Override
@@ -244,7 +244,6 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                                 nameEt.setText("");
                                 Toast.makeText(GameActivity.this, getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                                 savebtn.setClickable(false);
-
                         }
 
                     }
