@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -26,9 +27,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.androidgameproject.FileManager.readFromFile;
+
 public class ScoreListView extends AppCompatActivity {
 
    ArrayList<User> users = new ArrayList<>();
+   final String fileName="LeaderBoard";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +41,8 @@ public class ScoreListView extends AppCompatActivity {
 
         ListView listView=findViewById(R.id.custom_list_view);
 
+        users=(ArrayList<User>) FileManager.readFromFile(this,fileName);
 
-        try {
-            FileInputStream fileInputStream=openFileInput("LeaderBoard");
-            ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-            users= (ArrayList<User>) objectInputStream.readObject();
-            objectInputStream.close();
-
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
         Collections.sort(users);
         CustomAdapter customAdapter = new CustomAdapter(users,this);
         listView.setAdapter(customAdapter);

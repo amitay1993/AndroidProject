@@ -37,15 +37,15 @@ import java.util.List;
 
 public class GameActivity extends AppCompatActivity  implements GameListener, View.OnClickListener {
 
-    Point point;
-    GameSurfaceView gameSurfaceView;
-    List<User> users=new ArrayList<>();
-
-    int checkpoint=0;
-    SharedPreferences sharedPreferences;
-    boolean sound_bool;
-    MediaPlayer mp;
-    ImageButton pausebtn;
+    private Point point;
+    private GameSurfaceView gameSurfaceView;
+    private List<User> users=new ArrayList<>();
+    private final String fileName="LeaderBoard";
+    private int checkpoint=0;
+    private SharedPreferences sharedPreferences;
+    private boolean sound_bool;
+    private MediaPlayer mp;
+    private ImageButton pausebtn;
 
 
     @Override
@@ -238,34 +238,12 @@ public class GameActivity extends AppCompatActivity  implements GameListener, Vi
                             Toast.makeText(GameActivity.this,getString(R.string.enter_your_name), Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            try {
-                                FileInputStream fileInputStream=openFileInput("LeaderBoard");
-                                ObjectInputStream objectInputStream=new ObjectInputStream(fileInputStream);
-                                users=(ArrayList<User>) objectInputStream.readObject();
-                                for( User user:users){
-                                    System.out.println(user.toString());
-                                }
-                                objectInputStream.close();
-
-                            } catch (ClassNotFoundException | IOException e) {
-                                        e.printStackTrace();
-                                    }
-                            try{
-                                FileOutputStream fileOutputStream=openFileOutput("LeaderBoard",MODE_PRIVATE);
-                                ObjectOutputStream objectOutputStream=new ObjectOutputStream(fileOutputStream);
+                                users=(ArrayList<User>) FileManager.readFromFile(GameActivity.this,fileName);
                                 users.add(new User(name,score,dist));
-                                objectOutputStream.writeObject(users);
-                                objectOutputStream.close();
-
+                                FileManager.writeToFile(GameActivity.this,users,fileName);
                                 nameEt.setText("");
                                 Toast.makeText(GameActivity.this, getString(R.string.Saved), Toast.LENGTH_SHORT).show();
                                 savebtn.setClickable(false);
-
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
                         }
 
                     }
