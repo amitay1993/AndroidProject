@@ -60,5 +60,8 @@ public class Bullet extends Position implements ObjectsInterface {
     public Rect getRect(){
         return new Rect(x+8,y-5,rightBorder()-8,bottomBorder()+5);
     }
+    public boolean collisionDetection(Position second ){
+        return Rect.intersects(getRect(), second.getRect());
+    }
 
 }
