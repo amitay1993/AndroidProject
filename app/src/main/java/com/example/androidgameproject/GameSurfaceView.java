@@ -104,8 +104,7 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         heartSoundId=heartSound.load(context,R.raw.health_sound,1);
 
         vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-
-
+        
     }
 
 
@@ -155,182 +154,207 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         if (player.isPlaying()) {
             setBackNumber();
             backgrounds[backgroundNumber].update();
+
             player.update();
 
-            long heartTimeElapsed=(System.nanoTime()-heartStartTime)/MILLION;
-            if(heartTimeElapsed>15000-player.getDistance()/8){
-                if(life_counter==1&&backgroundNumber>0) // add new heart if passed the first level and one life left
-                    allies.add(new Heart(ImageBitmaps.heartImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - HEART_HEIGHT))));
-                heartStartTime=System.nanoTime();
+            updateHeart();
+            updateShield();
+            updatePowerUp();
+            updateCoin();
+            updateAllies();
+            updateBullet();
+            updateEnemies();
+            updateObstacles();
+        }
+    }
+
+    private void updateObstacles() {
+        long obstacleTimer = (System.nanoTime() - obstacleStartTime) / MILLION;
+        if (obstacleTimer > 8000 - player.getDistance() / 6) {
+            if(random.nextInt(2)==1) {
+                obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, heightScreen / 2 + 150)); // bottom screen
+            }
+            else {
+                obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, -350)); // top screen
             }
 
-            long shieldTimer = (System.nanoTime() - shieldStartTime) / MILLION; // time in ms that passed since the last time entered the if statement and added last object
-            if (shieldTimer > 17000 - player.getDistance() / 8) { // timing the object to show on screen more often when distance is bigger
-                if(!player.isHasShield()) //if player with shield wont add another shield
-                    allies.add(new Shield(ImageBitmaps.shieldImg,widthScreen + 10, (int) (random.nextDouble() * (heightScreen -SHIELD_HEIGHT ))));
-                shieldStartTime = System.nanoTime(); // reset the timer
-            }
-
-            long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION;
-            if (powerUpTimer > 14000 - player.getDistance() / 8) {
-                if(indexBulletToChoose==0) //if player with power up wont add another one
-                    allies.add(new PowerUp(ImageBitmaps.powerUpImg,widthScreen + 10, (int) (random.nextDouble() * (heightScreen -POWER_HEIGHT ))));
-                powerUpStartTime = System.nanoTime();
-            }
-
-            long coinTimeElapsed=(System.nanoTime()-coinStartTime)/MILLION;
-            if(coinTimeElapsed>9000-player.getDistance()/4){
-                allies.add(new Coin(ImageBitmaps.coinImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - COIN_HEIGHT))));
-                coinStartTime=System.nanoTime();
-            }
-
-            for(int i=0;i<allies.size();i++){
-                allies.get(i).update();
-                if(collisionDetectionPlayer(player,allies.get(i))){
-                    if(allies.get(i)instanceof Shield) {
-                        shieldSound.play(shieldSoundId, 1, 1, 0, 0, 1);
-                        player.setHasShield(true);
-                    }
-                    else if(allies.get(i)instanceof PowerUp){
-                        powerUpSound.play(powerUpSoundId,1,1,0,0,1);
-                        indexBulletToChoose=random.nextInt(2)+1;
-                    }
-                    else if(allies.get(i)instanceof Coin){
-                        coinSound.play(coinSoundId,1,1,0,0,1);
-                        bScore+=DELTA_SCORE;
-                        coin_counter++;
-                    }
-                    else if(allies.get(i)instanceof Heart){
-                        heartSound.play(heartSoundId, 1, 1, 0, 0, 1);
-                        if(life_counter<3)
-                            life_counter++;
-                    }
-                    allies.remove(i);
-                    break;
-                }
-
-            }
-
-
-            long bulletTimer = (System.nanoTime() - bulletStartTime) / MILLION;
-            int maxBulletDistance=player.getDistance();
-            if(maxBulletDistance>4000)
-                maxBulletDistance=4000;
-            if (bulletTimer > 1500 - maxBulletDistance / 4) { // add bullets
-                bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,indexBulletToChoose));
-                bulletStartTime = System.nanoTime();
-            }
-
-            for (int i=0;i<bullets.size();i++) {
-                bullets.get(i).update();
-
-
-                if (bullets.get(i).leftBorder() > widthScreen + 200) // if bullet past screen remove
-                {
-                    bullets.remove(i);
-                    break;
-                }
-
-            }
-
-            long enemyTimer = (System.nanoTime() - enemyStartTime) / MILLION;
-            if (enemyTimer > 3000 - player.getDistance() / 4) {
-                addEnemies();
-                enemyStartTime = System.nanoTime();
-            }
-
-            for (int i=0 ;i<enemies.size();i++) {
-                enemies.get(i).update();
-
-                if (collisionDetectionPlayer(player, enemies.get(i))) { //collision between player and enemy
-
-                    if(player.isHasShield()){
-                        player.setHasShield(false); // remove shield
-                        explosions.add(new Explosion(ImageBitmaps.explosionImg, enemies.get(i).getX(), enemies.get(i).getY(), enemies.get(i).getWidth(), enemies.get(i).getHeight()));
-                        explosionSound.play(explosionSoundId,1,1,0,0,1);
-                        enemies.remove(i); // remove enemy
-                    }
-                    else {
-                        int explosionY, explosionX;
-                        if (enemies.get(i).leftBorder() < player.leftBorder()) {
-                            explosionX = player.leftBorder() + 10;
-                        } else {
-                            explosionX = enemies.get(i).getX();
-                        }
-                        explosionY = getExplosionY(enemies.get(i), explosionX);
-                        int width, height;
-                        width = enemies.get(i).getWidth() * 2 / 3;
-                        height = enemies.get(i).getHeight() * 2 / 3;
-
-                        explosions.add(new Explosion(ImageBitmaps.explosionImg, explosionX - width / 2, explosionY - height / 2, width, height));
-                        vibrate();
-                        enemies.remove(i);
-                        life_counter--;
-                        indexBulletToChoose = 0; // reset bullet
-                        if (life_counter == 0) {
-
-                            explosions.add(new Explosion(ImageBitmaps.explosionImg, player.getX() + player.getWidth() / 2 - 1000 / 2, player.getY() + player.getHeight() / 2 - 1000 / 2, 1000, 1000));
-                            gameOver();
-                        }
-                    }
-                    break;
-                }
-
-                if (enemies.get(i).rightBorder() < 0) {
-                    enemies.remove(i);
-                    break;
-                }
-                for (int j=0 ;j<bullets.size();j++) {
-                    if (collisionDetection(enemies.get(i), bullets.get(j))) {
-                        explosions.add(new Explosion(ImageBitmaps.explosionImg, enemies.get(i).getX(), enemies.get(i).getY(),enemies.get(i).getWidth(),enemies.get(i).getHeight()));
-                        explosionSound.play(explosionSoundId,1,1,0,0,1);
-                        enemies.remove(i);
-                        bullets.remove(j);
-                        bScore+=DELTA_SCORE;
-                        break;
-                    }
-                }
-
-            }
-
-            long obstacleTimer = (System.nanoTime() - obstacleStartTime) / MILLION;
-            if (obstacleTimer > 8000 - player.getDistance() / 6) {
-                if(random.nextInt(2)==1) {
-                    obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, heightScreen / 2 + 150)); // bottom screen
+            obstacleStartTime = System.nanoTime();
+        }
+        for (int i=0;i<obstacles.size();i++) {
+            obstacles.get(i).update();
+            if (player.collisionDetection(obstacles.get(i))) {
+                if(player.isHasShield()){
+                    player.setHasShield(false); // destroy shield
                 }
                 else {
-                    obstacles.add(new Obstacle(ImageBitmaps.obstacleImg, widthScreen + 10, -350)); // top screen
-                }
-
-                obstacleStartTime = System.nanoTime();
-            }
-            for (int i=0;i<obstacles.size();i++) {
-                obstacles.get(i).update();
-                if (collisionDetectionPlayer(player, obstacles.get(i))) {
-                    if(player.isHasShield()){
-                        player.setHasShield(false); // destroy shield
-                    }
-                    else {
-                        vibrate();
-                        life_counter = 0;
-                        explosions.add(new Explosion(ImageBitmaps.explosionImg, player.getX() + player.getWidth() / 2 - 1000 / 2, player.getY() + player.getHeight() / 2 - 1000 / 2, 1000, 1000));
-                        gameOver();
-                        break;
-                    }
-                }
-
-                for(int j=0;j<bullets.size();j++){
-                    if(collisionDetection(obstacles.get(i),bullets.get(j))){
-                        bullets.remove(j);
-                        break;
-                    }
-                }
-                if (obstacles.get(i).rightBorder() < 0) {
-                    obstacles.remove(i);
+                    vibrate();
+                    life_counter = 0;
+                    explosions.add(new Explosion(ImageBitmaps.explosionImg, player.getX() + player.getWidth() / 2 - 1000 / 2, player.getY() + player.getHeight() / 2 - 1000 / 2, 1000, 1000));
+                    gameOver();
                     break;
                 }
             }
+
+            for(int j=0;j<bullets.size();j++){
+                if(bullets.get(j).collisionDetection(obstacles.get(i))){
+                    bullets.remove(j);
+                    break;
+                }
+            }
+            if (obstacles.get(i).rightBorder() < 0) {
+                obstacles.remove(i);
+                break;
+            }
         }
+    }
+
+    private void updateEnemies() {
+        long enemyTimer = (System.nanoTime() - enemyStartTime) / MILLION;
+        if (enemyTimer > 3000 - player.getDistance() / 4) {
+            addEnemies();
+            enemyStartTime = System.nanoTime();
+        }
+
+        for (int i=0 ;i<enemies.size();i++) {
+            enemies.get(i).update();
+
+            if (player.collisionDetection(enemies.get(i))) { //collision between player and enemy
+
+                if(player.isHasShield()){
+                    player.setHasShield(false); // remove shield
+                    explosions.add(new Explosion(ImageBitmaps.explosionImg, enemies.get(i).getX(), enemies.get(i).getY(), enemies.get(i).getWidth(), enemies.get(i).getHeight()));
+                    explosionSound.play(explosionSoundId,1,1,0,0,1);
+                    enemies.remove(i); // remove enemy
+                }
+                else {
+                    int explosionY, explosionX;
+                    if (enemies.get(i).leftBorder() < player.leftBorder()) {
+                        explosionX = player.leftBorder() + 10;
+                    } else {
+                        explosionX = enemies.get(i).getX();
+                    }
+                    explosionY = getExplosionY(enemies.get(i), explosionX);
+                    int width, height;
+                    width = enemies.get(i).getWidth() * 2 / 3;
+                    height = enemies.get(i).getHeight() * 2 / 3;
+
+                    explosions.add(new Explosion(ImageBitmaps.explosionImg, explosionX - width / 2, explosionY - height / 2, width, height));
+                    vibrate();
+                    enemies.remove(i);
+                    life_counter--;
+                    indexBulletToChoose = 0; // reset bullet
+                    if (life_counter == 0) {
+
+                        explosions.add(new Explosion(ImageBitmaps.explosionImg, player.getX() + player.getWidth() / 2 - 1000 / 2, player.getY() + player.getHeight() / 2 - 1000 / 2, 1000, 1000));
+                        gameOver();
+                    }
+                }
+                break;
+            }
+
+            if (enemies.get(i).rightBorder() < 0) {
+                enemies.remove(i);
+                break;
+            }
+            for (int j=0 ;j<bullets.size();j++) {
+                if (bullets.get(j).collisionDetection(enemies.get(i))) {
+                    explosions.add(new Explosion(ImageBitmaps.explosionImg, enemies.get(i).getX(), enemies.get(i).getY(),enemies.get(i).getWidth(),enemies.get(i).getHeight()));
+                    explosionSound.play(explosionSoundId,1,1,0,0,1);
+                    enemies.remove(i);
+                    bullets.remove(j);
+                    bScore+=DELTA_SCORE;
+                    break;
+                }
+            }
+
+        }
+    }
+
+    private void updateBullet() {
+        long bulletTimer = (System.nanoTime() - bulletStartTime) / MILLION;
+        int maxBulletDistance=player.getDistance();
+        if(maxBulletDistance>4000)
+            maxBulletDistance=4000;
+        if (bulletTimer > 1500 - maxBulletDistance / 4) { // add bullets
+            bullets.add(new Bullet(ImageBitmaps.bulletImg, player.getX() + player.getWidth(), player.getY() + player.getHeight() / 2 - BULLET_HEIGHT, bulletSpeed,indexBulletToChoose));
+            bulletStartTime = System.nanoTime();
+        }
+
+        for (int i=0;i<bullets.size();i++) {
+            bullets.get(i).update();
+
+
+            if (bullets.get(i).leftBorder() > widthScreen + 200) // if bullet past screen remove
+            {
+                bullets.remove(i);
+                break;
+            }
+
+        }
+    }
+
+    private void updateAllies() {
+        for(int i=0;i<allies.size();i++){
+            allies.get(i).update();
+            if(player.collisionDetection(allies.get(i))){
+                if(allies.get(i)instanceof Shield) {
+                    shieldSound.play(shieldSoundId, 1, 1, 0, 0, 1);
+                    player.setHasShield(true);
+                }
+                else if(allies.get(i)instanceof PowerUp){
+                    powerUpSound.play(powerUpSoundId,1,1,0,0,1);
+                    indexBulletToChoose=random.nextInt(2)+1;
+                }
+                else if(allies.get(i)instanceof Coin){
+                    coinSound.play(coinSoundId,1,1,0,0,1);
+                    bScore+=DELTA_SCORE;
+                    coin_counter++;
+                }
+                else if(allies.get(i)instanceof Heart){
+                    heartSound.play(heartSoundId, 1, 1, 0, 0, 1);
+                    if(life_counter<3)
+                        life_counter++;
+                }
+                allies.remove(i);
+                break;
+            }
+        }
+    }
+
+    private void updateCoin() {
+        long coinTimeElapsed=(System.nanoTime()-coinStartTime)/MILLION;
+        if(coinTimeElapsed>9000-player.getDistance()/4){
+            allies.add(new Coin(ImageBitmaps.coinImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - COIN_HEIGHT))));
+            coinStartTime=System.nanoTime();
+        }
+    }
+
+    private void updatePowerUp() {
+        long powerUpTimer = (System.nanoTime() - powerUpStartTime) / MILLION;
+        if (powerUpTimer > 14000 - player.getDistance() / 8) {
+            if(indexBulletToChoose==0) //if player with power up wont add another one
+                allies.add(new PowerUp(ImageBitmaps.powerUpImg,widthScreen + 10, (int) (random.nextDouble() * (heightScreen -POWER_HEIGHT ))));
+            powerUpStartTime = System.nanoTime();
+        }
+    }
+
+    private void updateShield() {
+        long shieldTimer = (System.nanoTime() - shieldStartTime) / MILLION; // time in ms that passed since the last time entered the if statement and added last object
+        if (shieldTimer > 17000 - player.getDistance() / 8) { // timing the object to show on screen more often when distance is bigger
+            if(!player.isHasShield()) //if player with shield wont add another shield
+                allies.add(new Shield(ImageBitmaps.shieldImg,widthScreen + 10, (int) (random.nextDouble() * (heightScreen -SHIELD_HEIGHT ))));
+            shieldStartTime = System.nanoTime(); // reset the timer
+        }
+    }
+
+    private void updateHeart(){
+        long heartTimeElapsed=(System.nanoTime()-heartStartTime)/MILLION;
+        if(heartTimeElapsed>15000-player.getDistance()/8){
+            if(life_counter==1&&backgroundNumber>0) // add new heart if passed the first level and one life left
+                allies.add(new Heart(ImageBitmaps.heartImg, widthScreen + 10, (int) (random.nextDouble() * (heightScreen - HEART_HEIGHT))));
+            heartStartTime=System.nanoTime();
+        }
+
     }
 
     @Override
@@ -410,118 +434,6 @@ public class GameSurfaceView extends SurfaceView implements SurfaceHolder.Callba
         for(int i=0;i<life_counter;i++){
             canvas.drawBitmap(life,widthScreen/2f-life.getWidth()+2*i*life.getWidth()/1.5f,30,null);
         }
-
-    }
-
-    // collision detection between bullet and other object
-    public boolean collisionDetection(Position first, Position second) {
-        return Rect.intersects(first.getRect(), second.getRect());
-    }
-    private boolean collisionWithoutShield(Player first, Position second){
-        int leftX, rightX, botY, midY, topY;
-        leftX = first.leftBorder()+20;
-        botY = first.bottomBorder()-20;
-        rightX = first.rightBorder()-20;
-        midY = first.bottomBorder() - first.getHeight() / 2;
-        topY = first.topBorder()+20;
-
-        // three triangle lines of the spaceship
-        Line[] triangleLines=new Line[3];
-        triangleLines[0]= new Line(new Point(leftX,topY),new Point(leftX,botY));
-        triangleLines[1]=new Line(new Point(leftX,botY),new Point(rightX,midY));
-        triangleLines[2]=new Line(new Point(rightX,midY),new Point(leftX,topY));
-
-
-        Line[] rectangleLines=new Line[4];
-        int topBorder=second.topBorder();
-        int leftBorder=second.leftBorder();
-        int bottomBorder=second.bottomBorder();
-        int rightBorder=second.rightBorder();
-        if(second instanceof Obstacle){
-            topBorder+=15;
-            leftBorder+=15;
-            rightBorder-=15;
-            bottomBorder-=15;
-        }
-        else if(second instanceof Missile){
-            leftBorder+=20;
-            rightBorder-=20;
-            topBorder+=30;
-            bottomBorder-=30;
-
-        }
-
-        // four rectangle lines of the enemy
-        rectangleLines[0]=new Line(new Point(leftBorder,topBorder),new Point(rightBorder,topBorder));
-        rectangleLines[1]=new Line(new Point(rightBorder,topBorder),new Point(rightBorder,bottomBorder));
-        rectangleLines[2]=new Line(new Point(rightBorder,second.bottomBorder()),new Point(leftBorder,bottomBorder));
-        rectangleLines[3]=new Line(new Point(leftBorder,bottomBorder),new Point(leftBorder,topBorder));
-
-        //check if there are 2 lines that touching
-        for(Line triangleLine:triangleLines){
-            for(Line rectangleLine:rectangleLines){
-                if(linesTouching(rectangleLine,triangleLine)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    private boolean collisionWithShield(Player first,Position second){
-        if (second instanceof Obstacle) { // checking collision between circle and rectangle
-            int middlePlayerX = first.x + first.width / 2 - 20;
-            int middlePlayerY = first.y + first.height / 2;
-            float testX = middlePlayerX;
-            float testY = middlePlayerY;
-            // which edge is closest?
-            if (middlePlayerX < second.leftBorder())
-                testX = second.leftBorder();      // test left edge
-            else if (middlePlayerX > second.rightBorder())
-                testX = second.rightBorder();   // right edge
-            if (middlePlayerY < second.topBorder()) testY = second.topBorder();      // top edge
-            else if (middlePlayerY > second.bottomBorder())
-                testY = second.bottomBorder();   // bottom edge
-            // get distance from closest edges
-            float distX = middlePlayerX - testX;
-            float distY = middlePlayerY - testY;
-            float distance = (float) Math.sqrt((distX * distX) + (distY * distY));
-            if (distance <= first.getShieldRadius()) { // if the distance is less than the radius, collision!
-                return true;
-            }
-            return false;
-        }
-        else { // checking collision between two circles
-            int enemyRadius = second.width / 2;
-            int middleEnemyX = second.getX() + enemyRadius, middleEnemyY = second.getY() + enemyRadius;
-            int middlePlayerX = first.x + first.width / 2 - 20, middlePlayerY = first.y + first.height / 2;
-            int distanceBetweenMidPoints = (int) Math.sqrt((middleEnemyX - middlePlayerX) *
-                    (middleEnemyX - middlePlayerX) + (middleEnemyY - middlePlayerY) * (middleEnemyY - middlePlayerY));
-            if (distanceBetweenMidPoints <= enemyRadius + first.getShieldRadius()) // if distance between circles is less than
-                return true;                                                       // sum of radius collision!
-            return false;
-        }
-    }
-
-    private boolean collisionDetectionPlayer(Player first, Position second) {
-        boolean hasCollided=false;
-        if(first.isHasShield()) {
-            hasCollided=collisionWithShield(first,second);
-        }
-        else
-            hasCollided=collisionWithoutShield(first,second);
-        return hasCollided;
-    }
-
-    // check if two lines are touching
-    boolean linesTouching(Line l1,Line l2) {
-
-        float denom=((l2.end.y-l2.start.y)*(l1.end.x-l1.start.x) - (l2.end.x-l2.start.x)*(l1.end.y-l1.start.y));
-        float uA = ((l2.end.x-l2.start.x)*(l1.start.y-l2.start.y) - (l2.end.y-l2.start.y)*(l1.start.x-l2.start.x)) / denom;
-        float uB = ((l1.end.x-l1.start.x)*(l1.start.y-l2.start.y) - (l1.end.y-l1.start.y)*(l1.start.x-l2.start.x)) / denom;
-        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
-            return true;
-        }
-        return false;
     }
 
     void gameOver() {
